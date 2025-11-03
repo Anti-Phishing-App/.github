@@ -46,7 +46,6 @@ References
 
 ## 2. Use Case Analysis
 
-
 ## 3. Class Diagrams
 
 이 장은 다양한 관점에서 바라본 Class diagram과 각각에 대한 설명을 기술한다. 본 문서의 Class diagram의 목차는 다음과 같다.
