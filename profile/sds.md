@@ -984,6 +984,21 @@ References
 | | add_audio_chunk(session_id, chunk) | void | Public | 오디오 청크를 버퍼에 추가하는 함수 |
 | | get_buffer(session_id) | bytes | Public | 세션의 오디오 버퍼를 반환하는 함수 |
 
+#### DocumentRouter Class
+
+| Class | DocumentRouter |
+|-------|------------|
+| Description | 문서 업로드 후 종합 분석(직인, OCR, 키워드, 레이아웃, 위험도)을 수행하는 API 라우터 클래스다 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | prefix | str | Public | 라우터 경로는 루트 기 |
+| | service | DocumentService | Private | 세션 정보를 저장하는 딕셔너리 |
+| | buffers | Dict[str, bytes] | Private | 문서 분석 비즈니스 로직 의존성 (DI) |
+| 구분 | Name | Type | Visibility | Description |
+| Operations | process_request(file)) | dict | Public | 업로드 파일 저장 후 analyze_document(image_path) 호출, 종합 결과 반환 |
+
+
 **주요 관계:**
 - Router들은 해당 Service를 의존성 주입 방식으로 사용한다
 - 모든 Router는 User 모델과 연결되어 인증된 사용자의 요청을 처리한다
