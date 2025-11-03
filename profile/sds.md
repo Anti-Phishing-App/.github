@@ -1589,14 +1589,110 @@ WebSocket 기반 실시간 통화 모니터링의 전체 생명주기를 나타�
 - 전이: Connecting으로 돌아가 재연결을 시도할 수 있다
 - 종료: 포기 시 프로세스가 실패로 종료되고 시스템은 유휴 상태로 돌아간다
 
+#### 문서 위조 분석 프로세스
+
+**관련 Use Case**: Use Case #8 - 문서 이미지 업로드 및 위조 분석
+
+사용자가 업로드한 문서 이미지를 순차적으로 분석하여 위조 위험도를 판별하는 생명주기를 나타낸다. 총 9개의 상태로 구성된다.
+
+**1. DocIdle (문서 분석 유휴)**
+- 문서 분석 프로세스의 초기 상태이다.
+- 이벤트: '문서 분석 요청' (사용자가 이미지 업로드)
+- 전이: Uploading 상태로 이동한다.
+
+**2. Uploading (업로드 중)**
+- 클라이언트로부터 이미지 파일을 수신하고 서버에 저장하는 상태이다.
+- 이벤트: 파일 저장 완료
+- 전이: AnalyzingStamp 상태로 이동한다.
+- 실패 시: DocAnalysisError 상태로 이동한다. (예: 파일 형식 오류, 저장 실패)
+
+**3. AnalyzingStamp (직인 분석 중)**
+- run_stamp_detection() 모듈을 실행하여 직인을 탐지하는 상태이다.
+- 이벤트: 직인 분석 완료
+- 전이: RunningOCR 상태로 이동한다.
+- 실패 시: DocAnalysisError 상태로 이동한다.
+
+**4. RunningOCR (OCR 추출 중)**
+- run_ocr() 모듈을 실행하여 문서 내 텍스트를 추출하는 상태이다.
+- 이벤트: 텍스트 추출 완료
+- 전이: AnalyzingKeywords 상태로 이동한다.
+- 실패 시: DocAnalysisError 상태로 이동한다.
+
+**5. AnalyzingKeywords (키워드 분석 중)**
+- detect_keywords() 모듈을 실행하여 위험 키워드를 탐지하는 상태이다.
+- 이벤트: 키워드 분석 완료
+- 전이: AnalyzingLayout 상태로 이동한다.
+- 실패 시: DocAnalysisError 상태로 이동한다.
+
+**6. AnalyzingLayout (레이아웃 분석 중)**
+- analyze_document_font() 모듈을 실행하여 폰트 및 레이아웃을 분석하는 상태이다.
+- 이벤트: 레이아웃 분석 완료
+- 전이: CalculatingRisk 상태로 이동한다.
+- 실패 시: DocAnalysisError 상태로 이동한다.
+
+**7. CalculatingRisk (위험도 계산 중)**
+- 모든 분석 결과를 종합하고 가중치를 적용하여 final_risk를 계산하는 상태이다.
+- 이벤트: 계산 완료
+- 전이: DocAnalysisComplete 상태로 이동한다.
+- 실패 시: DocAnalysisError 상태로 이동한다.
+
+**8. DocAnalysisComplete (문서 분석 완료)**
+- 모든 분석이 성공적으로 완료되고 최종 결과가 생성된 상태이다.
+- 모든 분석이 성공적으로 완료되고 최종 결과가 생성된 상태이다.
+
+**9. DocAnalysisError (문서 분석 오류)**
+- 파일 저장, OCR, 또는 개별 분석 모듈(직인, 키워드 등) 실행 중 오류가 발생한 상태이다.
+- 종료: 프로세스가 실패로 종료되고 시스템은 SystemIdle 상태로 돌아간다.
+
+#### 피싱 사이트 탐지 프로세스
+
+**관련 Use Case**: Use Case #9 - 피싱 사이트 탐지
+
+사용자가 요청한 URL의 피싱 위험도를 분석하는 생명주기를 나타낸다. 병렬 상태를 활용한다.
+
+**1. URLIdle (URL 분석 유휴)**
+- URL 분석 프로세스의 초기 상태이다.
+- 이벤트: 'URL 분석 요청'
+- 전이: AnalyzingURL 복합 상태로 이동한다.
+
+**2. AnalyzingURL (URL 분석 중 - 복합 상태)**
+- 사용자 요청(URL)을 받아 피싱 위험도를 분석하는 상태이다.
+- 2개의 병렬 하위 상태로 구성된다: ImmediateAnalysis, ComprehensiveAnalysis
+
+**2-1. ImmediateAnalysis (즉시 분석)**
+- detect_immediate()를 실행하여 URL 문자열 자체의 특징(길이, 키워드 등)을 분석한다.
+
+**2-2. ComprehensiveAnalysis (종합 분석)**
+- detect_comprehensive()를 실행하여 DB 조회, HTML 크롤링, ML 모델 예측을 수행한다.
+
+**AnalyzingURL 종료**:
+- 이벤트: 분석 완료
+- 전이: AggregatingResults 상태로 이동한다.
+- 오류 발생 시: URLAnalysisError 상태로 이동한다.
+
+**3. AggregatingResults (결과 종합 중)**
+- 즉시 분석과 종합 분석의 결과를 취합하여 최종 AnalysisResponse와 warning_message를 생성하는 상태이다.
+- 이벤트: 결과 종합 완료
+- 전이: URLAnalysisComplete 상태로 이동한다.
+
+**4. URLAnalysisComplete (URL 분석 완료)**
+- URL 분석이 성공적으로 완료되고 JSON 응답이 생성된 상태이다.
+- 종료: 프로세스가 성공적으로 종료되고 시스템은 SystemIdle 상태로 돌아간다.
+
+**5. URLAnalysisError (URL 분석 오류)**
+- 모델 로드 실패, HTML 크롤링 실패, DB 조회 실패 등 분석 과정에서 오류가 발생한 상태이다.
+- 종료: 프로세스가 실패로 종료되고 시스템은 SystemIdle 상태로 돌아간다.
+
 ### 시스템 전체 흐름
 
 **SystemIdle (시스템 유휴)**
 - 최상위 초기 상태로, 사용자가 시스템에 접속하지 않은 상태다
 - 이벤트: 사용자 인증 필요 → OAuth 인증 프로세스로 전이
 - 이벤트: 실시간 모니터링 시작 → 실시간 음성 스트리밍 프로세스로 전이
+- 이벤트: 문서 분석 요청 → 문서 위조 분석 프로세스로 전이
+- 이벤트: URL 분석 요청 → 피싱 사이트 탐지 프로세스로 전이
 
-각 프로세스가 완료되거나 실패하면 시스템은 다시 SystemIdle 상태로 돌아간다. 이를 통해 사용자는 언제든지 인증 또는 스트리밍을 새로 시작할 수 있다
+각 프로세스가 완료되거나 실패하면 시스템은 다시 SystemIdle 상태로 돌아간다. 이를 통해 사용자는 언제든지 인증, 스트리밍, 또는 각종 분석 기능을 새로 시작할 수 있다.
 
 ## 7. Implementation Requirements
 
