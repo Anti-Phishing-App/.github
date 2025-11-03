@@ -910,6 +910,34 @@ References
 | | created_at | datetime | Public | 계정 생성 일시 |
 | | updated_at | datetime | Public | 계정 정보 수정 일시 |
 
+#### UserRouter Class
+
+| Class | UserRouter |
+|-------|------------|
+| Description | 사용자 정보 조회/수정/삭제를 처리하는 API 라우터 클래스다 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | prefix | str | Public | 라우터 경로 접두사 (`"/users"` 또는 `""` ) |
+| 구분 | Name | Type | Visibility | Description |
+| Operations | get_my_info(current_user) | UserResponse | Public | 로그인한 사용자 정보를 반환한다 |
+| | update_my_info(request, db, current_user) | UserResponse | Public | 사용자 정보를 수정한다 |
+| | delete_my_account(current_user, db) | MessageResponse | Public | 사용자 계정을 삭제한다 |
+
+#### VoicePhishingRouter Class
+
+| Class | VoicePhishingRouter |
+|-------|---------------------|
+| Description | 텍스트/오디오 기반 보이스피싱 탐지 엔드포인트를 제공하는 라우터 클래스다 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | prefix | str | Public | 라우터 경로 접두사 ("/voice-phishing" 또는 "") |
+| 구분 | Name | Type | Visibility | Description |
+| Operations | analyze_text(request) | AnalysisResponse | Public | 텍스트 분석 요청을 처리한다 |
+| | analyze_audio(file, language, method) | AnalysisResponse | Public | 업로드된 오디오 파일을 분석한다 |
+| | health_check() | dict | Public | 서비스 상태를 반환한다 |
+
 #### VoicePhishingDetector Class
 
 | Class | VoicePhishingDetector |
@@ -968,7 +996,7 @@ References
 #### WebSocketManager Class
 
 | Class | WebSocketManager |
-|-------|-------------------|
+|-------|------------------|
 | Description | 실시간 음성 스트리밍 세션을 관리하는 매니저 클래스다 |
 
 | 구분 | Name | Type | Visibility | Description |
@@ -983,6 +1011,114 @@ References
 | | broadcast(message) | void | Public | 모든 활성 연결에 메시지를 브로드캐스트하는 함수 |
 | | add_audio_chunk(session_id, chunk) | void | Public | 오디오 청크를 버퍼에 추가하는 함수 |
 | | get_buffer(session_id) | bytes | Public | 세션의 오디오 버퍼를 반환하는 함수 |
+
+#### PhishingSiteRouter Class
+
+| Class | PhishingSiteRouter |
+|-------|--------------------|
+| Description | URL 기반 피싱 사이트 탐지 API를 제공하는 라우터 클래스다 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | prefix | str | Public | 라우터 경로 접두사 ("/phishing-site" 또는 "") |
+| 구분 | Name | Type | Visibility | Description |
+| Operations | analyze_url(request)) | AnalysisResponse | Public | URL 유사도/특징 기반 탐지를 수행한다 |
+| | health_check() | dict | Public | 서비스 상태를 반환한다 |
+
+#### TranscribeRouter Class
+
+| Class | TranscribeRouter |
+|-------|------------------|
+| Description | 음성 업로드/스트리밍 전사(STT) API를 제공하는 라우터 클래스다 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | prefix | str | Public | 라우터 경로 접두사 (`"/transcribe"` 또는 `""`) |
+| 구분 | Name | Type | Visibility | Description |
+| Operations | upload_audio(file) | Token | Public | 비동기 전사 작업 토큰을 발급한다 |
+| | get_transcription(token) | TranscriptionResult | Public | 토큰으로 전사 결과를 조회한다 |
+| | stream_transcription(websocket) | void | Public | WS/gRPC 기반 실시간 전사를 처리한다 |
+
+#### DocumentRouter Class
+
+| Class | DocumentRouter |
+|-------|----------------|
+| Description | 문서 업로드 후 종합 분석(직인, OCR, 키워드, 레이아웃, 위험도)을 수행하는 API 라우터 클래스다 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | prefix | str | Public | 라우터 경로는 루트 기 |
+| | service | DocumentService | Private | 세션 정보를 저장하는 딕셔너리 |
+| | buffers | Dict[str, bytes] | Private | 문서 분석 비즈니스 로직 의존성 (DI) |
+| 구분 | Name | Type | Visibility | Description |
+| Operations | process_request(file)) | dict | Public | 업로드 파일 저장 후 analyze_document(image_path) 호출, 종합 결과 반환 |
+
+#### PhishingSiteDetector Class
+
+| Class | PhishingSiteDetector |
+|-------|----------------------|
+| Description | URL 특징/유사도/블랙리스트를 결합해 피싱 가능성을 판정하는 탐지 클래스다 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | phish_db_path | str  | Private | 피싱 DB 또는 캐시 경로 |
+| | model | Any  | Private    | URL 분류/점수화 모델(옵션) |
+| 구분 | Name | Type | Visibility | Description |
+| Operations | load_db(path) | void | Private    | 피싱 DB/캐시를 로드한다  |
+| | extract_url_features(url) | dict | Private | URL 토큰/호스트/패스 등 특징을 추출한다 |
+| | check_url_similarity(url) | dict | Private | 정상 사이트와의 유사도를 계산한다 |
+| | detect_immediate(url) | dict | Public | 즉시 경고가 필요한 규칙 기반 판정 |
+| | detect_comprehensive(url) | dict | Public | 종합 지표를 결합해 최종 점수 산출 |
+
+#### HybridPhishingSession Class
+
+| Class | HybridPhishingSession |
+|-------|-----------------------|
+| Description | 텍스트·음성 입력을 모두 처리하는 실시간 하이브리드 탐지 세션 클래스다 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | websocket | Any | Private | 세션에 연결된 WebSocket |
+| | ws_manager | WebSocketManager | Private | 세션 연결/브로드캐스트 관리 |
+| | voice_detector | VoicePhishingDetector | Private | 실시간 음성/텍스트 탐지기 |
+| | last_result | dict | Private | 최신 종합 탐지 결과 |
+| 구분 | Name | Type | Visibility | Description |
+| Operations | init_session(user_id) | void | Public | 사용자 기준으로 세션을 초기화한다 |
+| | receive_text(text) | dict | Public | 텍스트 프레임을 분석하고 결과를 갱신한다 |
+| | receive_audio(chunk) | dict | Public | 오디오 청크를 분석하고 결과를 갱신한다 |
+| | get_latest_comprehensive() | dict | Public | 최신 종합 결과를 반환한다 |
+| | reset() | void | Public | 세션 상태/버퍼를 초기화한다 |
+
+#### ClovaOCR Class
+
+| Class | ClovaOCR |
+|-------|----------|
+| Description | 외부 OCR/레이아웃 분석 API를 호출하는 어댑터 클래스다 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | endpoint | str | Private | OCR API 엔드포인트 URL |
+| | secret_key | str | Private | 인증 키/토큰 |
+| 구분 | Name | Type | Visibility | Description |
+| Operations | analyze_document(image) | OCRResult | Public | 문서 이미지 분석 결과를 반환한다 |
+| | extract_text(image) | str | Public | 텍스트만 추출한다 |
+| | extract_layout(image) | Layout | Public | 레이아웃(블록/라인/좌표) 정보를 추출한다 |
+
+#### ClovaspeechSTT Class
+
+| Class | ClovaspeechSTT |
+|-------|----------------|
+| Description | 업로드/스트리밍 기반의 외부 STT 서비스를 호출하는 어댑터 클래스다 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute  | endpoint | str | Private | STT API 엔드포인트 URL |
+| | auth | str | Private | 인증 정보(키/시크릿 등) |
+| 구분 | Name | Type | Visibility | Description |
+| Operations | upload_audio(file) | Token | Public | 비동기 전사 작업을 생성하고 토큰을 반환한다 |
+| | stream_audio(chunk) | Generator | Public | 음성 청크를 스트리밍 업로드한다 |
+| | get_transcription(token) | Text | Public | 전사 완료 결과를 조회한다 |
+
 
 **주요 관계:**
 - Router들은 해당 Service를 의존성 주입 방식으로 사용한다
