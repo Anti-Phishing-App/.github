@@ -23,24 +23,17 @@
 9. [References](#9-references)
 
 ## Authors for each section
-
-Introduction
-
-Use Case Analysis
-
-Class Diagrams
-
-Sequence Diagrams
-
-State Machine Diagrams
-
-User Interface Design
-
-Implementation Requirements
-
-Glossary
-
-References
+| Section | Author(s) |
+|----------|------------|
+| Introduction | 김민서 |
+| Use Case Analysis | 윤찬익 |
+| Class Diagrams | 박윤호, 김민서 |
+| Sequence Diagrams | 김성현 |
+| State Machine Diagrams | 최현수 |
+| User Interface Design | 류효정 |
+| Implementation Requirements | 최현수 |
+| Glossary | 김성현 |
+| References | 김성현 |
 
 ## 1. Introduction
 해당 문서는 멀티모델 피싱 탐지 애플리케이션(Anti-Phishing APP)의 Software Design Specification(SDS) 문서이다. 스마트폰과 인터넷이 널리 쓰이면서 피싱 수법이 점점 똑똑해지고, 특히 디지털에 익숙하지 않은 사람들이 피해를 보기 쉬운 상황을 배경으로 하고 있다. 개발 시스템은 크게 Android 클라이언트와 AI 분석 서버(FastAPI)로 이루어지며, 사용자가 통화 음성(실시간), 문자(SMS) 내용, 문서·이미지 같은 의심 데이터를 올리면 서버가 바로 분석해 위험도와 그 근거를 보여 준다. 서버는 OCR(Clova로 텍스트 추출), 키워드 점수(금융·수사기관·압박 표현), KoBERT 기반 문맥 분류, 직인 탐지(Stamp), 레이아웃 지표, URL 검사(도메인/단축링크 등) 같은 모듈을 층별로 두고, Risk Aggregator가 각각의 결과를 가중해 최종 점수를 산출한다. 앱은 입력 화면과 서버 통신을 맡고, 알림·진동·하이라이트로 즉각 경고해 피해를 미리 막을 수 있게 돕는다.
