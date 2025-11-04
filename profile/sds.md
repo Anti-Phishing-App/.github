@@ -884,7 +884,7 @@ References
 
 ### 3.1 서버 시스템 클래스 다이어그램
 
-![### 3.1 DB Class Diagram (OAuth 지원 추가)](image/class_diagram_database.png)
+![### 3.1 DB Class Diagram (OAuth 지원 추가)](image/class_diagram_server.png)
 
 #### 설명
 
