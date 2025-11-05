@@ -1305,101 +1305,300 @@
 
 ### 3.2 안드로이드 클라이언트 클래스 다이어그램
 
-안드로이드 어플리케이션의 기능별 Class diagram을 작성했다. 각 클래스는 관련된 use case와 연결된다.
+![### 3.2 Android Client Class Diagram](image/class_diagram_android.png)
 
-![### 3.2 기능별 Class Diagram](image/class_diagram_all_routers.png)
+#### 설명
 
-아래 [그림 3-2]는 안드로이드 클라이언트에서 서버와 통신하고 문서 위조를 탐지하기 위한 시스템과 관련된 클래스들을 표현한 기능별 Class diagram이다.
+본 다이어그램은 안드로이드 클라이언트의 주요 화면, 뷰모델, 리포지토리, 네트워크, 유틸리티, 리시버 클래스를 포함한다.  
+앱은 MVVM(Model-View-ViewModel) 아키텍처를 기반으로 구성되며,  
+**문서 이미지 위조 탐지**, **보이스피싱 탐지(실시간/녹음)**, **문자 스미싱 탐지** 기능을 수행한다.  
+사용자는 로그인 후 각 기능 화면으로 이동해 서버(FastAPI)와 통신하며 탐지 결과를 확인할 수 있다.
+
+---
 
 #### MainActivity Class
 
 | Class | MainActivity |
 |-------|--------------|
-| Description | 안드로이드 앱의 메인 화면을 관리하는 Activity 클래스다 |
+| Description | 애플리케이션의 진입점으로, 네비게이션과 전역 UI 상태를 관리하는 Activity 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | apiService | ApiService | Private | 서버 통신을 위한 API 서비스 인스턴스 |
-| | currentBitmap | Bitmap | Private | 사용자가 선택한 현재 이미지를 저장하는 변수 (lateinit) |
+| Attribute | navController | NavController | Private | Jetpack Compose 네비게이션 컨트롤러 |
+|  | apiService | ApiService | Private | 서버 API 호출용 인스턴스 |
+|  | isLoggedIn | Boolean | Private | 로그인 상태 여부 |
+| Operations | onCreate(savedInstanceState) | void | Public | Activity 초기화 및 네비게이션 구성 |
+|  | navigateTo(screen) | void | Public | 선택한 기능 화면으로 이동 |
+|  | showToast(message) | void | Public | 간단한 사용자 메시지 표시 |
+
+---
+
+#### LoginScreen Class
+
+| Class | LoginScreen |
+|-------|-------------|
+| Description | 전화번호 및 비밀번호를 입력받아 로그인 요청을 수행하는 화면 |
+
 | 구분 | Name | Type | Visibility | Description |
-| Operations | onCreate(savedInstanceState) | void | Public | Activity 생성 시 초기화를 수행하는 함수 |
-| | onImageSelected(uri) | void | Public | 사용자가 갤러리에서 이미지를 선택했을 때 호출되는 함수 |
-| | onAnalyzeClicked() | void | Public | 분석 버튼을 클릭했을 때 호출되는 함수 |
-| | showResults(result) | void | Public | 분석 결과를 화면에 표시하는 함수 |
+|------|------|------|------------|-------------|
+| Attribute | viewModel | AuthViewModel | Private | 로그인 로직을 관리하는 뷰모델 |
+| Operations | onLoginClick() | void | Public | 로그인 버튼 클릭 시 호출 |
+|  | navigateToRegister() | void | Public | 회원가입 화면으로 이동 |
 
-#### StampDetector Class
+---
 
-| Class | StampDetector |
+#### RegisterScreen Class
+
+| Class | RegisterScreen |
+|-------|----------------|
+| Description | 회원 정보를 입력받아 서버에 가입 요청을 보내는 화면 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | viewModel | AuthViewModel | Private | 회원가입 로직 담당 뷰모델 |
+| Operations | onRegisterClick() | void | Public | 회원가입 버튼 클릭 시 호출 |
+|  | validateInput() | Boolean | Private | 입력값 검증 수행 |
+
+---
+
+#### MainScreen Class
+
+| Class | MainScreen |
+|-------|-------------|
+| Description | 로그인 이후 메인 메뉴 화면으로, 세 가지 기능(문서, 통화, 문자)을 선택할 수 있음 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | navController | NavController | Private | 각 기능 화면으로의 이동 제어 |
+| Operations | onDocumentClick() | void | Public | 문서 탐지 화면으로 이동 |
+|  | onCallClick() | void | Public | 보이스피싱 탐지 화면으로 이동 |
+|  | onSmsClick() | void | Public | 문자 스미싱 탐지 화면으로 이동 |
+
+---
+
+#### AnalysisScreen Class
+
+| Class | AnalysisScreen |
+|-------|----------------|
+| Description | 문서 이미지 기반 위조 탐지 화면. 사용자가 이미지를 선택하거나 촬영하여 서버로 업로드함 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | viewModel | AnalysisViewModel | Private | 이미지 분석 로직 담당 |
+|  | selectedBitmap | Bitmap | Private | 사용자가 선택한 문서 이미지 |
+| Operations | onSelectImage() | void | Public | 갤러리/카메라 이미지 선택 |
+|  | onAnalyzeClick() | void | Public | 이미지 업로드 및 분석 요청 |
+|  | showResultDialog(result) | void | Public | 분석 결과 팝업 표시 |
+
+---
+
+#### RealtimeScreen Class
+
+| Class | RealtimeScreen |
+|-------|----------------|
+| Description | 실시간 통화 중 보이스피싱 탐지를 수행하는 화면. WebSocket 기반 오디오 스트리밍을 수행함 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | viewModel | RealtimeViewModel | Private | 실시간 탐지 로직 담당 |
+|  | notificationHelper | NotificationHelper | Private | 탐지 결과 알림 표시 도우미 |
+| Operations | onStartCallDetection() | void | Public | 통화 수신 시 탐지 시작 |
+|  | onStopCallDetection() | void | Public | 탐지 종료 |
+|  | showPhishingAlert(level) | void | Public | 위험도에 따른 알림 표시 |
+
+---
+
+#### SmsScreen Class
+
+| Class | SmsScreen |
+|-------|-----------|
+| Description | 수신된 문자 내용을 분석 요청으로 변환하여 스미싱 탐지를 수행하는 화면 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | viewModel | SmsViewModel | Private | 문자 탐지 로직 담당 |
+|  | lastMessage | String | Private | 최근 수신 문자 내용 |
+| Operations | onSmsAnalyzeClick() | void | Public | 서버에 문자 내용 전송 |
+|  | showSmsResult(result) | void | Public | 분석 결과 UI 표시 |
+
+---
+
+#### AuthViewModel Class
+
+| Class | AuthViewModel |
+|-------|----------------|
+| Description | 로그인/회원가입 로직을 관리하는 ViewModel 클래스 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | repository | AuthRepository | Private | 인증 관련 API 호출 객체 |
+| Operations | login(phone, password) | LiveData&lt;AuthResponse&gt; | Public | 로그인 요청 및 응답 처리 |
+|  | register(userData) | LiveData&lt;AuthResponse&gt; | Public | 회원가입 요청 처리 |
+
+---
+
+#### AnalysisViewModel Class
+
+| Class | AnalysisViewModel |
+|-------|-------------------|
+| Description | 문서 이미지 업로드 및 위조 탐지 결과를 관리하는 ViewModel 클래스 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | repository | AnalysisRepository | Private | 문서 분석용 API 호출 객체 |
+|  | result | LiveData&lt;AnalysisResponse&gt; | Public | 분석 결과 LiveData |
+| Operations | analyzeImage(bitmap) | void | Public | 이미지 업로드 및 서버 요청 |
+|  | postResult(response) | void | Private | 응답 결과 LiveData에 반영 |
+
+---
+
+#### RealtimeViewModel Class
+
+| Class | RealtimeViewModel |
+|-------|-------------------|
+| Description | 실시간 보이스피싱 탐지 로직을 관리하는 ViewModel 클래스 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | repository | RealtimeRepository | Private | 오디오 스트리밍 API 호출 객체 |
+|  | alertLevel | LiveData&lt;Int&gt; | Public | 위험도 감지 수준 LiveData |
+| Operations | startRealtimeStream() | void | Public | 서버와 WebSocket 연결 시작 |
+|  | stopRealtimeStream() | void | Public | 연결 종료 |
+
+---
+
+#### SmsViewModel Class
+
+| Class | SmsViewModel |
 |-------|---------------|
-| Description | OpenCV를 사용하여 문서 이미지에서 직인을 탐지하는 클래스다 |
+| Description | 문자 스미싱 탐지 결과를 관리하는 ViewModel 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Operations | findStampRoi(inputBitmap, context) | DetectionResult | Public | 입력 이미지에서 직인 영역을 찾아 반환하는 함수 |
-| | detectRedRegions(mat) | Mat | Private | HSV 색상 공간에서 빨간색 영역을 탐지하는 함수 |
-| | findContours(mask) | List&lt;MatOfPoint&gt; | Private | 마스크에서 컨투어를 찾는 함수 |
-| | filterContours(contours) | List&lt;Rect&gt; | Private | 컨투어를 필터링하여 직인 후보를 추출하는 함수 |
+| Attribute | repository | SmsRepository | Private | 문자 분석 API 호출 객체 |
+|  | result | LiveData&lt;SmsResponse&gt; | Public | 문자 분석 결과 LiveData |
+| Operations | detectSmsContent(text) | void | Public | 텍스트 기반 탐지 요청 |
+|  | postResult(response) | void | Private | 탐지 결과 반영 |
+
+---
 
 #### ApiService Class
 
 | Class | ApiService |
 |-------|------------|
-| Description | Retrofit 기반 네트워크 API 인터페이스를 정의하는 클래스다 |
+| Description | 서버와 통신하기 위한 Retrofit 인터페이스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Operations | analyzeStamp(file) | Call&lt;DetectionResponse&gt; | Public | 직인 분석 요청을 서버로 보내는 함수 |
-| | uploadImage(file) | Call&lt;UploadResponse&gt; | Public | 이미지 업로드 요청을 서버로 보내는 함수 |
+| Operations | login(request) | Call&lt;AuthResponse&gt; | Public | 로그인 요청 |
+|  | register(request) | Call&lt;AuthResponse&gt; | Public | 회원가입 요청 |
+|  | analyzeDocument(file) | Call&lt;AnalysisResponse&gt; | Public | 문서 이미지 분석 요청 |
+|  | analyzeVoice(file) | Call&lt;VoiceResponse&gt; | Public | 보이스피싱 분석 요청 |
+|  | analyzeSms(text) | Call&lt;SmsResponse&gt; | Public | 문자 분석 요청 |
+
+---
 
 #### RetrofitClient Class
 
 | Class | RetrofitClient |
 |-------|----------------|
-| Description | Retrofit 인스턴스를 생성하고 관리하는 클래스다 |
+| Description | Retrofit 인스턴스를 생성하고 ApiService를 제공하는 싱글톤 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | BASE_URL | String | Private | 서버의 기본 URL을 저장하는 상수 |
-| 구분 | Name | Type | Visibility | Description |
-| Operations | getInstance() | ApiService | Public | Retrofit을 설정하고 ApiService 구현체를 반환하는 싱글톤 함수 |
+| Attribute | BASE_URL | String | Private | 서버 기본 URL |
+|  | retrofit | Retrofit | Private | Retrofit 인스턴스 |
+| Operations | getInstance() | ApiService | Public | ApiService 구현체 반환 |
+
+---
 
 #### FileUtils Class
 
 | Class | FileUtils |
 |-------|-----------|
-| Description | 파일 및 이미지 처리를 위한 유틸리티 클래스다 |
+| Description | 이미지 및 오디오 파일을 서버 업로드용 Multipart 형태로 변환하는 유틸리티 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Operations | getFileFromUri(context, uri) | File | Public | Android Uri를 File 객체로 변환하는 함수 |
-| | createMultipartBody(file) | MultipartBody.Part | Public | 파일을 Retrofit의 멀티파트 요청 형식으로 변환하는 함수 |
-| | saveToInternalStorage(bitmap, filename) | String | Public | Bitmap을 앱의 내부 저장소에 저장하고 경로를 반환하는 함수 |
+| Operations | bitmapToMultipart(bitmap) | MultipartBody.Part | Public | Bitmap을 JPEG 포맷으로 변환 |
+|  | audioToMultipart(file) | MultipartBody.Part | Public | Audio 파일을 MultipartBody로 변환 |
 
-**클래스 간 주요 관계:**
-- MainActivity는 ApiService, StampDetector, OcrService, FileUtils를 사용한다
-- RetrofitClient는 ApiService 인터페이스를 생성한다
-- ApiService는 DetectionResponse와 UploadResponse를 반환한다
-- StampDetector는 DetectionResult를 생성한다
-- DetectionResult는 BoxDto를 사용하여 서버 응답을 클라이언트 화면 좌표로 변환한다
+---
 
-### 3.3 Key Design Patterns
+#### NotificationHelper Class
 
-본 시스템에서 사용된 주요 디자인 패턴:
+| Class | NotificationHelper |
+|-------|--------------------|
+| Description | 탐지 결과에 따른 알림(Notification)을 표시하는 클래스 |
 
-1. Singleton Pattern
-   - `VoicePhishingDetector`, `PhishingSiteDetector`: 무거운 ML 모델 로딩을 한 번만 수행하기 위해 싱글톤 패턴 사용
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | showNotification(title, message) | void | Public | 알림 생성 및 표시 |
+|  | cancelNotification(id) | void | Public | 지정 ID 알림 취소 |
 
-2. Dependency Injection
-   - FastAPI의 `Depends`를 통한 의존성 주입 (데이터베이스 세션, 사용자 인증)
+---
 
-3. Repository Pattern
-   - SQLAlchemy ORM을 통한 데이터 접근 계층 추상화
+#### SmsReceiver Class
 
-4. Strategy Pattern
-   - 분석 방법 선택 (immediate, comprehensive, hybrid)을 위한 전략 패턴
+| Class | SmsReceiver |
+|-------|--------------|
+| Description | 문자 수신 이벤트를 감지하고 탐지 요청을 트리거하는 리시버 |
 
-5. Facade Pattern
-   - `DocumentService`: 복잡한 문서 분석 과정(OCR, Stamp, Keyword, Layout)을 단일 인터페이스로 제공
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | onReceive(context, intent) | void | Public | 문자 수신 브로드캐스트 처리 |
+|  | extractSmsContent(intent) | String | Private | 문자 본문 추출 및 전달 |
+
+---
+
+#### CallReceiver Class
+
+| Class | CallReceiver |
+|-------|--------------|
+| Description | 전화 수신 및 종료 이벤트를 감지하여 보이스피싱 탐지를 트리거하는 리시버 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | onReceive(context, intent) | void | Public | 통화 상태 감지 |
+|  | handleIncomingCall(number) | void | Private | 발신자 정보 처리 및 알림 표시 |
+
+---
+
+#### SaltKeeper Class
+
+| Class | SaltKeeper |
+|-------|-------------|
+| Description | 문자열 암호화 및 솔트 생성 기능을 제공하는 보안 유틸리티 클래스 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | generateSalt() | String | Public | 임의의 솔트 문자열 생성 |
+|  | encryptText(text) | String | Public | 텍스트 암호화 수행 |
+
+---
+
+#### Sanitizer Class
+
+| Class | Sanitizer |
+|-------|------------|
+| Description | 입력 텍스트의 전처리 및 보안 정제를 수행하는 유틸리티 클래스 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | cleanText(input) | String | Public | 특수문자/공백 제거 및 정규화 수행 |
+
+---
+
+#### 클래스 간 주요 관계
+
+- `MainActivity`는 `AuthViewModel`, `AnalysisViewModel`, `RealtimeViewModel`, `SmsViewModel`을 사용한다.  
+- 각 `ViewModel`은 대응되는 `Repository`와 연결된다.  
+- `Repository`는 `ApiService`를 통해 서버와 통신한다.  
+- `ApiService` 인스턴스는 `RetrofitClient`에서 생성된다.  
+- `SmsReceiver`와 `CallReceiver`는 시스템 이벤트를 감지하여 대응되는 ViewModel을 호출한다.  
+- `NotificationHelper`는 탐지 결과를 사용자에게 즉시 알린다.
+
+
 
 ## 4. Sequence Diagrams
 
