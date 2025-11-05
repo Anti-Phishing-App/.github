@@ -1320,7 +1320,7 @@
 
 | Class | MainActivity |
 |-------|--------------|
-| Description | 애플리케이션의 진입점으로, 네비게이션과 전역 UI 상태를 관리하는 Activity 클래스다 |
+| Description | 애플리케이션의 진입점으로, 네비게이션과 전역 UI 상태를 관리하는 Activity 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1337,7 +1337,7 @@
 
 | Class | LoginScreen |
 |-------|-------------|
-| Description | 전화번호 및 비밀번호를 입력받아 로그인 요청을 수행하는 화면이다 |
+| Description | 전화번호 및 비밀번호를 입력받아 로그인 요청을 수행하는 화면 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1351,7 +1351,7 @@
 
 | Class | RegisterScreen |
 |-------|----------------|
-| Description | 회원 정보를 입력받아 서버에 가입 요청을 보내는 화면이다 |
+| Description | 회원 정보를 입력받아 서버에 가입 요청을 보내는 화면 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1365,7 +1365,7 @@
 
 | Class | MainScreen |
 |-------|-------------|
-| Description | 로그인 이후 메인 메뉴 화면으로, 세 가지 기능(문서, 통화, 문자)을 선택할 수 있다 |
+| Description | 로그인 이후 메인 메뉴 화면으로, 세 가지 기능(문서, 통화, 문자)을 선택할 수 있음 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1380,7 +1380,7 @@
 
 | Class | AnalysisScreen |
 |-------|----------------|
-| Description | 문서 이미지 기반 위조 탐지 화면이다. 사용자가 이미지를 선택하거나 촬영하여 서버로 업로드한다. |
+| Description | 문서 이미지 기반 위조 탐지 화면. 사용자가 이미지를 선택하거나 촬영하여 서버로 업로드함 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1396,7 +1396,7 @@
 
 | Class | RealtimeScreen |
 |-------|----------------|
-| Description | 실시간 통화 중 보이스피싱 탐지를 수행하는 화면이다. WebSocket 기반 오디오 스트리밍을 수행한다. |
+| Description | 실시간 통화 중 보이스피싱 탐지를 수행하는 화면. WebSocket 기반 오디오 스트리밍을 수행함 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1412,7 +1412,7 @@
 
 | Class | SmsScreen |
 |-------|-----------|
-| Description | 수신된 문자 내용을 분석 요청으로 변환하여 스미싱 탐지를 수행하는 화면이다 |
+| Description | 수신된 문자 내용을 분석 요청으로 변환하여 스미싱 탐지를 수행하는 화면 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1427,7 +1427,7 @@
 
 | Class | AuthViewModel |
 |-------|----------------|
-| Description | 로그인/회원가입 로직을 관리하는 ViewModel 클래스다 |
+| Description | 로그인/회원가입 로직을 관리하는 ViewModel 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1441,7 +1441,7 @@
 
 | Class | AnalysisViewModel |
 |-------|-------------------|
-| Description | 문서 이미지 업로드 및 위조 탐지 결과를 관리하는 ViewModel 클래스다 |
+| Description | 문서 이미지 업로드 및 위조 탐지 결과를 관리하는 ViewModel 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1456,7 +1456,7 @@
 
 | Class | RealtimeViewModel |
 |-------|-------------------|
-| Description | 실시간 보이스피싱 탐지 로직을 관리하는 ViewModel 클래스다 |
+| Description | 실시간 보이스피싱 탐지 로직을 관리하는 ViewModel 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1471,7 +1471,7 @@
 
 | Class | SmsViewModel |
 |-------|---------------|
-| Description | 문자 스미싱 탐지 결과를 관리하는 ViewModel 클래스다 |
+| Description | 문자 스미싱 탐지 결과를 관리하는 ViewModel 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1486,7 +1486,7 @@
 
 | Class | ApiService |
 |-------|------------|
-| Description | 서버와 통신하기 위한 Retrofit 인터페이스다 |
+| Description | 서버와 통신하기 위한 Retrofit 인터페이스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1502,7 +1502,7 @@
 
 | Class | RetrofitClient |
 |-------|----------------|
-| Description | Retrofit 인스턴스를 생성하고 ApiService를 제공하는 싱글톤 클래스다 |
+| Description | Retrofit 인스턴스를 생성하고 ApiService를 제공하는 싱글톤 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1516,7 +1516,7 @@
 
 | Class | FileUtils |
 |-------|-----------|
-| Description | 이미지 및 오디오 파일을 서버 업로드용 Multipart 형태로 변환하는 유틸리티 클래스다 |
+| Description | 이미지 및 오디오 파일을 서버 업로드용 Multipart 형태로 변환하는 유틸리티 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1529,7 +1529,7 @@
 
 | Class | NotificationHelper |
 |-------|--------------------|
-| Description | 탐지 결과에 따른 알림(Notification)을 표시하는 클래스다 |
+| Description | 탐지 결과에 따른 알림(Notification)을 표시하는 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1542,7 +1542,7 @@
 
 | Class | SmsReceiver |
 |-------|--------------|
-| Description | 문자 수신 이벤트를 감지하고 탐지 요청을 트리거하는 리시버다 |
+| Description | 문자 수신 이벤트를 감지하고 탐지 요청을 트리거하는 리시버 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1555,7 +1555,7 @@
 
 | Class | CallReceiver |
 |-------|--------------|
-| Description | 전화 수신 및 종료 이벤트를 감지하여 보이스피싱 탐지를 트리거하는 리시버다 |
+| Description | 전화 수신 및 종료 이벤트를 감지하여 보이스피싱 탐지를 트리거하는 리시버 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1568,7 +1568,7 @@
 
 | Class | SaltKeeper |
 |-------|-------------|
-| Description | 문자열 암호화 및 솔트 생성 기능을 제공하는 보안 유틸리티 클래스다 |
+| Description | 문자열 암호화 및 솔트 생성 기능을 제공하는 보안 유틸리티 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1581,7 +1581,7 @@
 
 | Class | Sanitizer |
 |-------|------------|
-| Description | 입력 텍스트의 전처리 및 보안 정제를 수행하는 유틸리티 클래스다 |
+| Description | 입력 텍스트의 전처리 및 보안 정제를 수행하는 유틸리티 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1591,12 +1591,12 @@
 
 #### 클래스 간 주요 관계
 
-- `MainActivity`는 `AuthViewModel`, `AnalysisViewModel`, `RealtimeViewModel`, `SmsViewModel`을 사용한다  
-- 각 `ViewModel`은 대응되는 `Repository`와 연결된다  
-- `Repository`는 `ApiService`를 통해 서버와 통신한다  
-- `ApiService` 인스턴스는 `RetrofitClient`에서 생성된다  
-- `SmsReceiver`와 `CallReceiver`는 시스템 이벤트를 감지하여 대응되는 ViewModel을 호출한다  
-- `NotificationHelper`는 탐지 결과를 사용자에게 즉시 알린다  
+- `MainActivity`는 `AuthViewModel`, `AnalysisViewModel`, `RealtimeViewModel`, `SmsViewModel`을 사용한다.  
+- 각 `ViewModel`은 대응되는 `Repository`와 연결된다.  
+- `Repository`는 `ApiService`를 통해 서버와 통신한다.  
+- `ApiService` 인스턴스는 `RetrofitClient`에서 생성된다.  
+- `SmsReceiver`와 `CallReceiver`는 시스템 이벤트를 감지하여 대응되는 ViewModel을 호출한다.  
+- `NotificationHelper`는 탐지 결과를 사용자에게 즉시 알린다.
 
 
 
