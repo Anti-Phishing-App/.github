@@ -65,7 +65,7 @@
 -문서 위조 분석: 사용자가 업로드한 문서 이미지의 직인, 레이아웃, 키워드 등을 분석하여 위조 위험도를 측정하는 기능.<br>
 
 ### 2.1 Use case Diagram
-![Usecase Diagram](image/Usecase%20diagram.png)
+![Usecase Diagram](image/Usecase_diagram_antiphishing.png)
 ### 2.2 Use case Description
 <h2>Use case #1 : 회원가입 (Sign Up)</h2>
 
@@ -487,7 +487,252 @@
 </table>
 
 
-<h2>Use case #6 : 통화 녹음본 보이스피싱 탐지</h2>
+<h2>Use case #6 : 회원 정보 수정 (Edit User Information)</h2>
+
+<table border="1" cellpadding="6" cellspacing="0" width="980" align="center">
+  <colgroup>
+    <col width="25%">
+    <col>
+  </colgroup>
+
+  <!-- GENERAL CHARACTERISTICS -->
+  <tr>
+    <td colspan="2"><strong>GENERAL CHARACTERISTICS</strong></td>
+  </tr>
+
+  <tr>
+    <td><strong>Summary</strong></td>
+    <td>
+      사용자가 로그인한 상태에서 자신의 개인정보를 수정할 수 있는 기능이다.<br>
+      서버는 수정 요청 시 JWT 토큰을 이용해 사용자를 인증하고, 
+      유효성 검증 및 DB 갱신을 수행한다.<br>
+      수정된 정보는 즉시 반영되어 클라이언트에 갱신된 프로필이 반환된다.
+    </td>
+  </tr>
+
+  <tr><td><strong>Scope</strong></td><td>Anti-Phishing-App</td></tr>
+  <tr><td><strong>Level</strong></td><td>User level</td></tr>
+  <tr><td><strong>Author</strong></td><td>Anti-Phishing-App_Team</td></tr>
+  <tr><td><strong>Last Update</strong></td><td>2025.11.06</td></tr>
+  <tr><td><strong>Status</strong></td><td>Analysis</td></tr>
+  <tr><td><strong>Primary Actor</strong></td><td>사용자</td></tr>
+
+  <!-- PRECONDITIONS -->
+  <tr>
+    <td><strong>Preconditions</strong></td>
+    <td>
+      1. 사용자는 로그인 상태이며 유효한 JWT 액세스 토큰을 보유해야 한다.<br>
+      2. 서버의 사용자 정보 테이블이 정상적으로 연결되어 있어야 한다.<br>
+      3. 변경 요청 필드 값이 유효한 형식이어야 한다.<br>
+      4. 중복 이메일, 닉네임 등 고유 제약 조건 위반이 없어야 한다.
+    </td>
+  </tr>
+
+  <!-- TRIGGER -->
+  <tr>
+    <td><strong>Trigger</strong></td>
+    <td>
+      사용자가 “내 정보 수정” 페이지에서 항목을 변경 후 “저장” 버튼을 클릭할 때.<br>
+      클라이언트는 <code>PUT /user/me</code> 요청을 전송한다.
+    </td>
+  </tr>
+
+  <!-- SUCCESS POST CONDITION -->
+  <tr>
+    <td><strong>Success Post Condition</strong></td>
+    <td>
+      1. 서버가 JWT 인증을 검증하고 요청 사용자를 식별한다.<br>
+      2. 요청 필드의 유효성을 검사하고 DB에서 해당 사용자 정보를 갱신한다.<br>
+      3. 수정 성공 시 200 OK 와 함께 갱신된 사용자 정보(JSON)를 반환한다.<br>
+      4. 클라이언트는 즉시 최신 정보를 UI에 반영한다.
+    </td>
+  </tr>
+
+  <!-- FAILED POST CONDITION -->
+  <tr>
+    <td><strong>Failed Post Condition</strong></td>
+    <td>
+      1. JWT 토큰이 없거나 만료된 경우 <code>401 Unauthorized</code> 반환.<br>
+      2. 잘못된 필드 형식 또는 제약 조건 위반 시 <code>400 Bad Request</code> 반환.<br>
+      3. DB 업데이트 중 오류 발생 시 <code>500 Internal Server Error</code> 반환.<br>
+      4. 이메일/닉네임 중복일 경우 <code>409 Conflict</code> 반환.
+    </td>
+  </tr>
+
+  <!-- MAIN SUCCESS SCENARIO -->
+  <tr>
+    <td colspan="2"><strong>MAIN SUCCESS SCENARIO</strong></td>
+  </tr>
+
+  <tr>
+    <td><strong>Step</strong></td>
+    <td><strong>Action</strong></td>
+  </tr>
+
+  <tr><td align="center">S</td><td>사용자가 “내 정보 수정” 페이지를 연다.</td></tr>
+  <tr><td align="center">1</td><td>사용자가 닉네임, 이메일, 비밀번호 등 수정할 항목을 입력한다.</td></tr>
+  <tr><td align="center">2</td><td>클라이언트가 JWT를 포함해 <code>PUT /user/me</code> 요청을 전송한다.</td></tr>
+  <tr><td align="center">3</td><td>서버가 JWT를 해석해 사용자 ID를 식별한다.</td></tr>
+  <tr><td align="center">4</td><td>서버가 입력값 유효성을 검사하고 중복 여부를 확인한다.</td></tr>
+  <tr><td align="center">5</td><td>검증 통과 시 DB의 사용자 레코드를 갱신한다.</td></tr>
+  <tr><td align="center">6</td><td>DB 업데이트가 완료되면 200 OK와 함께 수정된 사용자 정보(JSON)를 반환한다.</td></tr>
+  <tr><td align="center">7</td><td>클라이언트는 UI에 최신 프로필을 갱신하고 “수정 완료” 알림을 표시한다.</td></tr>
+
+  <!-- EXTENSION SCENARIOS -->
+  <tr>
+    <td colspan="2"><strong>EXTENSION SCENARIOS</strong></td>
+  </tr>
+
+  <tr><td align="center">2a</td><td>입력값 형식이 유효하지 않으면 클라이언트에서 저장 버튼 비활성화 및 경고 표시.</td></tr>
+  <tr><td align="center">4a</td><td>이메일 형식 오류 → <code>400 Bad Request</code> (“잘못된 이메일 형식”).</td></tr>
+  <tr><td align="center">4b</td><td>중복 이메일/닉네임 존재 시 → <code>409 Conflict</code> (“이미 사용 중인 정보”).</td></tr>
+  <tr><td align="center">5a</td><td>DB 업데이트 실패 → <code>500 Internal Server Error</code> (“정보 저장 실패”).</td></tr>
+  <tr><td align="center">6a</td><td>토큰 만료 또는 변조 → <code>401 Unauthorized</code> (“인증 실패”).</td></tr>
+
+  <!-- RELATED INFORMATION -->
+  <tr>
+    <td colspan="2"><strong>RELATED INFORMATION</strong></td>
+  </tr>
+
+  <tr>
+    <td><strong>Performance</strong></td>
+    <td>≤ 1s</td>
+  </tr>
+
+  <tr>
+    <td><strong>Frequency</strong></td>
+    <td>제한 없음</td>
+  </tr>
+
+  <tr>
+    <td><strong>Concurrency</strong></td>
+    <td>제한 없음 </td>
+  </tr>
+</table>
+
+<h2>Use case #7 : 회원 탈퇴 (Delete My Account)</h2>
+
+<table border="1" cellpadding="6" cellspacing="0" width="980" align="center">
+  <colgroup>
+    <col width="25%">
+    <col>
+  </colgroup>
+
+  <!-- GENERAL CHARACTERISTICS -->
+  <tr>
+    <td colspan="2"><strong>GENERAL CHARACTERISTICS</strong></td>
+  </tr>
+
+  <tr>
+    <td><strong>Summary</strong></td>
+    <td>
+      사용자가 로그인 상태에서 자신의 계정을 탈퇴(비활성화)할 수 있는 기능이다.<br>
+      실제 데이터 삭제 대신 Soft Delete 방식을 사용하며, 
+      서버는 해당 사용자의 <code>is_active</code> 필드를 <code>False</code>로 변경한다.<br>
+      탈퇴 후 사용자는 더 이상 로그인할 수 없으며, 관련 데이터는 내부적으로 유지된다.
+    </td>
+  </tr>
+
+  <tr><td><strong>Scope</strong></td><td>Anti-Phishing-App</td></tr>
+  <tr><td><strong>Level</strong></td><td>User level</td></tr>
+  <tr><td><strong>Author</strong></td><td>Anti-Phishing-App_Team</td></tr>
+  <tr><td><strong>Last Update</strong></td><td>2025.11.06</td></tr>
+  <tr><td><strong>Status</strong></td><td>Analysis</td></tr>
+  <tr><td><strong>Primary Actor</strong></td><td>사용자</td></tr>
+
+  <!-- PRECONDITIONS -->
+  <tr>
+    <td><strong>Preconditions</strong></td>
+    <td>
+      1. 사용자는 로그인 상태여야 하며 유효한 JWT 토큰을 보유해야 한다.<br>
+      2. 사용자 정보가 DB에 존재해야 한다.<br>
+      3. DB 연결이 정상적으로 이루어져야 한다.<br>
+      4. 탈퇴 시 사용자와 관련된 세션, 토큰, 캐시가 자동으로 만료되거나 삭제되어야 한다.
+    </td>
+  </tr>
+
+  <!-- TRIGGER -->
+  <tr>
+    <td><strong>Trigger</strong></td>
+    <td>
+      사용자가 “회원 탈퇴” 버튼을 클릭하고 탈퇴 확인을 선택할 때.<br>
+      클라이언트는 JWT 토큰을 포함하여 <code>DELETE /user/me</code> 요청을 서버로 전송한다.<br>
+    </td>
+  </tr>
+
+  <!-- SUCCESS POST CONDITION -->
+  <tr>
+    <td><strong>Success Post Condition</strong></td>
+    <td>
+      1. 서버가 JWT 인증을 검증하고 현재 사용자를 식별한다.<br>
+      2. 해당 사용자의 <code>is_active</code> 필드를 <code>False</code>로 변경한다.<br>
+      3. DB 트랜잭션이 커밋되고 사용자 상태가 비활성화된다.<br>
+      4. 클라이언트는 “계정이 성공적으로 비활성화되었습니다.” 메시지를 수신하고 로그인 화면으로 리다이렉트된다.
+    </td>
+  </tr>
+
+  <!-- FAILED POST CONDITION -->
+  <tr>
+    <td><strong>Failed Post Condition</strong></td>
+    <td>
+      1. JWT 토큰이 없거나 만료된 경우 <code>401 Unauthorized</code> 반환.<br>
+      2. 사용자 정보가 존재하지 않을 경우 <code>404 Not Found</code> 반환.<br>
+      3. DB 세션 오류 또는 커밋 실패 시 <code>500 Internal Server Error</code> 반환.<br>
+      4. 이미 탈퇴(비활성화)된 계정인 경우 <code>409 Conflict</code> 반환.
+    </td>
+  </tr>
+
+  <!-- MAIN SUCCESS SCENARIO -->
+  <tr>
+    <td colspan="2"><strong>MAIN SUCCESS SCENARIO</strong></td>
+  </tr>
+
+  <tr>
+    <td><strong>Step</strong></td>
+    <td><strong>Action</strong></td>
+  </tr>
+
+  <tr><td align="center">S</td><td>사용자가 “내 정보” 페이지에서 회원 탈퇴 버튼을 클릭한다.</td></tr>
+  <tr><td align="center">1</td><td>클라이언트가 탈퇴 의사를 재확인하는 팝업을 표시한다.</td></tr>
+  <tr><td align="center">2</td><td>사용자가 확인을 누르면 JWT를 포함해 <code>DELETE /user/me</code> 요청을 전송한다.</td></tr>
+  <tr><td align="center">3</td><td>서버가 <code>get_current_user()</code>를 통해 현재 사용자 인증을 수행한다.</td></tr>
+  <tr><td align="center">4</td><td>서버가 사용자 객체의 <code>is_active</code> 필드를 <code>False</code>로 변경한다.</td></tr>
+  <tr><td align="center">5</td><td>DB 커밋이 완료되면 <code>{"message": "Account successfully deactivated"}</code> 응답을 반환한다.</td></tr>
+  <tr><td align="center">6</td><td>클라이언트는 성공 메시지를 표시하고 자동 로그아웃 처리 후 메인 화면으로 이동한다.</td></tr>
+
+  <!-- EXTENSION SCENARIOS -->
+  <tr>
+    <td colspan="2"><strong>EXTENSION SCENARIOS</strong></td>
+  </tr>
+
+  <tr><td align="center">2a</td><td>사용자가 탈퇴 확인을 취소하면 요청이 중단된다.</td></tr>
+  <tr><td align="center">3a</td><td>토큰이 만료되면 <code>401 Unauthorized</code> — “로그인 세션이 만료되었습니다.”</td></tr>
+  <tr><td align="center">4a</td><td>이미 <code>is_active=False</code> 상태라면 <code>409 Conflict</code> — “이미 탈퇴된 계정입니다.”</td></tr>
+  <tr><td align="center">5a</td><td>DB 커밋 중 예외 발생 시 <code>500 Internal Server Error</code> — “서버 오류로 탈퇴 처리 실패.”</td></tr>
+
+  <!-- RELATED INFORMATION -->
+  <tr>
+    <td colspan="2"><strong>RELATED INFORMATION</strong></td>
+  </tr>
+
+  <tr>
+    <td><strong>Performance</strong></td>
+    <td>≤ 1s </td>
+  </tr>
+
+  <tr>
+    <td><strong>Frequency</strong></td>
+    <td>사용자당 1회 한정</td>
+  </tr>
+
+  <tr>
+    <td><strong>Concurrency</strong></td>
+    <td>제한 없음 </td>
+  </tr>
+</table>
+
+
+<h2>Use case #8 : 통화 녹음본 보이스피싱 탐지</h2>
 
 <table border="1" cellpadding="6" cellspacing="0" width="980" align="center">
   <colgroup>
@@ -512,7 +757,7 @@
       2. 서버와 DB, CLOVA 연결이 정상이어야 한다.<br>
       3. 업로드 파일은 허용 형식/크기를 만족해야 한다.<br>
       ● 형식: audio/mpeg (MP3), audio/wav (WAV)<br>
-      ● 최대 크기: 25 MB (권장값; 서버 설정으로 조정 가능)<br>
+      ● 최대 크기: 25 MB <br>
       ● 최대 길이: 60분 권장(이상 시 처리 지연 가능)
     </td>
   </tr>
@@ -573,7 +818,7 @@
 </table>
 
 
-<h2>Use case #7 : 실시간 통화 보이스피싱 탐지 (WebSocket + gRPC)</h2>
+<h2>Use case #9 : 실시간 통화 보이스피싱 탐지 (WebSocket + gRPC)</h2>
 
 <table border="1" cellpadding="6" cellspacing="0" width="980" align="center">
   <colgroup>
@@ -592,7 +837,7 @@
   <tr><td><strong>Author</strong></td><td>Anti-Phishing-App_Team</td></tr>
   <tr><td><strong>Last Update</strong></td><td>2025.10.26</td></tr>
   <tr><td><strong>Status</strong></td><td>Analysis</td></tr>
-  <tr><td><strong>Primary Actor</strong></td><td>t사용자</td></tr>
+  <tr><td><strong>Primary Actor</strong></td><td>사용자</td></tr>
 
   <tr>
     <td><strong>Preconditions</strong></td>
@@ -646,7 +891,7 @@
   <tr><td align="center">10</td><td>누적 문장이 3개 이상이 되면 KoBERT 종합 분석이 자동 실행되고, 보이스피싱으로 판단 시 "alert_type": "comprehensive" 메시지를 전송한다.</td></tr>
   <tr><td align="center">11</td><td>사용자가 통화를 종료하거나 연결을 닫으면 서버는 gRPC 스트림 및 세션을 종료하고 자원을 정리한다.</td></tr>
 
-  <!-- XTENSION SCENARIOS -->
+  <!-- EXTENSION SCENARIOS -->
   <tr><td colspan="2"><strong>XTENSION SCENARIOS</strong></td></tr>
   <tr><td><strong>Step</strong></td><td><strong>Branching Action / Result (HTTP)</strong></td></tr>
   <tr><td align="center">3</td><td>3a. create_session() 실행이 실패하면, 서버는 enable_phishing_detection=False로 전환하여 탐지 기능을 비활성화한다.</td></tr>
@@ -668,105 +913,7 @@
   <tr><td><strong>Due Date</strong></td><td></td></tr>
 </table>
 
-
-<h2>Use case #8 : 문서 이미지 업로드 및 위조 분석</h2>
-
-<table border="1" cellpadding="6" cellspacing="0" width="980" align="center">
-  <colgroup>
-    <col width="25%">
-    <col>
-  </colgroup>
-
-  <!-- GENERAL CHARACTERISTICS -->
-  <tr><td colspan="2"><strong>GENERAL CHARACTERISTICS</strong></td></tr>
-  <tr><td><strong>Summary</strong></td><td>사용자가 문서 이미지를 업로드하면, 서버는 해당 파일을 저장하고<br>OCR, 키워드 탐지, 레이아웃 분석, 직인 탐지 등의 모듈을 순차적으로 실행한다.<br>이후 각 분석 결과를 종합하여 최종 위험도를 계산하고, 분석 세부 정보와 함께 JSON 형태로 반환한다.</td></tr>
-  <tr><td><strong>Scope</strong></td><td>Anti-Phishing-App</td></tr>
-  <tr><td><strong>Level</strong></td><td>User level</td></tr>
-  <tr><td><strong>Author</strong></td><td>Anti-Phishing-App_Team</td></tr>
-  <tr><td><strong>Last Update</strong></td><td>2025.10.30</td></tr>
-  <tr><td><strong>Status</strong></td><td>Analysis</td></tr>
-  <tr><td><strong>Primary Actor</strong></td><td>t사용자</td></tr>
-
-  <tr>
-    <td><strong>Preconditions</strong></td>
-    <td>
-      1.사용자는 로그인 상태여야 한다.<br>
-      2.업로드할 파일은 이미지 형식(.jpg, .jpeg, .png)이어야 하며, 손상되지 않아야 한다.(최대 크기: 25MB)<br>
-      3.서버 환경 변수와 파일 저장 경로의 쓰기 권한이 있어야 한다.<br>
-      4.legacy 기반 분석 모듈(ocr_run, detect_keywords, layout_analysis, stamp)이 정상적으로 import 되어야 한다.<br>
-      5.서버는 네트워크 연결이 정상이어야 하며, CLOVA OCR 호출 중 네트워크 오류가 없어야 한다.
-    </td>
-  </tr>
-  <tr>
-    <td><strong>Trigger</strong></td>
-    <td>사용자가 앱 또는 웹에서 “문서 위조 분석” 버튼을 클릭한 뒤, 문서 이미지를 선택하여 업로드하면 클라이언트는 POST /process-request 엔드포인트로 파일을 전송한다. 서버는 업로드된 이미지를 저장하고 analyze_document() 함수를 실행하여 OCR, 키워드, 레이아웃, 직인 탐지를 수행한 후, 최종 위험도를 계산한다.</td>
-  </tr>
-  <tr>
-    <td><strong>Success Post Condition</strong></td>
-    <td>
-      1.파일이 지정된 UPLOAD_DIR 내에 정상적으로 저장된다.<br>
-      2.서버는 OCR, 키워드, 레이아웃, 직인 분석을 순차적으로 수행한다.<br>
-      ● run_stamp_detection(): 문서 내 직인 탐지 (좌표, 신뢰도, 유무 판단)<br>
-      ● run_ocr(): 전체 텍스트와 블록 구조 추출<br>
-      ● detect_keywords(): 위험 키워드 탐지 및 점수화<br>
-      ● analyze_document_font(): 문서 내 폰트·레이아웃 불일치 탐지<br>
-      3.세 분석 결과(stamp_result, keyword_result, layout_result)를 가중합(직인 30%, 키워드 50%, 레이아웃 20%)하여 최종 위험도(final_risk)를 계산한다.<br>
-      4.서버는 결과를 JSON 형태로 반환한다.<br>
-      5.모든 과정이 정상 완료되면 상태코드 200 OK 와 함께 응답된다.<br>
-      6.서버 로그에 “문서 분석 성공” 이벤트가 기록된다.
-    </td>
-  </tr>
-  <tr>
-    <td><strong>Failed Post Condition</strong></td>
-    <td>
-      1.파일 검증에 실패하면(형식, 크기, 손상 등의 문제), 서버는 400 Bad Request 또는 415 Unsupported Media Type을 반환하며 "지원하지 않는 파일 형식입니다." 또는 "파일이 손상되었습니다."라는 메시지를 표시한다.<br>
-      2.디스크 용량 부족이나 권한 문제로 인해 파일 저장이 실패하면, 서버는 500 Internal Server Error를 반환하고 "파일 저장 실패" 메시지를 출력한다.<br>
-      3.run_ocr() 내부에서 예외가 발생하면, 서버는 500 Internal Server Error를 반환하며 "OCR 처리 실패: {e}" 메시지를 반환한다.<br>
-      4.CLOVA OCR 호출 과정에서 네트워크 불안정이나 타임아웃이 발생하면, 서버는 504 Gateway Timeout 또는 500 Internal Server Error를 반환한다.<br>
-      5.분석 중 키워드, 직인, 레이아웃 모듈 중 하나라도 예외가 발생하면, 서버는 500 Internal Server Error를 반환하고 "알 수 없는 서버 오류: {e}" 메시지를 표시한다.<br>
-      6.결과 딕셔너리를 합성하거나 변환하는 과정에서 오류가 발생하면, 서버는 500 Internal Server Error를 반환하고 "결과 생성 실패" 메시지를 반환한다.
-    </td>
-  </tr>
-
-  <!-- MAIN SUCCESS SCENARIO -->
-  <tr><td colspan="2"><strong>MAIN SUCCESS SCENARIO</strong></td></tr>
-  <tr><td><strong>Step</strong></td><td><strong>Action</strong></td></tr>
-  <tr><td align="center">S</td><td>사용자가 “문서 위조 분석” 페이지를 연다.</td></tr>
-  <tr><td align="center">1</td><td>사용자가 문서 이미지를 선택하고 업로드한다.</td></tr>
-  <tr><td align="center">2</td><td>서버가 파일의 MIME 형식 및 크기를 검증한다.</td></tr>
-  <tr><td align="center">3</td><td>서버가 save_upload_file() 함수를 호출해 파일을 UPLOAD_DIR 경로에 저장한다.</td></tr>
-  <tr><td align="center">4</td><td>저장된 파일 경로를 기반으로 analyze_document() 함수가 실행된다.</td></tr>
-  <tr><td align="center">5</td><td>run_stamp_detection()이 호출되어 문서의 직인을 탐지한다.</td></tr>
-  <tr><td align="center">6</td><td>run_ocr()가 실행되어 문서의 텍스트와 블록 구조를 추출한다.</td></tr>
-  <tr><td align="center">7</td><td>detect_keywords() 가 실행되어 위험 키워드와 점수를 계산한다.</td></tr>
-  <tr><td align="center">8</td><td>detect_keywords() 가 실행되어 위험 키워드와 점수를 계산한다.</td></tr>
-  <tr><td align="center">9</td><td>서버는 세 분석 결과를 바탕으로 가중치(직인 30%, 키워드 50%, 레이아웃 20%)를 적용해 final_risk를 계산한다.</td></tr>
-  <tr><td align="center">10</td><td>서버가 {filename, url, stamp, keyword, layout, final_risk} 형태의 JSON 응답을 반환한다.</td></tr>
-  <tr><td align="center">11</td><td>클라이언트는 결과를 UI에 표시하고, 위험도 등급(정상/주의/경고/위험)을 시각화한다.</td></tr>
-
-  <!-- EXTENSION SCENARIOS -->
-  <tr><td colspan="2"><strong>EXTENSION SCENARIOS</strong></td></tr>
-  <tr><td><strong>Step</strong></td><td><strong>Branching Action / Result (HTTP)</strong></td></tr>
-  <tr><td align="center">2</td><td>2a. 업로드된 파일이 이미지 형식이 아니면, 서버는 415 Unsupported Media Type과 “지원하지 않는 파일 형식” 메시지를 반환한다.</td></tr>
-  <tr><td align="center">2</td><td>2b. 업로드된 파일 크기가 제한(25MB)을 초과하면, 서버는 413 Payload Too Large와 “파일 크기 제한 초과” 메시지를 반환한다.</td></tr>
-  <tr><td align="center">3</td><td>3a. 파일 저장 중 디스크 용량 부족이나 권한 문제 발생 시, 서버는 500 Internal Server Error와 “파일 저장 실패” 메시지를 반환한다.</td></tr>
-  <tr><td align="center">4</td><td>4a. analyze_document() 실행 중 OCR 모듈(run_ocr)에서 예외가 발생하면, 서버는 500 Internal Server Error와 “OCR 처리 실패” 메시지를 반환한다.</td></tr>
-  <tr><td align="center">5</td><td>5a. run_stamp_detection() 수행 중 모델 오류나 탐지 실패가 발생하면, 서버는 500 Internal Server Error와 “직인 탐지 오류” 메시지를 반환한다.</td></tr>
-  <tr><td align="center">6</td><td>6a. run_ocr() 호출 후 응답이 비어 있거나 파싱 오류가 발생하면, 서버는 500 Internal Server Error와 “OCR 응답 파싱 오류” 메시지를 반환한다.</td></tr>
-  <tr><td align="center">7</td><td>7a. detect_keywords() 실행 중 예외가 발생하면, 서버는 500 Internal Server Error와 “키워드 분석 실패” 메시지를 반환한다.</td></tr>
-  <tr><td align="center">8</td><td>8a. analyze_document_font() 수행 중 레이아웃 분석 모델이 비정상 종료되면, 서버는 500 Internal Server Error와 “레이아웃 분석 오류” 메시지를 반환한다.</td></tr>
-  <tr><td align="center">9</td><td>9a. 최종 위험도 계산 중 가중치 계산 오류가 발생하면, 서버는 500 Internal Server Error와 “위험도 계산 실패” 메시지를 반환한다.</td></tr>
-  <tr><td align="center">10</td><td>10a. 결과 JSON 직렬화 중 오류 발생 시, 서버는 500 Internal Server Error와 “응답 생성 실패” 메시지를 반환한다.</td></tr>
-
-  <!-- RELATED INFORMATION -->
-  <tr><td colspan="2"><strong>RELATED INFORMATION</strong></td></tr>
-  <tr><td><strong>Performance</strong></td><td>≤ 3s</td></tr>
-  <tr><td><strong>Frequency</strong></td><td>제한 없음</td></tr>
-  <tr><td><strong>&lt;Concurrency&gt;</strong></td><td>제한 없음</td></tr>
-  <tr><td><strong>Due Date</strong></td><td></td></tr>
-</table>
-
-<h2>Use case #9 : 피싱 사이트 탐지</h2>
+<h2>Use case #10 : 문서 위조 탐지</h2>
 
 <table border="1" cellpadding="6" cellspacing="0" width="980" align="center">
   <colgroup>
@@ -775,85 +922,281 @@
   </colgroup>
 
   <!-- GENERAL CHARACTERISTICS -->
-  <tr><td colspan="2"><strong>GENERAL CHARACTERISTICS</strong></td></tr>
+  <tr>
+    <td colspan="2"><strong>GENERAL CHARACTERISTICS</strong></td>
+  </tr>
+
   <tr>
     <td><strong>Summary</strong></td>
     <td>
-      사용자가 수신한 메시지를 앱이 자동으로 스캔하여 메시지에서 URL을 추출하고, 추출된 URL을 서버의 피싱 탐지 파이프라인(즉시 분석(URL 기반) + 종합 분석(DB, ML + HTML 크롤링))으로 분석해 위험도를 계산하고 사용자에게 경고/권고를 제공한다.
+      본 유스케이스는 사용자가 업로드한 문서 이미지를 분석하여 위조·조작 여부를 판단하는 기능이다.<br>
+      단일 이미지를 업로드하는 경우 단일 문서 분석이 수행되며, 
+      여러 장의 이미지를 업로드하는 경우 복수 문서 분석이 수행된다.<br>
+      서버는 OCR, 키워드 탐지, 레이아웃 분석, 직인 탐지 등의 모듈을 통해 위험 요인을 식별하고, 
+      단일 또는 복수 이미지의 종합 위험도를 계산하여 JSON 형태로 반환한다.
     </td>
   </tr>
+
   <tr><td><strong>Scope</strong></td><td>Anti-Phishing-App</td></tr>
   <tr><td><strong>Level</strong></td><td>User level</td></tr>
   <tr><td><strong>Author</strong></td><td>Anti-Phishing-App_Team</td></tr>
-  <tr><td><strong>Last Update</strong></td><td>2025.10.26</td></tr>
+  <tr><td><strong>Last Update</strong></td><td>2025.11.06</td></tr>
   <tr><td><strong>Status</strong></td><td>Analysis</td></tr>
-  <tr><td><strong>Primary Actor</strong></td><td>t사용자</td></tr>
+  <tr><td><strong>Primary Actor</strong></td><td>사용자</td></tr>
+
+  <!-- PRECONDITIONS -->
   <tr>
     <td><strong>Preconditions</strong></td>
     <td>
-      1.사용자는 로그인 상태여야 함.<br>
-      2.앱이 메시지 접근 권한(또는 사용자가 메시지 전달)을 허용해야 함.<br>
-      3.서버, 모델 파일, DB가 준비되어 있어야 함<br>
-      4.네트워크 연결이 가능해야 함(자동 전송/크롤링을 위해).
+      1. 사용자는 로그인 상태여야 한다.<br>
+      2. 업로드 파일은 이미지 형식 (.jpg, .jpeg, .png) 이어야 한다.<br>
+      3. 서버에 파일 저장 권한 및 디스크 여유 공간이 확보되어야 한다.<br>
+      4. OCR, 키워드, 레이아웃, 직인 탐지 모듈이 import 및 초기화되어 있어야 한다.<br>
+      5. 다중 업로드의 경우, 각 파일 크기는 25MB 이하이며 전체 용량은 100MB를 초과하지 않아야 한다.
     </td>
   </tr>
+
+  <!-- TRIGGER -->
   <tr>
     <td><strong>Trigger</strong></td>
-    <td>디바이스가 새 메시지를 수신하면 앱이 메시지 수신 이벤트를 감지하여 자동으로 검사 파이프라인을 실행.</td>
+    <td>
+      사용자가 “문서 위조 분석” 또는 “다중 문서 분석” 버튼을 클릭하고 
+      하나 이상의 문서 이미지를 업로드할 때.<br>
+      단일 업로드 시 <code>POST /process-request</code>, 
+      복수 업로드 시 <code>multipart/form-data</code> 형식으로 전송된다.
+    </td>
   </tr>
+
+  <!-- SUCCESS POST CONDITION -->
   <tr>
     <td><strong>Success Post Condition</strong></td>
-    <td>시스템이 메시지에서 추출한 URL을 분석하여 immediate(URL 기반 점수) 및 comprehensive(Db / ML) 결과를 반환하고, 사용자에게 warning_message(요약 경고)를 표시한다.</td>
+    <td>
+      1. 서버가 모든 이미지를 정상 저장한다.<br>
+      2. 각 이미지별로 <code>analyze_document()</code>가 실행되어 OCR, 키워드, 레이아웃, 직인 탐지를 수행한다.<br>
+      3. 단일 이미지는 가중치(직인 30%, 키워드 50%, 레이아웃 20%)로 <code>final_risk</code>를 계산한다.<br>
+      4. 복수 이미지의 경우 각 이미지의 위험도를 평균 또는 가중평균하여 <code>total_risk</code>를 계산한다.<br>
+      5. 결과는 JSON 객체 또는 JSON 배열 형태로 반환된다.
+    </td>
   </tr>
+
+  <!-- FAILED POST CONDITION -->
   <tr>
     <td><strong>Failed Post Condition</strong></td>
-    <td>URL이 없거나 형식 오류, 네트워크/서버 오류, 모델 로드 실패 등으로 인해 분석을 수행하지 못하면 적절한 오류 메시지를 사용자에게 표시하고, 요청을 로그(에러 코드 포함)한다.</td>
+    <td>
+      1. 비이미지 파일 업로드 시 <code>415 Unsupported Media Type</code> 반환.<br>
+      2. OCR 오류 또는 분석 중 예외 발생 시 <code>500 Internal Server Error</code> 반환.<br>
+      3. 서버 자원 부족(메모리 초과 등) 시 <code>503 Service Unavailable</code> 반환.<br>
+      4. 일부 파일 오류 발생 시 나머지는 정상 처리하며, 실패한 파일은 별도 메시지로 표시.
+    </td>
   </tr>
 
   <!-- MAIN SUCCESS SCENARIO -->
-  <tr><td colspan="2"><strong>MAIN SUCCESS SCENARIO</strong></td></tr>
-  <tr><td><strong>Step</strong></td><td><strong>Action</strong></td></tr>
-  <tr><td align="center">S</td><td>사용자 디바이스에서 SMS/메시지 수신 이벤트 발생</td></tr>
-  <tr><td align="center">1</td><td>. 앱이 메시지 수신 이벤트를 자동으로 감지한다</td></tr>
-  <tr><td align="center">2</td><td>앱은 수신된 메시지 본문을 분석하여 내부에 포함된 URL을 정규식 기반으로 추출한다. 메시지 내용 중에서 URL은 별도로 분리되어 저장되고, 일반 텍스트(키워드 분석용)와는 구분된다.</td></tr>
-  <tr><td align="center">3</td><td>앱은 추출된 URL을 서버의 피싱 사이트 탐지 엔드포인트(/api/phishing-site/analyze)로 전송한다. 이때 요청에는 URL과 분석 방법(method=“hybrid”)이 포함되며, 자동 분석일 경우 기본적으로 hybrid 모드가 사용된다.</td></tr>
-  <tr><td align="center">4</td><td>서버는 요청을 수신한 후 get_detector() 함수를 호출하여 전역 탐지기 인스턴스를 가져온다. 이 인스턴스에는 미리 로드된 RandomForest 모델, 스케일러, DB가 포함되어 있다.</td></tr>
-  <tr><td align="center">5</td><td>서버는 먼저 detect_immediate() 함수를 실행하여 URL의 구조적 특징을 분석한다. 이 단계에서는 크롤링 없이 URL 문자열만을 사용해 길이, 점(.)의 개수, 하이픈(-) 존재 여부, 숫자 비율, 피싱 관련 키워드(예: secure, login, verify 등) 등을 추출하고, 규칙 기반 가중치를 합산하여 위험 점수를 계산한다.</td></tr>
-  <tr><td align="center">6</td><td>계산된 점수를 기준으로 위험도를 네 단계(Level 0~3)로 구분한다. 예를 들어 점수가 50점 이상이면 Level 3(위험), 30~49점은 Level 2(경고), 15~29점은 Level 1(주의), 15점 미만은 Level 0(안전)으로 분류된다. 서버는 이 결과를 즉시 분석(immediate) 결과 객체로 생성하여 저장한다.</td></tr>
-  <tr><td align="center">7</td><td>다음으로 서버는 detect_comprehensive() 함수를 호출하여 종합 분석을 수행한다. 이 과정은 두 단계로 진행된다. 먼저 입력된 URL이 DB에 등록된 피싱 주소인지 확인하고, 일치할 경우 피싱 사이트로 확정하며 신뢰도를 1.0으로 설정한다. DB에서 발견되지 않은 경우에는 머신러닝 기반 분석 절차로 넘어간다.</td></tr>
-  <tr><td align="center">8</td><td>서버는 _extract_url_features() 함수를 사용하여 URL의 기초적인 구조 특징을 다시 추출하고, _extract_html_features()를 호출하여 실제 웹페이지를 요청해 HTML 기반 특징을 수집한다. 이때 링크의 개수, 내부 링크 비율, 제목 존재 여부, 파비콘 경로, iframe 유무, form 태그(action) 등이 함께 계산된다. HTML 크롤링이 실패한 경우 해당 특징값은 0으로 대체된다.</td></tr>
-  <tr><td align="center">9</td><td>추출된 모든 특징값은 DataFrame으로 구성된 후 스케일러(scaler.transform())를 통해 정규화된다. 서버는 이를 RandomForest 모델의 입력으로 전달하여 predict_proba()를 수행하고, 피싱일 확률(raw_prob)을 얻는다.</td></tr>
-  <tr><td align="center">10</td><td>모델에서 얻은 확률에 추가적인 보정이 적용된다.<br>피싱 관련 힌트 키워드가 포함되었거나 도메인에 하이픈이 존재하는 등 위험 신호가 감지되면 확률을 소폭 증가시키고, 구글이나 네이버 같은 신뢰 도메인에 해당할 경우 확률을 소폭 감소시킨다. 보정값은 -0.08~+0.25 범위 내에서 제한되며, 보정 후의 최종 확률(prob)이 0.7 이상이면 해당 URL을 피싱 사이트로 판정한다.</td></tr>
-  <tr><td align="center">11</td><td>서버는 즉시 분석과 종합 분석의 결과를 하나로 합쳐 AnalysisResponse 형태로 구성한다.<br>이 응답 객체에는 즉시 분석(immediate) 결과(레벨, 점수, 위험요인), 종합 분석(comprehensive) 결과(피싱 여부, 신뢰도, 소스), 그리고 전체 요약 메시지(warning_message)가 포함된다.</td></tr>
-  <tr><td align="center">12</td><td>서버는 완성된 JSON 응답을 앱으로 반환한다.<br>앱은 응답에 포함된 warning_message의 내용에 따라 사용자에게 적절한 경고를 표시한다.<br>예를 들어 즉시 분석에서 Level 3 또는 종합 분석에서 is_phishing=true가 감지된 경우, 앱은 “피싱 사이트 탐지! (신뢰도 87%, 소스: ML 모델)”과 같은 강한 경고 알림을 팝업이나 푸시 형태로 출력한다.</td></tr>
-  <tr><td align="center">13</td><td>사용자는 결과를 확인한 뒤 해당 URL을 열람하지 않거나, 필요 시 신고 기능을 통해 서버에 피드백을 전송할 수 있다. </td></tr>
+  <tr>
+    <td colspan="2"><strong>MAIN SUCCESS SCENARIO</strong></td>
+  </tr>
+
+  <tr>
+    <td><strong>Step</strong></td>
+    <td><strong>Action</strong></td>
+  </tr>
+
+  <!-- SINGLE DOCUMENT MODE -->
+  <tr><td colspan="2" style="background-color:#f9f9f9;"><strong>(1) 단일 문서 이미지 분석</strong></td></tr>
+
+  <tr><td align="center">S1</td><td>사용자가 “문서 위조 분석” 페이지를 연다.</td></tr>
+  <tr><td align="center">1</td><td>문서 이미지 1장을 선택해 업로드한다.</td></tr>
+  <tr><td align="center">2</td><td>서버가 파일 유효성을 검증한다.</td></tr>
+  <tr><td align="center">3</td><td>서버가 파일을 저장하고 <code>analyze_document()</code>를 호출한다.</td></tr>
+  <tr><td align="center">4</td><td>직인, OCR, 키워드, 레이아웃 분석이 순차적으로 수행된다.</td></tr>
+  <tr><td align="center">5</td><td>결과를 가중합하여 <code>final_risk</code>를 계산한다.</td></tr>
+  <tr><td align="center">6</td><td>JSON 결과 (<code>{filename, url, stamp, keyword, layout, final_risk}</code>) 반환.</td></tr>
+  <tr><td align="center">7</td><td>클라이언트는 분석 결과를 시각화한다.</td></tr>
+
+  <!-- MULTI DOCUMENT MODE -->
+  <tr><td colspan="2" style="background-color:#f9f9f9;"><strong>(2) 복수 문서 이미지 분석</strong></td></tr>
+
+  <tr><td align="center">S2</td><td>사용자가 “다중 문서 분석” 페이지를 연다.</td></tr>
+  <tr><td align="center">1</td><td>여러 장의 문서 이미지를 선택하여 업로드한다.</td></tr>
+  <tr><td align="center">2</td><td>서버가 각 파일의 형식과 크기를 검증한다.</td></tr>
+  <tr><td align="center">3</td><td>각 파일이 서버에 저장된다.</td></tr>
+  <tr><td align="center">4</td><td>각 파일별로 <code>analyze_document()</code>가 병렬 또는 비동기적으로 실행된다.</td></tr>
+  <tr><td align="center">5</td><td>서버가 이미지별 위험도를 취합한다.</td></tr>
+  <tr><td align="center">6</td><td>평균 또는 가중평균으로 <code>total_risk</code>를 계산한다.</td></tr>
+  <tr><td align="center">7</td><td>결과 배열 (<code>[{filename, risk_detail, final_risk}, ...]</code>) 형태로 반환.</td></tr>
+  <tr><td align="center">8</td><td>클라이언트는 각 페이지별 결과 및 종합 위험 등급을 시각화한다.</td></tr>
 
   <!-- EXTENSION SCENARIOS -->
-  <tr><td colspan="2"><strong>EXTENSION SCENARIOS</strong></td></tr>
-  <tr><td><strong>Step</strong></td><td><strong>Branching Action / Result (HTTP)</strong></td></tr>
-  <tr><td align="center">2</td><td>2a.메시지 접근 권한이 없으면 앱이 자동 검사를 수행하지 않고, “메시지 접근 권한이 필요합니다.”라는 알림을 표시한다.</td></tr>
-  <tr><td align="center">3</td><td>3a.메시지에 URL이 없을 경우 분석을 중단하고 “검사할 URL이 없습니다.”라는 안내를 표시한다.</td></tr>
-  <tr><td align="center">3</td><td>3b.URL 형식이 올바르지 않거나 너무 짧으면 무시하고 유효한 URL만 서버로 전송한다.</td></tr>
-  <tr><td align="center">4</td><td>4a.네트워크가 끊겨 서버에 요청하지 못하면 “서버와 연결할 수 없습니다.” 메시지를 표시하고 재시도 대기 상태로 둔다.</td></tr>
-  <tr><td align="center">5</td><td>5a.모델 파일이나 스케일러 파일을 찾지 못한 경우 서버가 HTTP 500 오류와 함께 “모델 파일을 찾을 수 없습니다.”를 반환한다.</td></tr>
-  <tr><td align="center">6</td><td>6a.URL 파싱 중 오류가 발생하면 즉시 분석을 건너뛰고 안전(Level 0) 상태로 처리한다.</td></tr>
-  <tr><td align="center">7</td><td>7a. DB 파일이 없으면 로그에 경고를 남기고 ML 분석만 수행한다.</td></tr>
-  <tr><td align="center">8</td><td>8a.HTML 크롤링이 실패하거나 차단되면 해당 HTML 특징을 0으로 채우고 모델 예측을 계속 진행한다.</td></tr>
-  <tr><td align="center">9</td><td>9a.모델 예측 중 오류가 발생하면 is_phishing=false, confidence=0.0으로 기본 응답을 반환한다.</td></tr>
-  <tr><td align="center">10</td><td>10a. 보정 계산에서 비정상 데이터가 발생하면 보정값을 0으로 처리해 그대로 확률 계산을 수행한다.</td></tr>
-  <tr><td align="center">11</td><td>11a.분석 결과 일부가 누락되면 남은 결과만 포함해 응답을 반환한다.</td></tr>
-  <tr><td align="center">12</td><td>12a.앱이 JSON 응답을 해석하지 못하면 “결과를 불러오는 중 오류가 발생했습니다.” 메시지를 표시한다.</td></tr>
-  <tr><td align="center">12</td><td>12b.피싱으로 판정되면 앱이 즉시 경고 팝업과 푸시 알림을 띄우고, 링크 클릭 시 추가 확인창을 표시한다.</td></tr>
-  <tr><td align="center">13</td><td>13a.사용자 신고 전송이 실패하면 “신고 전송 실패” 메시지를 표시한다.</td></tr>
-  <tr><td align="center">13</td><td>13b.서버 로그 저장이 실패하면 결과는 그대로 반환하고 로그 오류만 내부에 남긴다.</td></tr>
+  <tr>
+    <td colspan="2"><strong>EXTENSION SCENARIOS</strong></td>
+  </tr>
+
+  <tr><td align="center">2a</td><td>비이미지 파일 업로드 시 <code>415 Unsupported Media Type</code> 오류</td></tr>
+  <tr><td align="center">4a</td><td>OCR 처리 실패 시 <code>500 Internal Server Error</code> — “OCR 처리 실패”</td></tr>
+  <tr><td align="center">5a</td><td>가중치 계산 오류 시 <code>500 Internal Server Error</code> — “위험도 계산 실패”</td></tr>
+  <tr><td align="center">6a</td><td>복수 문서 분석 중 일부 파일 오류 발생 시 해당 결과만 제외</td></tr>
+  <tr><td align="center">7a</td><td>병렬 처리 중 메모리 초과 시 <code>503 Service Unavailable</code> 반환</td></tr>
 
   <!-- RELATED INFORMATION -->
-  <tr><td colspan="2"><strong>RELATED INFORMATION</strong></td></tr>
-  <tr><td><strong>Performance</strong></td><td>≤ 3s</td></tr>
-  <tr><td><strong>Frequency</strong></td><td>제한 없음</td></tr>
-  <tr><td><strong>&lt;Concurrency&gt;</strong></td><td>제한 없음</td></tr>
-  <tr><td><strong>Due Date</strong></td><td></td></tr>
+  <tr>
+    <td colspan="2"><strong>RELATED INFORMATION</strong></td>
+  </tr>
+
+
+  <tr>
+    <td><strong>Performance</strong></td>
+    <td>단일 분석 ≤ 3s / 복수 분석(5장 기준) ≤ 5s</td>
+  </tr>
+
+  <tr>
+    <td><strong>Frequency</strong></td>
+    <td>제한 없음</td>
+  </tr>
+
+  <tr>
+    <td><strong>Concurrency</strong></td>
+    <td>동시 요청 최대 10회</td>
+  </tr>
 </table>
+
+
+<h2>Use case #11 : 스미싱 탐지</h2>
+
+<table border="1" cellpadding="6" cellspacing="0" width="980" align="center">
+  <colgroup>
+    <col width="25%">
+    <col>
+  </colgroup>
+
+  <!-- GENERAL CHARACTERISTICS -->
+  <tr>
+    <td colspan="2"><strong>GENERAL CHARACTERISTICS</strong></td>
+  </tr>
+
+  <tr>
+    <td><strong>Summary</strong></td>
+    <td>
+      본 유스케이스는 앱이 수신한 문자 메시지를 기반으로 스미싱 여부를 판별하는 기능이다.<br>
+      서버는 텍스트 기반 탐지를 수행하며, 
+      메시지 내에 URL이 존재할 경우 추가적으로 URL 기반 탐지를 병행 수행한다.<br>
+      두 분석 결과는 각각의 위험 점수와 탐지 요인을 종합하여 
+      최종 스미싱 위험도와 판정을 산출하고 사용자에게 주의·경고 알림을 제공한다.
+    </td>
+  </tr>
+
+  <tr><td><strong>Scope</strong></td><td>Anti-Phishing-App</td></tr>
+  <tr><td><strong>Level</strong></td><td>User level</td></tr>
+  <tr><td><strong>Author</strong></td><td>Anti-Phishing-App_Team</td></tr>
+  <tr><td><strong>Last Update</strong></td><td>2025.11.06</td></tr>
+  <tr><td><strong>Status</strong></td><td>Analysis</td></tr>
+  <tr><td><strong>Primary Actor</strong></td><td>사용자 / 앱 (자동 감지 모듈)</td></tr>
+
+  <!-- PRECONDITIONS -->
+  <tr>
+    <td><strong>Preconditions</strong></td>
+    <td>
+      1. 앱이 메시지 접근 권한 및 분석 권한을 보유해야 함.<br>
+      2. 서버는 텍스트 분석 모듈, URL 분석 모듈, ML 모델, 피싱 DB, HTML 크롤러를 초기화한 상태여야 함.<br>
+      3. URL 추출 정규식과 메시지 파싱 로직이 준비되어 있어야 함.<br>
+      4. 클라이언트는 메시지 수신 이벤트를 자동 감지하고 서버로 전달할 수 있어야 함.
+    </td>
+  </tr>
+
+  <!-- TRIGGER -->
+  <tr>
+    <td><strong>Trigger</strong></td>
+    <td>
+      디바이스가 새 메시지를 수신하고 앱이 본문을 감지할 때.<br>
+      ① 모든 메시지에 대해 텍스트 기반 분석이 즉시 실행된다.<br>
+      ② 본문에 URL이 포함된 경우 URL 기반 분석이 추가로 병행 실행된다.
+    </td>
+  </tr>
+
+  <!-- SUCCESS POST CONDITION -->
+  <tr>
+    <td><strong>Success Post Condition</strong></td>
+    <td>
+      1. 서버가 텍스트 분석 및 (URL 존재 시) URL 분석 결과를 종합하여 
+         최종 위험도(<code>final_risk</code>)를 계산.<br>
+      2. 분석 결과에는 위험도, 판정(level), 주요 탐지 요인, 권고가 포함.<br>
+      3. 앱은 결과를 시각화하여 사용자에게 주의·경고 알림을 제공.
+    </td>
+  </tr>
+
+  <!-- FAILED POST CONDITION -->
+  <tr>
+    <td><strong>Failed Post Condition</strong></td>
+    <td>
+      1. 입력 포맷 오류 시 400 Bad Request 반환.<br>
+      2. 서버 분석 중 예외 발생 시 500 Internal Server Error 반환.<br>
+      3. 일부 분석 실패 시 가능한 부분 결과만 부분 반환.<br>
+      4. 네트워크 문제 또는 크롤링 실패 시 기본 안전 응답 반환.
+    </td>
+  </tr>
+
+  <!-- MAIN SUCCESS SCENARIO -->
+  <tr>
+    <td colspan="2"><strong>MAIN SUCCESS SCENARIO</strong></td>
+  </tr>
+
+  <tr>
+    <td><strong>Step</strong></td>
+    <td><strong>Action</strong></td>
+  </tr>
+
+  <!-- TEXT-BASED DETECTION (ALWAYS EXECUTED) -->
+  <tr><td colspan="2" style="background-color:#f9f9f9;"><strong>(1) 텍스트 기반 스미싱 탐지 </strong></td></tr>
+
+  <tr><td align="center">S1</td><td>앱이 메시지 수신 이벤트를 감지하고 본문 전체를 확보</td></tr>
+  <tr><td align="center">1</td><td>앱이 텍스트 및 발신자 정보를 엔드포인트로 전송</td></tr>
+  <tr><td align="center">2</td><td>서버가 긴급성/행동유도 패턴 탐지 → 패턴 점수 산출</td></tr>
+  <tr><td align="center">3</td><td>키워드 탐지 및 가중치 계산 (<code>detect_keywords()</code>)</td></tr>
+  <tr><td align="center">4</td><td>ML 분류기(KoBERT 등)로 스미싱 확률(<code>raw_prob_text</code>) 예측</td></tr>
+  <tr><td align="center">5</td><td>패턴·키워드·ML 점수를 가중합 </td></tr>
+  <tr><td align="center">6</td><td>텍스트 기반 위험도및 분석 요약 JSON 생성</td></tr>
+
+  <!-- URL-BASED DETECTION (OPTIONAL) -->
+  <tr><td colspan="2" style="background-color:#f9f9f9;"><strong>(2) URL 기반 스미싱 탐지 (URL 존재 시 추가 실행)</strong></td></tr>
+
+  <tr><td align="center">S2</td><td>앱이 메시지 본문에서 URL을 추출 </td></tr>
+  <tr><td align="center">1</td><td>URL이 하나 이상 감지되면 각 URL을 <code>POST /api/phishing-site/analyze</code> 로 전송</td></tr>
+  <tr><td align="center">2</td><td><code>detect_immediate(url)</code> 실행 — URL 길이, 도메인, 숫자 비율, 위험 키워드 탐지</td></tr>
+  <tr><td align="center">3</td><td><code>detect_comprehensive(url)</code> 실행 — DB 조회, HTML 크롤링, ML 입력</td></tr>
+  <tr><td align="center">4</td><td>ML 모델(<code>RandomForest</code>)로 <code>predict_proba()</code> 수행 → URL 위험 확률 계산</td></tr>
+  <tr><td align="center">5</td><td>결과를 텍스트 분석 결과와 병합하여 종합 위험도(<code>final_risk</code>) 계산</td></tr>
+  <tr><td align="center">6</td><td>앱은 통합된 결과를 사용자에게 표시 (팝업/푸시/상세 분석 화면)</td></tr>
+
+  <!-- EXTENSION SCENARIOS -->
+  <tr>
+    <td colspan="2"><strong>EXTENSION SCENARIOS</strong></td>
+  </tr>
+
+  <tr><td align="center">S1a</td><td>텍스트가 짧거나 의미 없는 경우(1~2글자) → ML 생략 후 키워드·패턴만 평가</td></tr>
+  <tr><td align="center">S2a</td><td>URL이 없으면 URL 분석 단계를 건너뛰고 텍스트 분석 결과만 사용</td></tr>
+  <tr><td align="center">3a</td><td>HTML 크롤링 실패 → HTML 특징 0으로 대체 후 예측 진행</td></tr>
+  <tr><td align="center">4a</td><td>ML 예측 실패 시 기본 안전 응답(is_phishing=false, confidence=0.0) 반환</td></tr>
+  <tr><td align="center">6a</td><td>결과 일부 누락 시 가능한 데이터만 포함하여 JSON 반환</td></tr>
+
+  <!-- RELATED INFORMATION -->
+  <tr>
+    <td colspan="2"><strong>RELATED INFORMATION</strong></td>
+  </tr>
+
+  <tr>
+    <td><strong>Performance</strong></td>
+    <td>텍스트 분석 ≤ 1.5s / URL 분석 ≤ 3s (네트워크 및 모델 크기에 따라 변동)</td>
+  </tr>
+
+  <tr>
+    <td><strong>Frequency</strong></td>
+    <td>모든 메시지 수신 시 자동 실행 (rate limit 및 병렬 제어 필요)</td>
+  </tr>
+
+  <tr>
+    <td><strong>Concurrency</strong></td>
+    <td>최대 동시 요청 10개 이하 권장 (크롤링 및 모델 부하 고려)</td>
+  </tr>
+</table>
+
 
 
 
