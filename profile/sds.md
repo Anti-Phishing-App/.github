@@ -2382,25 +2382,28 @@
 *   **역할 분리를 통한 모듈화 설계 (Modular Design with Separation of Concerns):** `SmishingDetector`는 전체 흐름을 제어하고 텍스트 분석을 담당하며, 복잡한 URL 분석은 `PhishingSiteDetector`에 위임하여 코드의 유지보수성과 확장성을 높입니다.
 *   **병렬 처리를 통한 응답 시간 최적화 (Optimized Response Time via Parallel Processing):** 신속한 URL 패턴 분석과 시간이 소요되는 콘텐츠 기반 종합 분석을 병렬로 동시에 처리하여, 정확도를 희생하지 않으면서도 사용자에게 최대한 빠른 분석 결과를 제공합니다.
 
-## 5. State Machine Diagram
+## 5. State Machine Diagrams
 
 이 장은 시스템 전체의 동작을 표현하는 통합 State machine diagram과 그 설명을 제공한다.
 
-본 시스템은 두 가지 주요 프로세스가 통합된 하나의 State machine으로 구성된다.
-1. **OAuth 인증 프로세스**: 사용자 인증 및 로그인의 전체 생명주기를 나타낸다
-2. **실시간 음성 스트리밍 프로세스**: WebSocket 기반 통화 모니터링의 전체 생명주기를 나타낸다
+본 시스템은 다섯 가지 주요 프로세스가 통합된 하나의 State machine으로 구성된다.
+1. **OAuth 인증 프로세스**: 사용자 인증 및 로그인의 전체 생명주기를 나타낸다.
+2. **통화 녹음본 분석 프로세스**: 업로드 된 오디오 파일의 위험도를 판별하는 생명주기를 나타낸다.
+3. **실시간 음성 스트리밍 프로세스**: WebSocket 기반 통화 모니터링의 전체 생명주기를 나타낸다.
+4. **문서 위조 분석 프로세스**: 업로드된 문서 이미지의 위조 위험도를 판별하는 생명주기를 나타낸다.
+5. **스미싱 탐지 프로세스**: 문자 메시지 텍스트와 포함된 URL의 위험도를 분석하는 생명주기를 나타낸다.
 
 State machine diagram은 다음과 같은 특징을 가진다.
-- 모든 상태는 명확한 진입 조건과 이벤트를 가진다
-- 상태 전이는 특정 Use case의 시나리오를 따른다
-- 복합 상태와 병렬 상태를 활용하여 복잡한 프로세스를 표현한다
-- 오류 처리 및 재시도 메커니즘을 명확히 나타낸다
+- 모든 상태는 명확한 진입 조건과 이벤트를 가진다.
+- 상태 전이는 특정 Use case의 시나리오를 따른다.
+- 복합 상태와 병렬 상태를 활용하여 복잡한 프로세스를 표현한다.
+- 오류 처리 및 재시도 메커니즘을 명확히 나타낸다.
 
 ![State Machine Diagram](image/statemachine_diagram_unified_system.png)
 
 ### 상태 전이 설명
 
-본 다이어그램은 보이스피싱 탐지 시스템의 전체 생명주기를 하나의 통합된 State machine으로 표현한다. 시스템은 최상위 유휴 상태에서 시작하여 두 가지 주요 프로세스 중 하나로 전이된다.
+본 다이어그램은 피싱 탐지 시스템의 전체 생명주기를 하나의 통합된 State machine으로 표현한다. 시스템은 최상위 유휴 상태에서 시작하여 다섯 가지 주요 프로세스 중 하나로 전이된다.
 
 #### OAuth 인증 프로세스
 
@@ -2409,116 +2412,155 @@ State machine diagram은 다음과 같은 특징을 가진다.
 사용자 인증 및 로그인의 전체 생명주기를 나타낸다. 총 9개의 상태로 구성된다.
 
 **1. OAuthIdle (OAuth 유휴)**
-- OAuth 프로세스의 초기 상태로, 사용자가 아직 인증을 시작하지 않은 상태다
+- OAuth 프로세스의 초기 상태로, 사용자가 아직 인증을 시작하지 않은 상태이다.
 - 이벤트: 소셜 로그인 클릭
-- 전이: Redirected 상태로 이동한다
+- 전이: Redirected 상태로 이동한다.
 
 **2. Redirected (리다이렉션)**
-- 클라이언트가 OAuth Provider의 인증 URL을 받아 사용자를 리다이렉트한 상태다
+- 클라이언트가 OAuth Provider의 인증 URL을 받아 사용자를 리다이렉트한 상태이다.
 - 이벤트: 사용자 인증 완료
-- 전이: Authorized 상태로 이동한다
+- 전이: Authorized 상태로 이동한다.
 
 **3. Authorized (권한 부여)**
-- 사용자가 OAuth Provider에서 성공적으로 인증하고 권한을 동의한 상태다
+- 사용자가 OAuth Provider에서 성공적으로 인증하고 권한을 동의한 상태이다.
 - 이벤트: Authorization Code 수신
-- 전이: TokenExchange 상태로 이동한다
+- 전이: TokenExchange 상태로 이동한다.
 
 **4. TokenExchange (토큰 교환)**
-- 서버가 OAuth Provider와 토큰 교환을 수행하는 상태다
+- 서버가 OAuth Provider와 토큰 교환을 수행하는 상태이다.
 - 이벤트: Access Token 획득
-- 전이: ProfileFetch 상태로 이동한다
-- 실패 시: OAuthError 상태로 이동한다
+- 전이: ProfileFetch 상태로 이동한다.
+- 실패 시: OAuthError 상태로 이동한다.
 
 **5. ProfileFetch (프로필 조회)**
-- 서버가 access token으로 사용자 프로필 정보를 요청하는 상태다
+- 서버가 access token으로 사용자 프로필 정보를 요청하는 상태이다.
 - 이벤트: 프로필 정보 수신
-- 전이: AccountLinking 상태로 이동한다
-- 실패 시: OAuthError 상태로 이동한다
+- 전이: AccountLinking 상태로 이동한다.
+- 실패 시: OAuthError 상태로 이동한다.
 
 **6. AccountLinking (계정 연동)**
-- 서버가 OAuth 정보로 데이터베이스에서 계정을 조회하거나 생성하는 상태다
+- 서버가 OAuth 정보로 데이터베이스에서 계정을 조회하거나 생성하는 상태이다.
 - 이벤트: 계정 연동 성공
-- 전이: OAuthComplete 상태로 이동한다
-- 실패 시: OAuthError 상태로 이동한다
+- 전이: OAuthComplete 상태로 이동한다.
+- 실패 시: OAuthError 상태로 이동한다.
 
 **7. OAuthComplete (OAuth 완료)**
-- OAuth 인증이 성공적으로 완료되고 JWT 토큰이 발급된 상태다
-- 종료: 인증 프로세스가 성공적으로 종료되고 시스템은 유휴 상태로 돌아간다
+- OAuth 인증이 성공적으로 완료되고 JWT 토큰이 발급된 상태이다.
+- 종료: 인증 프로세스가 성공적으로 종료되고 시스템은 유휴 상태로 돌아간다.
 
 **8. OAuthError (OAuth 오류)**
-- OAuth 인증 과정에서 오류가 발생한 상태다
+- OAuth 인증 과정에서 오류가 발생한 상태이다.
 - 이벤트: 재시도
-- 전이: OAuthIdle로 돌아가 재시도 가능하다
-- 종료: 포기 시 프로세스가 실패로 종료되고 시스템은 유휴 상태로 돌아간다
+- 전이: OAuthIdle로 돌아가 재시도 가능하다.
+- 종료: 포기 시 프로세스가 실패로 종료되고 시스템은 유휴 상태로 돌아간다.
 
 **9. Cancelled (취소)**
-- 사용자가 명시적으로 OAuth 인증을 취소한 상태다
-- 종료: 프로세스가 취소로 종료되고 시스템은 유휴 상태로 돌아간다
+- 사용자가 명시적으로 OAuth 인증을 취소한 상태이다.
+- 종료: 프로세스가 취소로 종료되고 시스템은 유휴 상태로 돌아간다.
+
+#### 통화 녹음본 분석 프로세스
+
+**관련 Use Case**: Use Case #8 - 통화 녹음본 보이스피싱 탐지
+
+사용자가 업로드한 통화 녹음본을 분석하여 보이스피싱 위험을 판별하는 생명주기를 나타낸다.
+
+**1. RecIdle (녹음본 분석 유휴)**
+- 녹음본 분석 프로세스의 초기 상태이다.
+- 이벤트: 녹음 파일 업로
+- 전이: UploadingToClova 상태로 이동한다.
+
+**2. UploadingToClova (CLOVA 업로드 중)**
+- 서버가 클라이언트의 파일을 받아 CLOVA Speech API로 전송하는 상태이다.
+- 이벤트: 업로드 완료 및 token 발급
+- 전이: Transcribing 상태로 이동한다.
+- 실패 시: RecAnalysisError 상태로 이동한다.
+
+**3. Transcribing (음성 변환 중)**
+- CLOVA API가 STT를 수행하는 동안, 클라이언트는 token으로 상태를 반복 조회(loop)하는 상태이다.
+- 이벤트: status: processing
+- 전이: Transcribing (Self-loop)
+- 이벤트: status: Completed (음성 변환 완료)
+- 전이: AnalyzingPhishing 상태로 이동한다.
+- 실패 시: RecAnalysisError 상태로 이동한다.
+
+**4. AnalyzingPhishing (피싱 분석 중)**
+- 서버가 변환된 텍스트를 받아 VoicePhishingDetector로 분석하는 상태이다.
+- 이벤트: 피싱 분석 완료
+- 전이: RecAnalysisComplete 상태로 이동한다.
+- 실패 시: RecAnalysisError 상태로 이동한다.
+
+**5. RecAnalysisComplete (녹음본 분석 완료)**
+- 모든 분석이 완료되어 최종 AnalysisResponse가 생성된 상태이다.
+- 종료: 프로세스가 성공적으로 종료되고 시스템은 유휴 상태로 돌아간다.
+
+**6. RecAnalysisError (녹음본 분석 오류)**
+- CLOVA API 오류, 토큰 조회 실패 등 분석 과정에서 오류가 발생한 상태이다.
+- 종료: 프로세스가 실패로 종료되고 시스템은 유휴 상태로 돌아간다.
 
 #### 실시간 음성 스트리밍 프로세스
 
-**관련 Use Case**: Use Case #7 - 실시간 통화 보이스피싱 탐지
+**관련 Use Case**: Use Case #9 - 실시간 통화 보이스피싱 탐지
 
 WebSocket 기반 실시간 통화 모니터링의 전체 생명주기를 나타낸다. 복합 상태와 병렬 상태를 활용한다.
 
 **1. StreamIdle (스트리밍 유휴)**
-- 스트리밍 프로세스의 초기 상태로, WebSocket 연결이 수립되지 않은 상태다
+- 스트리밍 프로세스의 초기 상태로, WebSocket 연결이 수립되지 않은 상태이다.
 - 이벤트: 모니터링 시작
-- 전이: Connecting 상태로 이동한다
+- 전이: Connecting 상태로 이동한다.
 
 **2. Connecting (연결 중)**
-- Android Client가 WebSocket 연결을 시도하는 상태다
+- Android Client가 WebSocket 연결을 시도하는 상태이다.
 - 이벤트: WebSocket 연결 성공
-- 전이: Active 복합 상태로 이동한다
-- 실패 시: StreamError 상태로 이동한다
+- 전이: Active 복합 상태로 이동한다.
+- 실패 시: StreamError 상태로 이동한다.
 
 **3. Active (활성 상태 - 복합 상태)**
-- WebSocket 연결이 활성화되어 실시간 처리가 진행되는 상태다
+- WebSocket 연결이 활성화되어 실시간 처리가 진행되는 상태이다.
 - 3개의 병렬 하위 상태로 구성된다: Streaming, Analyzing, ResultSending
 
 **3-1. Streaming (스트리밍)**
-- Android Client가 오디오 청크를 WebSocket으로 지속 전송하는 상태다
-- 행동: 오디오 청크를 버퍼에 저장하고 STT 처리 큐에 추가한다
+- Android Client가 오디오 청크를 WebSocket으로 지속 전송하는 상태이다.
+- 행동: 오디오 청크를 버퍼에 저장하고 STT 처리 큐에 추가한다.
 
 **3-2. Analyzing (분석 - 병렬 처리)**
-- 받은 오디오를 분석하는 상태로, 2개의 병렬 하위 상태로 구성된다
+- 받은 오디오를 분석하는 상태로, 2개의 병렬 하위 상태로 구성된다.
 
 **3-2-1. ImmediateAnalysis (즉시 분석)**
-- CLOVA STT gRPC 스트림으로 실시간 텍스트 변환 및 키워드 기반 탐지를 수행한다
+- CLOVA STT gRPC 스트림으로 실시간 텍스트 변환 및 키워드 기반 탐지를 수행한다.
 - 처리 시간: 100~300ms
 
 **3-2-2. ComprehensiveAnalysis (종합 분석)**
-- 누적 오디오를 CLOVA STT REST API로 변환하고 KoBERT 모델로 정밀 분석한다
+- 누적 오디오를 CLOVA STT REST API로 변환하고 KoBERT 모델로 정밀 분석한다.
 - 처리 시간: 2~5초
 
 **3-3. ResultSending (결과 전송)**
-- 분석 결과를 WebSocket으로 클라이언트에 실시간 전송하는 상태다
-- 즉시 결과와 종합 결과를 모두 전송한다
+- 분석 결과를 WebSocket으로 클라이언트에 실시간 전송하는 상태이다.
+- 즉시 결과와 종합 결과를 모두 전송한다.
 
 **Active 종료**:
 - 이벤트: 통화 종료
-- 전이: Disconnecting 상태로 이동한다
-- 오류 발생 시: StreamError 상태로 이동한다
+- 전이: Disconnecting 상태로 이동한다.
+- 오류 발생 시: StreamError 상태로 이동한다.
 
 **4. Disconnecting (연결 해제 중)**
-- WebSocket 연결을 정리하고 종료하는 상태다
+- WebSocket 연결을 정리하고 종료하는 상태이다.
 - 행동: gRPC 스트림 종료, 최종 분석, 결과 저장, WebSocket 닫기
 - 이벤트: 정리 완료
-- 전이: StreamClosed 상태로 이동한다
+- 전이: StreamClosed 상태로 이동한다.
 
 **5. StreamClosed (스트리밍 종료)**
-- WebSocket 연결이 정상 종료되고 결과가 저장된 상태다
-- 종료: 스트리밍 세션이 성공적으로 완료되고 시스템은 유휴 상태로 돌아간다
+- WebSocket 연결이 정상 종료되고 결과가 저장된 상태이다.
+- 종료: 스트리밍 세션이 성공적으로 완료되고 시스템은 유휴 상태로 돌아간다.
 
 **6. StreamError (스트리밍 오류)**
-- 스트리밍 과정에서 오류가 발생한 상태다
+- 스트리밍 과정에서 오류가 발생한 상태이다.
 - 이벤트: 재연결
-- 전이: Connecting으로 돌아가 재연결을 시도할 수 있다
-- 종료: 포기 시 프로세스가 실패로 종료되고 시스템은 유휴 상태로 돌아간다
+- 전이: Connecting으로 돌아가 재연결을 시도할 수 있다.
+- 종료: 포기 시 프로세스가 실패로 종료되고 시스템은 유휴 상태로 돌아간다.
 
 #### 문서 위조 분석 프로세스
 
-**관련 Use Case**: Use Case #8 - 문서 이미지 업로드 및 위조 분석
+**관련 Use Case**: Use Case #10 - 문서 위조 탐지
 
 사용자가 업로드한 문서 이미지를 순차적으로 분석하여 위조 위험도를 판별하는 생명주기를 나타낸다. 총 9개의 상태로 구성된다.
 
@@ -2565,59 +2607,66 @@ WebSocket 기반 실시간 통화 모니터링의 전체 생명주기를 나타�
 
 **8. DocAnalysisComplete (문서 분석 완료)**
 - 모든 분석이 성공적으로 완료되고 최종 결과가 생성된 상태이다.
-- 모든 분석이 성공적으로 완료되고 최종 결과가 생성된 상태이다.
+- 종료: 프로세스가 성공적으로 종료되고 시스템은 유휴 상태로 돌아간다.
 
 **9. DocAnalysisError (문서 분석 오류)**
 - 파일 저장, OCR, 또는 개별 분석 모듈(직인, 키워드 등) 실행 중 오류가 발생한 상태이다.
-- 종료: 프로세스가 실패로 종료되고 시스템은 SystemIdle 상태로 돌아간다.
+- 종료: 프로세스가 실패로 종료되고 시스템은 유휴 상태로 돌아간다.
 
-#### 피싱 사이트 탐지 프로세스
+#### 스미싱 탐지 프로세스
 
-**관련 Use Case**: Use Case #9 - 피싱 사이트 탐지
+**관련 Use Case**: Use Case #11 - 스미싱 탐지
 
-사용자가 요청한 URL의 피싱 위험도를 분석하는 생명주기를 나타낸다. 병렬 상태를 활용한다.
+사용자가 요청한 문자 메시지의 스미싱 위험도를 분석하는 생명주기를 나타낸다. 텍스트 기반 분석과 URL 기반 분석의 두 병렬 프로세스로 구성되어 결과를 종합한다.
 
-**1. URLIdle (URL 분석 유휴)**
-- URL 분석 프로세스의 초기 상태이다.
-- 이벤트: 'URL 분석 요청'
-- 전이: AnalyzingURL 복합 상태로 이동한다.
+**1. SmishingIdle (스미싱 분석 유휴)**
+- 스미싱 분석 프로세스의 초기 상태이다.
+- 이벤트: 문자 분석 요청
+- 전이: AnalyzingSmishing 복합 상태로 이동한다.
 
-**2. AnalyzingURL (URL 분석 중 - 복합 상태)**
-- 사용자 요청(URL)을 받아 피싱 위험도를 분석하는 상태이다.
-- 2개의 병렬 하위 상태로 구성된다: ImmediateAnalysis, ComprehensiveAnalysis
+**2. AnalyzingSmishing (스미싱 분석 중 - 복합 상태)**
+- 사용자 요청을 받아 스미싱 위험도를 분석하는 상태이다.
+- 2개의 병렬 하위 상태로 구성된다: TextAnalysis, URLAnalysis
 
-**2-1. ImmediateAnalysis (즉시 분석)**
-- detect_immediate()를 실행하여 URL 문자열 자체의 특징(길이, 키워드 등)을 분석한다.
+**2-1. TextAnalysis (텍스트 분석)**
+- detect_keywords(), KoBERT ML 예측 등을 실행하여 텍스트 자체의 위험도를 분석한다.
+- 분석 완료 시 TextAnalysisDone 상태가 된다.
 
-**2-2. ComprehensiveAnalysis (종합 분석)**
-- detect_comprehensive()를 실행하여 DB 조회, HTML 크롤링, ML 모델 예측을 수행한다.
+**2-2. URLAnalysis (URL 분석)**
+- 메시지에서 URL을 추출한다.
+- 메시지에 URL이 없는 경우 즉시 URLAnalysisDone 상태가 된다.
+- 메시지에 URL이 있는 경우 2개의 병렬 하위 상태로 분석을 시작한다.
+  - ImmediateAnalysis (즉시 분석): detect_immediate()를 실행하여 URL 문자열 자체의 특징(길이, 키워드 등)을 분석한다.
+  - ComprehensiveAnalysis (종합 분석): detect_comprehensive()를 실행하여 DB 조회, HTML 크롤링, ML 모델 예측을 수행한다.
+- 두 분석이 완료되면 AnalysisDone 상태가 된다.
 
 **AnalyzingURL 종료**:
-- 이벤트: 분석 완료
+- 이벤트: 텍스트 및 URL 분석 완료
 - 전이: AggregatingResults 상태로 이동한다.
-- 오류 발생 시: URLAnalysisError 상태로 이동한다.
+- 오류 발생 시: SmishingAnalysisError 상태로 이동한다.
 
 **3. AggregatingResults (결과 종합 중)**
-- 즉시 분석과 종합 분석의 결과를 취합하여 최종 AnalysisResponse와 warning_message를 생성하는 상태이다.
+- TextAnalysis와 URLAnalysis의 결과를 취합하여 최종 AnalysisResponse와 final_risk를 생성하는 상태이다.
 - 이벤트: 결과 종합 완료
-- 전이: URLAnalysisComplete 상태로 이동한다.
+- 전이: SmishingAnalysisComplete 상태로 이동한다.
 
-**4. URLAnalysisComplete (URL 분석 완료)**
-- URL 분석이 성공적으로 완료되고 JSON 응답이 생성된 상태이다.
-- 종료: 프로세스가 성공적으로 종료되고 시스템은 SystemIdle 상태로 돌아간다.
+**4. smishingAnalysisComplete (스미싱 분석 완료)**
+- 스미싱 분석이 성공적으로 완료되고 JSON 응답이 생성된 상태이다.
+- 종료: 프로세스가 성공적으로 종료되고 시스템은 유휴 상태로 돌아간다.
 
-**5. URLAnalysisError (URL 분석 오류)**
+**5. SmishingAnalysisError (스미싱 분석 오류)**
 - 모델 로드 실패, HTML 크롤링 실패, DB 조회 실패 등 분석 과정에서 오류가 발생한 상태이다.
-- 종료: 프로세스가 실패로 종료되고 시스템은 SystemIdle 상태로 돌아간다.
+- 종료: 프로세스가 실패로 종료되고 시스템은 유휴 상태로 돌아간다.
 
 ### 시스템 전체 흐름
 
 **SystemIdle (시스템 유휴)**
-- 최상위 초기 상태로, 사용자가 시스템에 접속하지 않은 상태다
+- 최상위 초기 상태로, 사용자가 시스템에 접속하지 않은 상태이다.
 - 이벤트: 사용자 인증 필요 → OAuth 인증 프로세스로 전이
+- 이벤트: 녹음본 분석 요청 → 통화 녹음본 분석 프로세스로 전이
 - 이벤트: 실시간 모니터링 시작 → 실시간 음성 스트리밍 프로세스로 전이
 - 이벤트: 문서 분석 요청 → 문서 위조 분석 프로세스로 전이
-- 이벤트: URL 분석 요청 → 피싱 사이트 탐지 프로세스로 전이
+- 이벤트: 문자 분석 요청 → 스미싱 탐지 프로세스로 전이
 
 각 프로세스가 완료되거나 실패하면 시스템은 다시 SystemIdle 상태로 돌아간다. 이를 통해 사용자는 언제든지 인증, 스트리밍, 또는 각종 분석 기능을 새로 시작할 수 있다.
 
