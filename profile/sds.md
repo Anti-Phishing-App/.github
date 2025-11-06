@@ -2384,28 +2384,28 @@
 
 ## 5. State Machine Diagrams
 
-이 장은 시스템 전체의 동작을 표현하는 통합 State machine diagram과 그 설명을 제공한다.
+이 장은 시스템의 주요 생명주기를 State Machine Diagrams로 표현한다.
 
-본 시스템은 다섯 가지 주요 프로세스가 통합된 하나의 State machine으로 구성된다.
+본 시스템은 개념적으로 최상위 유휴 상태에서 시작하여, 사용자의 요청에 따라 5개의 독립적인 하위 프로세스 중 하나로 전이되는 통합된 구조를 가진다.
+
+하나의 통합 다이어그램으로 표현할 경우, 레이아웃이 복잡해지고 가독성이 저하되는 문제가 있어, 이 장에서는 5개의 주요 프로세스를 각각 별도의 다이어그램으로 분리하여 기술한다.
+
+5개의 주요 프로세스는 다음과 같다.
 1. **OAuth 인증 프로세스**: 사용자 인증 및 로그인의 전체 생명주기를 나타낸다.
 2. **통화 녹음본 분석 프로세스**: 업로드 된 오디오 파일의 위험도를 판별하는 생명주기를 나타낸다.
 3. **실시간 음성 스트리밍 프로세스**: WebSocket 기반 통화 모니터링의 전체 생명주기를 나타낸다.
 4. **문서 위조 분석 프로세스**: 업로드된 문서 이미지의 위조 위험도를 판별하는 생명주기를 나타낸다.
 5. **스미싱 탐지 프로세스**: 문자 메시지 텍스트와 포함된 URL의 위험도를 분석하는 생명주기를 나타낸다.
 
-State machine diagram은 다음과 같은 특징을 가진다.
+각 다이어그램은 다음과 같은 특징을 가진다.
 - 모든 상태는 명확한 진입 조건과 이벤트를 가진다.
 - 상태 전이는 특정 Use case의 시나리오를 따른다.
 - 복합 상태와 병렬 상태를 활용하여 복잡한 프로세스를 표현한다.
 - 오류 처리 및 재시도 메커니즘을 명확히 나타낸다.
 
-![State Machine Diagram](image/statemachine_diagram_unified_system.png)
-
-### 상태 전이 설명
-
-본 다이어그램은 피싱 탐지 시스템의 전체 생명주기를 하나의 통합된 State machine으로 표현한다. 시스템은 최상위 유휴 상태에서 시작하여 다섯 가지 주요 프로세스 중 하나로 전이된다.
-
 #### OAuth 인증 프로세스
+
+![mermaid-diagram-OAuth](image/mermaid-diagram-OAuth.png)
 
 **관련 Use Case**: Use Case #2, #4 - 소셜 회원가입 및 소셜 로그인
 
@@ -2460,6 +2460,8 @@ State machine diagram은 다음과 같은 특징을 가진다.
 
 #### 통화 녹음본 분석 프로세스
 
+![mermaid-diagram-VoiceRecording](image/mermaid-diagram-VoiceRecording.png)
+
 **관련 Use Case**: Use Case #8 - 통화 녹음본 보이스피싱 탐지
 
 사용자가 업로드한 통화 녹음본을 분석하여 보이스피싱 위험을 판별하는 생명주기를 나타낸다.
@@ -2498,6 +2500,8 @@ State machine diagram은 다음과 같은 특징을 가진다.
 - 종료: 프로세스가 실패로 종료되고 시스템은 유휴 상태로 돌아간다.
 
 #### 실시간 음성 스트리밍 프로세스
+
+![mermaid-diagram-VoiceRealtime](image/mermaid-diagram-VoiceRealtime.png)
 
 **관련 Use Case**: Use Case #9 - 실시간 통화 보이스피싱 탐지
 
@@ -2560,6 +2564,8 @@ WebSocket 기반 실시간 통화 모니터링의 전체 생명주기를 나타�
 
 #### 문서 위조 분석 프로세스
 
+![mermaid-diagram-Document](image/mermaid-diagram-Document.png)
+
 **관련 Use Case**: Use Case #10 - 문서 위조 탐지
 
 사용자가 업로드한 문서 이미지를 순차적으로 분석하여 위조 위험도를 판별하는 생명주기를 나타낸다. 총 9개의 상태로 구성된다.
@@ -2614,6 +2620,8 @@ WebSocket 기반 실시간 통화 모니터링의 전체 생명주기를 나타�
 - 종료: 프로세스가 실패로 종료되고 시스템은 유휴 상태로 돌아간다.
 
 #### 스미싱 탐지 프로세스
+
+![mermaid-diagram-Smishing](image/mermaid-diagram-Smishing.png)
 
 **관련 Use Case**: Use Case #11 - 스미싱 탐지
 
@@ -2698,3 +2706,15 @@ WebSocket 기반 실시간 통화 모니터링의 전체 생명주기를 나타�
 | 위험도 종합기 | 문서 분석 과정에서 분석 모듈로부터 산출된 개별 위험도 점수들을 미리 정의된 가중치에 따라 합산하여, 최종적인 단일 위험도 점수(final_risk)를 계산하는 본 프로젝트 내부의 논리적 컴포넌트 |
 | CLOVA Speech | Naver Cloud Platform에서 제공하는 인공지능 음성 인식(STT, Speech-to-Text) 서비스 |
 | PhishTank | 전 세계 커뮤니티에 의해 검증되고 공유되는 피싱 사이트 URL의 공개 데이터베이스 |
+
+## 9. References
+
+1.  금융감독원, [보이스피싱 체험관](https://www.fss.or.kr/fss/bbs/B0000203/list.do?menuNo=200686)
+
+2.  AI Hub, [감정 분류를 위한 대화 음성 데이터셋](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=263)
+
+3.  Ultralytics, [이미지 분할을 통한 문서 인증의 AI](https://www.ultralytics.com/ko/blog/ai-in-document-authentication-with-image-segmentation), 2024.09.11.
+
+4.  JeffersonQin, [YuzuMarker.FontDetection](https://github.com/JeffersonQin/YuzuMarker.FontDetection)
+
+5.  코딩애플, [파이썬으로 사진에서 문자인식하는 AI 쉽게 만들기](https://youtu.be/L8q-KCbXybc?si=hQeuVH2YGfge8kh0), 2021.10.19.
