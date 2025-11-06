@@ -65,7 +65,7 @@
 -문서 위조 분석: 사용자가 업로드한 문서 이미지의 직인, 레이아웃, 키워드 등을 분석하여 위조 위험도를 측정하는 기능.<br>
 
 ### 2.1 Use case Diagram
-![Usecase Diagram](image/Usecase_diagram_antiphishing.png)
+![Usecase Diagram](image/Usecase_diagram.png)
 ### 2.2 Use case Description
 <h2>Use case #1 : 회원가입 (Sign Up)</h2>
 
@@ -77,7 +77,7 @@
 
   <!-- GENERAL CHARACTERISTICS -->
   <tr><td colspan="2"><strong>GENERAL CHARACTERISTICS</strong></td></tr>
-  <tr><td><strong>Summary</strong></td><td>사용자가 시스템 이용을 위해 개인 정보를 입력하고 계정을 생성하는 기능</td></tr>
+  <tr><td><strong>Summary</strong></td><td>사용자가 시스템 이용을 위해 개인 정보를 입력하고 계정을 생성하는 기능.</td></tr>
   <tr><td><strong>Scope</strong></td><td>Anti-Phishing-App</td></tr>
   <tr><td><strong>Level</strong></td><td>User level</td></tr>
   <tr><td><strong>Author</strong></td><td>Anti-Phishing-App_Team</td></tr>
@@ -124,12 +124,12 @@
   <!-- EXTENSION SCENARIOS -->
   <tr><td colspan="2"><strong>EXTENSION SCENARIOS</strong></td></tr>
   <tr><td><strong>Step</strong></td><td><strong>Branching Action / Result (HTTP)</strong></td></tr>
-  <tr><td align="center">2</td><td>2a. 사용자가 필수 입력값을 누락하거나 형식이 잘못된 경우, 서버는 422 Unprocessable Entity를 반환</td></tr>
-  <tr><td align="center">2</td><td>2b. 비밀번호가 정책(8자 이상, 문자+숫자 조합)을 만족하지 않으면 400 Bad Request를 반환</td></tr>
-  <tr><td align="center">3</td><td>3a. 이미 존재하는 아이디로 가입을 시도하면 서버는 409 Conflict를 반환</td></tr>
-  <tr><td align="center">4</td><td>4a. 비밀번호 해시 생성 과정에서 오류가 발생하면 서버는 500 Internal Server Error를 반환</td></tr>
-  <tr><td align="center">5</td><td>5a. 데이터베이스 연결이 끊기거나 트랜잭션이 실패하면 서버는 500 Internal Server Error 또는 503 Service Unavailable을 반환</td></tr>
-  <tr><td align="center">5</td><td>5b. DB 응답이 지연되면 서버는 504 Gateway Timeout을 반환</td></tr>
+  <tr><td align="center">2</td><td>2a. 사용자가 필수 입력값을 누락하거나 형식이 잘못된 경우, 서버는 422 Unprocessable Entity를 반환.</td></tr>
+  <tr><td align="center">2</td><td>2b. 비밀번호가 정책(8자 이상, 문자+숫자 조합)을 만족하지 않으면 400 Bad Request를 반환.</td></tr>
+  <tr><td align="center">3</td><td>3a. 이미 존재하는 아이디로 가입을 시도하면 서버는 409 Conflict를 반환.</td></tr>
+  <tr><td align="center">4</td><td>4a. 비밀번호 해시 생성 과정에서 오류가 발생하면 서버는 500 Internal Server Error를 반환.</td></tr>
+  <tr><td align="center">5</td><td>5a. 데이터베이스 연결이 끊기거나 트랜잭션이 실패하면 서버는 500 Internal Server Error 또는 503 Service Unavailable을 반환.</td></tr>
+  <tr><td align="center">5</td><td>5b. DB 응답이 지연되면 서버는 504 Gateway Timeout을 반환.</td></tr>
 
   <!-- RELATED INFORMATION -->
   <tr><td colspan="2"><strong>RELATED INFORMATION</strong></td></tr>
@@ -257,11 +257,11 @@
   </tr>
   <tr>
     <td><strong>Trigger</strong></td>
-    <td>사용자가 로그인 화면에서 아이디/비밀번호를 입력하고 로그인을 클릭하거나, 클라이언트가 POST /auth/login을 호출</td>
+    <td>사용자가 로그인 화면에서 아이디/비밀번호를 입력하고 로그인을 클릭하거나, 클라이언트가 POST /auth/login을 호출.</td>
   </tr>
   <tr>
     <td><strong>Success Post Condition</strong></td>
-    <td>서버가 자격 증명을 검증하고 JWT 액세스 토큰을 발급하여 200 OK와 함께 반환</td>
+    <td>서버가 자격 증명을 검증하고 JWT 액세스 토큰을 발급하여 200 OK와 함께 반환.</td>
   </tr>
   <tr>
     <td><strong>Failed Post Condition</strong></td>
@@ -282,13 +282,13 @@
   <!-- EXTENSION SCENARIOS -->
   <tr><td colspan="2"><strong>EXTENSION SCENARIOS</strong></td></tr>
   <tr><td><strong>Step</strong></td><td><strong>Branching Action / Result (HTTP)</strong></td></tr>
-  <tr><td align="center">2</td><td>2a. 사용자가 아이디나 비밀번호를 입력하지 않으면 서버는 422 Unprocessable Entity를 반환하고 "아이디와 비밀번호를 입력해주세요." 메시지를 표시</td></tr>
-  <tr><td align="center">3</td><td>3a. 입력한 아이디가 존재하지 않으면 서버는 401 Unauthorized를 반환하고 "아이디 또는 비밀번호가 올바르지 않습니다." 메시지를 표시</td></tr>
-  <tr><td align="center">4</td><td>4a.비밀번호가 일치하지 않으면 서버는 401 Unauthorized를 반환하고 동일하게 "아이디 또는 비밀번호가 올바르지 않습니다." 메시지를 표시</td></tr>
-  <tr><td align="center">5</td><td>5a. JWT 토큰 생성 중 내부 오류나 키 로드 실패가 발생하면 서버는 500 Internal Server Error를 반환하고 "서버 오류로 로그인에 실패했습니다." 메시지를 표시</td></tr>
-  <tr><td align="center">5</td><td>5b. 데이터베이스 연결 또는 쿼리 오류가 발생하면 서버는 500 Internal Server Error 또는 503 Service Unavailable을 반환하고 "일시적 서버 오류입니다. 잠시 후 다시 시도해주세요." 메시지를 표시</td></tr>
-  <tr><td align="center">6</td><td>6a. 너무 많은 로그인 시도가 감지되면 서버는 429 Too Many Requests를 반환하고 "시도가 많습니다. 잠시 후 다시 시도해주세요." 메시지를 표시</td></tr>
-  <tr><td align="center">6</td><td>6b. 연속된 실패로 계정이 잠금 상태이면 서버는 423 Locked를 반환하고 "보안을 위해 계정이 잠겼습니다. 비밀번호를 재설정해주세요." 메시지를 표시</td></tr>
+  <tr><td align="center">2</td><td>2a. 사용자가 아이디나 비밀번호를 입력하지 않으면 서버는 422 Unprocessable Entity를 반환하고 "아이디와 비밀번호를 입력해주세요." 메시지를 표시.</td></tr>
+  <tr><td align="center">3</td><td>3a. 입력한 아이디가 존재하지 않으면 서버는 401 Unauthorized를 반환하고 "아이디 또는 비밀번호가 올바르지 않습니다." 메시지를 표시.</td></tr>
+  <tr><td align="center">4</td><td>4a.비밀번호가 일치하지 않으면 서버는 401 Unauthorized를 반환하고 동일하게 "아이디 또는 비밀번호가 올바르지 않습니다." 메시지를 표시.</td></tr>
+  <tr><td align="center">5</td><td>5a. JWT 토큰 생성 중 내부 오류나 키 로드 실패가 발생하면 서버는 500 Internal Server Error를 반환하고 "서버 오류로 로그인에 실패했습니다." 메시지를 표시.</td></tr>
+  <tr><td align="center">5</td><td>5b. 데이터베이스 연결 또는 쿼리 오류가 발생하면 서버는 500 Internal Server Error 또는 503 Service Unavailable을 반환하고 "일시적 서버 오류입니다. 잠시 후 다시 시도해주세요." 메시지를 표시.</td></tr>
+  <tr><td align="center">6</td><td>6a. 너무 많은 로그인 시도가 감지되면 서버는 429 Too Many Requests를 반환하고 "시도가 많습니다. 잠시 후 다시 시도해주세요." 메시지를 표시.</td></tr>
+  <tr><td align="center">6</td><td>6b. 연속된 실패로 계정이 잠금 상태이면 서버는 423 Locked를 반환하고 "보안을 위해 계정이 잠겼습니다. 비밀번호를 재설정해주세요." 메시지를 표시.</td></tr>
 
   <!-- RELATED INFORMATION -->
   <tr><td colspan="2"><strong>RELATED INFORMATION</strong></td></tr>
@@ -800,8 +800,8 @@
   <!-- EXTENSION SCENARIOS -->
   <tr><td colspan="2"><strong>EXTENSION SCENARIOS</strong></td></tr>
   <tr><td><strong>Step</strong></td><td><strong>Branching Action / Result (HTTP)</strong></td></tr>
-  <tr><td align="center">1</td><td>1a. 업로드된 파일 형식이 허용되지 않으면 서버는 415 Unsupported Media Type을 반환하고 오류 메시지를 표시</td></tr>
-  <tr><td align="center">1</td><td>1b. 파일 크기가 25MB 제한을 초과하면 서버는 413 Payload Too Large를 반환하고 오류 메시지를 표시</td></tr>
+  <tr><td align="center">1</td><td>1a. 업로드된 파일 형식이 허용되지 않으면 서버는 415 Unsupported Media Type을 반환하고 오류 메시지를 표시.</td></tr>
+  <tr><td align="center">1</td><td>1b. 파일 크기가 25MB 제한을 초과하면 서버는 413 Payload Too Large를 반환하고 오류 메시지를 표시.</td></tr>
   <tr><td align="center">3</td><td>3a. CLOVA Speech API가 4xx/5xx 오류를 반환하면 서버는 해당 상태코드와 함께 “CLOVA API Error: …” 메시지를 반환한다.</td></tr>
   <tr><td align="center">3</td><td>3b. CLOVA API 요청이 타임아웃되거나 연결이 끊기면 서버는 500 Internal Server Error를 반환하고 “CLOVA API 요청 실패” 메시지를 표시한다.</td></tr>
   <tr><td align="center">3</td><td>3c. CLOVA 환경 변수가 설정되지 않은 경우 서버는 500 Internal Server Error를 반환하고 오류 메시지를 표시한다.</td></tr>
@@ -1001,7 +1001,7 @@
   </tr>
 
   <!-- SINGLE DOCUMENT MODE -->
-  <tr><td colspan="2" style="background-color:#f9f9f9;"><strong>(1) 단일 문서 이미지 분석</strong></td></tr>
+  <tr><td colspan="2" ><strong>(1) 단일 문서 이미지 분석</strong></td></tr>
 
   <tr><td align="center">S1</td><td>사용자가 “문서 위조 분석” 페이지를 연다.</td></tr>
   <tr><td align="center">1</td><td>문서 이미지 1장을 선택해 업로드한다.</td></tr>
@@ -1013,7 +1013,7 @@
   <tr><td align="center">7</td><td>클라이언트는 분석 결과를 시각화한다.</td></tr>
 
   <!-- MULTI DOCUMENT MODE -->
-  <tr><td colspan="2" style="background-color:#f9f9f9;"><strong>(2) 복수 문서 이미지 분석</strong></td></tr>
+  <tr><td colspan="2" ><strong>(2) 복수 문서 이미지 분석</strong></td></tr>
 
   <tr><td align="center">S2</td><td>사용자가 “다중 문서 분석” 페이지를 연다.</td></tr>
   <tr><td align="center">1</td><td>여러 장의 문서 이미지를 선택하여 업로드한다.</td></tr>
@@ -1144,7 +1144,7 @@
   </tr>
 
   <!-- TEXT-BASED DETECTION (ALWAYS EXECUTED) -->
-  <tr><td colspan="2" style="background-color:#f9f9f9;"><strong>(1) 텍스트 기반 스미싱 탐지 </strong></td></tr>
+  <tr><td colspan="2" ><strong>(1) 텍스트 기반 스미싱 탐지 </strong></td></tr>
 
   <tr><td align="center">S1</td><td>앱이 메시지 수신 이벤트를 감지하고 본문 전체를 확보</td></tr>
   <tr><td align="center">1</td><td>앱이 텍스트 및 발신자 정보를 엔드포인트로 전송</td></tr>
@@ -1155,7 +1155,7 @@
   <tr><td align="center">6</td><td>텍스트 기반 위험도및 분석 요약 JSON 생성</td></tr>
 
   <!-- URL-BASED DETECTION (OPTIONAL) -->
-  <tr><td colspan="2" style="background-color:#f9f9f9;"><strong>(2) URL 기반 스미싱 탐지 (URL 존재 시 추가 실행)</strong></td></tr>
+  <tr><td colspan="2" ><strong>(2) URL 기반 스미싱 탐지 (URL 존재 시 추가 실행)</strong></td></tr>
 
   <tr><td align="center">S2</td><td>앱이 메시지 본문에서 URL을 추출 </td></tr>
   <tr><td align="center">1</td><td>URL이 하나 이상 감지되면 각 URL을 <code>POST /api/phishing-site/analyze</code> 로 전송</td></tr>
@@ -1219,15 +1219,13 @@
 2. 이미 정의된 클래스 및 연관관계일 시, 시각적 편의성을 위해 클래스 다이어그램 내에서 클래스 이름으로만 표기하는 것을 허용한다.
 3. 모든 클래스는 상세 표(Class Description Table)로 Attributes와 Operations를 명시한다.
 
-### 3.1 서버 시스템 클래스 다이어그램
+# 서버 시스템 클래스 다이어그램
 
-![### 3.1 DB Class Diagram (OAuth 지원 추가)](image/class_diagram_server.png)
+## 3.1 핵심 인프라 (Core Infrastructure)
 
-#### 설명
+![3.1 Core Infrastructure](image/class_diagram_core.png)
 
-본 다이어그램은 피싱 탐지 시스템의 데이터베이스 및 핵심 비즈니스 로직 클래스들을 나타낸다. PDF의 use case에 명시된 OAuth 인증 기능을 지원하기 위해 User 모델에 `oauth_provider`와 `oauth_id` 필드가 추가되었다.
-
-#### FastAPIApp Class
+### FastAPIApp Class
 
 | Class | FastAPIApp |
 |-------|------------|
@@ -1235,15 +1233,14 @@
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | app | FastAPI | Public | FastAPI 인스턴스 |
-|  | routers | list | Private | 등록할 APIRouter 목록 |
-| Operations | include_routers() | None | Public | 모든 라우터(prefix 포함)를 앱에 등록한다 |
-|  | add_middlewares() | None | Private | CORS 등 공통 미들웨어 추가 |
-|  | create_app() | FastAPI | Public | 구성/라우터/미들웨어를 적용해 앱 반환 |
+| Operations | on_startup() | None | Public | 앱 시작 시 초기화 작업 수행 |
+|  | read_root() | HTMLResponse | Public | 루트 경로 응답 |
+|  | favicon() | FileResponse | Public | 파비콘 제공 |
+|  | healthz() | dict | Public | 헬스체크 엔드포인트 |
 
 ---
 
-#### Config Class
+### Config Class
 
 | Class | Config |
 |-------|-------|
@@ -1255,13 +1252,15 @@
 |  | JWT_ALG | str | Public | 예: HS256 |
 |  | ACCESS_EXPIRE_MIN | int | Public | 액세스 토큰 만료(분) |
 |  | REFRESH_EXPIRE_DAYS | int | Public | 리프레시 토큰 만료(일) |
-|  | DATABASE_URL | str | Public | SQLAlchemy 연결 문자열 |
-| Operations | from_env() | Config | Public | OS 환경변수에서 설정 생성 |
-|  | load_dotenv() | None | Private | .env 로드(있을 때) |
+|  | UPLOAD_DIR | str | Public | 파일 업로드 디렉토리 |
+|  | MAX_UPLOAD_MB | int | Public | 최대 업로드 크기 |
+|  | DATABASE_URL | str | Public | 데이터베이스 연결 URL |
+|  | CLOVA_OCR_KEY | str | Public | Clova OCR API 키 |
+|  | CLOVA_SPEECH_KEY | str | Public | Clova Speech API 키 |
 
 ---
 
-#### Database Class
+### Database Class
 
 | Class | Database |
 |-------|---------|
@@ -1269,14 +1268,14 @@
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | engine | Engine | Private | SQLAlchemy 엔진 |
-|  | SessionLocal | sessionmaker | Private | 요청 단위 세션 팩토리 |
-| Operations | get_db() | Generator[Session] | Public | FastAPI 의존성: 요청 단위 세션 제공/종료 |
-|  | create_all() | None | Public | 모델 기반 테이블 생성 |
+| Attribute | Base | DeclarativeBase | Public | SQLAlchemy Base 클래스 |
+|  | SessionLocal | sessionmaker | Public | 요청 단위 세션 팩토리 |
+| Operations | get_db() | Generator~Session~ | Public | FastAPI 의존성: 요청 단위 세션 제공/종료 |
+|  | init_db() | None | Public | 모델 기반 테이블 생성 |
 
 ---
 
-#### Security Class
+### Security Class
 
 | Class | Security |
 |-------|---------|
@@ -1284,18 +1283,16 @@
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | pwd_context | CryptContext | Private | bcrypt 해싱 컨텍스트 |
-|  | secret | str | Private | JWT 서명 키 |
-|  | algorithm | str | Private | JWT 알고리즘(예: HS256) |
-| Operations | hash_password(pw) | str | Public | 비밀번호 해싱 |
-|  | verify_password(pw, hashed) | bool | Public | 해시 검증 |
-|  | create_access_token(data, exp_min) | str | Public | 액세스 토큰 생성 |
-|  | create_refresh_token(sub, exp_days) | str | Public | 리프레시 토큰 생성 |
-|  | decode_token(token) | dict | Public | 토큰 디코딩/검증 |
+| Operations | get_password_hash(plain: str) | str | Public | 비밀번호 해싱 |
+|  | verify_password(plain: str, hashed: str) | bool | Public | 해시 검증 |
+|  | authenticate_user(db: Session, username: str, password: str) | User \| None | Public | 사용자 인증 |
+|  | create_access_token(data: dict, secret_key: str, algorithm: str, expires: int) | str | Public | 액세스 토큰 생성 |
+|  | create_refresh_token(data: dict, secret_key: str, algorithm: str, expires: int) | str | Public | 리프레시 토큰 생성 |
+|  | decode_token(token: str, secret_key: str, algorithm: str) | dict | Public | 토큰 디코딩/검증 |
 
 ---
 
-#### Dependencies Class
+### Dependencies Class
 
 | Class | Dependencies |
 |-------|-------------|
@@ -1303,12 +1300,11 @@
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Operations | get_current_user(db, token) | User | Public | Authorization 헤더의 JWT로 사용자 로드 |
-|  | require_active(user) | User | Public | 비활성 사용자 차단 후 통과 사용자 반환 |
+| Operations | get_current_user(credentials: HTTPAuthorizationCredentials, db: Session) | User | Public | Authorization 헤더의 JWT로 사용자 로드 |
 
 ---
 
-#### User Class
+### User Class
 
 | Class | User |
 |-------|------|
@@ -1322,17 +1318,392 @@
 |  | hashed_password | str | Public | 해시된 비밀번호 |
 |  | full_name | str | Public | 사용자 전체 이름 |
 |  | phone | str | Public | 전화번호 |
+|  | oauth_provider | str | Public | OAuth 제공자 |
+|  | oauth_id | str | Public | OAuth ID |
 |  | is_active | bool | Public | 계정 활성화 상태 |
 |  | created_at | datetime | Public | 계정 생성 일시 |
 |  | updated_at | datetime | Public | 계정 정보 수정 일시 |
 
 ---
 
+## 3.2 인증 및 사용자 관리 (Authentication & User Management)
+
+![3.2 Authentication](image/class_diagram_authentication.png)
+
+### AuthRouter Class
+
+| Class | AuthRouter |
+|-------|-----------|
+| Description | 회원가입, 로그인, OAuth 인증을 처리하는 API 라우터 클래스 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | prefix | str | Public | 라우터 경로 접두사 ("/auth") |
+| Operations | signup(request, db) | UserResponse | Public | 일반 회원가입을 처리하는 엔드포인트 함수 |
+|  | login(request, db) | TokenResponse | Public | 일반 로그인을 처리하고 JWT 토큰을 발급하는 함수 |
+|  | social_login(provider, code, db) | TokenResponse | Public | OAuth 소셜 로그인을 처리하는 함수 |
+|  | refresh_token(request, db) | TokenResponse | Public | 리프레시 토큰으로 새 액세스 토큰을 발급하는 함수 |
+|  | logout(current_user) | MessageResponse | Public | 로그아웃을 처리하는 함수 |
+|  | get_me(current_user) | UserResponse | Public | 현재 로그인한 사용자 정보를 반환하는 함수 |
+
+---
+
+### UserRouter Class
+
+| Class | UserRouter |
+|-------|-----------|
+| Description | 사용자 정보 조회/수정/삭제를 처리하는 API 라우터 클래스 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | get_my_info() | User | Public | 로그인한 사용자 정보를 반환한다 |
+|  | update_my_info() | User | Public | 사용자 정보를 수정한다 |
+|  | delete_my_account() | Message | Public | 사용자 계정을 삭제한다 |
+|  | find_username() | Username | Public | 이메일로 아이디 찾기 |
+|  | reset_password() | Message | Public | 비밀번호 재설정 |
+
+---
+
+### OAuthProvider Class
+
+| Class | OAuthProvider |
+|-------|----------------|
+| Description | Google, Naver, Kakao OAuth 2.0 인증을 처리하는 외부 시스템 클래스 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | client_id | str | Public | OAuth 앱 클라이언트 ID |
+|  | client_secret | str | Private | OAuth 앱 클라이언트 시크릿 |
+|  | redirect_uri | str | Public | OAuth 콜백 URL |
+|  | authorization_url | str | Public | 사용자 인증 URL |
+|  | token_url | str | Public | 토큰 교환 URL |
+|  | userinfo_url | str | Public | 사용자 정보 조회 URL |
+| Operations | get_authorization_url() | str | Public | OAuth 인증 페이지 URL을 생성하여 반환하는 함수 |
+|  | exchange_code(code) | dict | Public | Authorization code를 액세스 토큰으로 교환하는 함수 |
+|  | get_user_info(access_token) | dict | Public | 액세스 토큰으로 사용자 프로필 정보를 조회하는 함수 |
+|  | validate_token(access_token) | bool | Public | 액세스 토큰의 유효성을 검증하는 함수 |
+
+---
+
+## 3.3 보이스피싱 탐지 및 음성 변환 (Voice Phishing Detection & Transcription)
+
+![3.3 Voice Phishing](image/class_diagram_voicephishing.png)
+
+### VoicePhishingRouter Class
+
+| Class | VoicePhishingRouter |
+|-------|---------------------|
+| Description | 텍스트/자막 기반 보이스피싱 위험도 분석 API 라우터 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | analyze_text(request: TextAnalysisRequest) | AnalysisResponse | Public | 텍스트 분석 |
+|  | analyze_audio(file: UploadFile) | AnalysisResponse | Public | 음성 파일 분석 |
+|  | health_check() | dict | Public | 헬스체크 |
+
+---
+
+### TranscribeRouter Class
+
+| Class | TranscribeRouter |
+|-------|------------------|
+| Description | 음성 → 텍스트 변환(STT) 및 실시간 탐지 API 라우터 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | upload_audio(file: UploadFile) | TranscriptionResponse | Public | 업로드 파일 STT 처리 |
+|  | get_transcription(transcription_id: str) | TranscriptionResponse | Public | 변환 결과 조회 |
+|  | ws_stream_transcribe(websocket: WebSocket) | None | Public | 실시간 음성 스트리밍(STT) |
+
+---
+
+### VoicePhishingDetector Class
+
+| Class | VoicePhishingDetector |
+|-------|------------------------|
+| Description | KoBERT 기반으로 보이스피싱을 탐지하는 서비스 클래스 (싱글톤 패턴) |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | model | BERTClassifier | Private | KoBERT 딥러닝 모델 인스턴스 |
+|  | tokenizer | BertTokenizer | Private | 텍스트를 토큰으로 변환하는 토크나이저 |
+|  | device | torch.device | Private | 모델 실행 장치 (CPU/GPU) |
+|  | keywords | List[str] | Private | 보이스피싱 위험 키워드 리스트 |
+| Operations | analyze_text(text) | dict | Public | 텍스트를 분석하여 보이스피싱 여부를 판단하는 함수 |
+|  | keyword_analysis(text) | dict | Public | 키워드 기반 즉시 분석을 수행하는 함수 |
+|  | ml_analysis(text) | float | Public | KoBERT 모델로 보이스피싱 확률을 계산하는 함수 |
+|  | preprocess(text) | List[int] | Private | 텍스트를 모델 입력 형식으로 전처리하는 함수 |
+|  | detect_immediate(text) | dict | Public | 즉시 탐지 |
+|  | detect_comprehensive(text) | dict | Public | 종합 분석 |
+|  | detect(text) | dict | Public | 통합 탐지 |
+
+---
+
+### HybridPhishingSession Class
+
+| Class | HybridPhishingSession |
+|-------|----------------------|
+| Description | 실시간 스트리밍 중 누적 분석 세션 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | detector | VoicePhishingDetector | Private | 탐지기 인스턴스 |
+|  | sentence_buffer | deque | Private | 문장 버퍼 |
+| Operations | add_sentence(sentence) | dict | Public | 문장 추가 및 분석 |
+|  | get_latest_comprehensive() | dict | Public | 최신 종합 결과 조회 |
+|  | reset() | None | Public | 세션 초기화 |
+
+---
+
+### WebSocketManager Class
+
+| Class | WebSocketManager |
+|-------|------------------|
+| Description | 실시간 음성 스트리밍 세션을 관리하는 매니저 클래스 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | active_connections | Dict[str, WebSocket] | Private | 활성 WebSocket 연결을 저장하는 딕셔너리 |
+|  | sessions | Dict[str, dict] | Private | 세션 정보를 저장하는 딕셔너리 |
+|  | buffers | Dict[str, bytes] | Private | 오디오 데이터 버퍼 |
+| Operations | connect(websocket, session_id) | void | Public | 새 WebSocket 연결을 등록하는 함수 |
+|  | disconnect(session_id) | void | Public | WebSocket 연결을 해제하고 세션을 정리하는 함수 |
+|  | send_message(session_id, message) | void | Public | 특정 세션에 메시지를 전송하는 함수 |
+|  | broadcast(message) | void | Public | 모든 활성 연결에 메시지를 브로드캐스트하는 함수 |
+|  | add_audio_chunk(session_id, chunk) | void | Public | 오디오 청크를 버퍼에 추가하는 함수 |
+|  | get_buffer(session_id) | bytes | Public | 세션의 오디오 버퍼를 반환하는 함수 |
+|  | transcribe_stream(ws, audio_iter) | Generator | Public | 스트리밍 변환 |
+
+---
+
+### ClovaSpeechClient Class
+
+| Class | ClovaSpeechClient |
+|-------|-------------------|
+| Description | Naver Clova Speech API 클라이언트 (외부 시스템) |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | recognize(audio: bytes, config: dict, lang: str) | Transcript | Public | 음성 인식 |
+|  | close() | None | Public | 연결 종료 |
+
+---
+
+## 3.4 스미싱 탐지 (Smishing Detection)
+
+![3.4 Smishing](image/class_diagram_smishing.png)
+
+### SmishingAnalysisRequest Class
+
+| Class | SmishingAnalysisRequest |
+|-------|-------------------------|
+| Description | 스미싱 분석 요청 DTO |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | message | str | Public | 문자 메시지 본문 |
+
+---
+
+### SmishingAnalysisResponse Class
+
+| Class | SmishingAnalysisResponse |
+|-------|--------------------------|
+| Description | 스미싱 종합 분석 응답 DTO |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | risk_level | str | Public | 위험 등급 |
+|  | risk_percentage | float | Public | 위험도 퍼센트 |
+|  | phone_numbers | List[str] | Public | 추출된 전화번호 |
+|  | urls | List[str] | Public | 추출된 URL |
+|  | detected_keywords | List[str] | Public | 탐지된 키워드 |
+|  | urgency_score | int | Public | 긴급도 점수 |
+|  | recommendation | str | Public | 권장 조치사항 |
+
+---
+
+### URLAnalysisRequest Class
+
+| Class | URLAnalysisRequest |
+|-------|--------------------|
+| Description | 단일 URL 분석 요청 DTO |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | url | str | Public | 분석 대상 URL |
+|  | method | str | Public | 분석 방법 |
+
+---
+
+### AnalysisResponse Class
+
+| Class | AnalysisResponse |
+|-------|------------------|
+| Description | URL 분석 결과 응답 DTO |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | immediate_result | dict | Public | 즉시 분석 결과 |
+|  | comprehensive_result | dict | Public | 종합 분석 결과 |
+|  | warning_message | str | Public | 경고 메시지 |
+
+---
+
+### SmishingRouter Class
+
+| Class | SmishingRouter |
+|-------|----------------|
+| Description | 문자 메시지(SMS/MMS) 기반 스미싱 탐지 API 라우터 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | analyze_sms(request: SmishingAnalysisRequest) | SmishingAnalysisResponse | Public | SMS 분석 |
+|  | health_check() | dict | Public | 헬스체크 |
+
+---
+
+### PhishingSiteRouter Class
+
+| Class | PhishingSiteRouter |
+|-------|-------------------|
+| Description | 피싱 사이트 URL 분석 API 라우터 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | analyze_url(request: URLAnalysisRequest) | AnalysisResponse | Public | URL 분석 |
+|  | health_check() | dict | Public | 헬스체크 |
+
+---
+
+### SmishingDetector Class
+
+| Class | SmishingDetector |
+|-------|------------------|
+| Description | 스미싱 핵심 비즈니스 로직(텍스트·URL·발신자 종합 분석) |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | url_analyzer | PhishingSiteDetector | Private | URL 분석기 |
+|  | smishing_keywords | List | Private | 스미싱 키워드 목록 |
+| Operations | analyze_sms(message) | dict | Public | SMS 메시지 종합 분석 |
+|  | extract_urls(text) | List | Public | URL 추출 |
+|  | detect_immediate(message) | dict | Public | 즉시 탐지 |
+|  | detect_comprehensive(message) | dict | Public | 종합 분석 |
+|  | analyze_text_patterns(text) | dict | Public | 텍스트 패턴 분석 |
+
+---
+
+### PhishingSiteDetector Class
+
+| Class | PhishingSiteDetector |
+|-------|----------------------|
+| Description | URL·도메인·HTML 특징 기반 피싱 사이트 탐지 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | model | model | Private | ML 모델 |
+|  | scaler | scaler | Private | 특징 스케일러 |
+|  | phishtank_db | set | Private | PhishTank 데이터베이스 |
+| Operations | detect_immediate(url) | dict | Public | 즉시 URL 분석 |
+|  | detect_comprehensive(url) | dict | Public | 종합 URL 분석 |
+
+---
+
+## 3.5 문서 분석 (Document Analysis)
+
+![3.5 Document Analysis](image/class_diagram_document.png)
+
+### DocumentAnalysisRequest Class
+
+| Class | DocumentAnalysisRequest |
+|-------|-------------------------|
+| Description | 문서 분석 요청 DTO |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | file | bytes | Public | 문서 파일 데이터 |
+
+---
+
+### AnalysisResponse Class
+
+| Class | AnalysisResponse |
+|-------|------------------|
+| Description | 문서 분석 결과 응답 DTO |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | immediate_result | dict | Public | 즉시 분석 결과 |
+|  | comprehensive_result | dict | Public | 종합 분석 결과 |
+|  | warning_message | str | Public | 경고 메시지 |
+
+---
+
+### DocumentRouter Class
+
+| Class | DocumentRouter |
+|-------|----------------|
+| Description | 문서 위조(키워드/레이아웃/OCR/직인) 종합 분석 API 라우터 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | process_request() | Analysis | Public | 문서 분석 요청 처리 |
+
+---
+
+### UploadRouter Class
+
+| Class | UploadRouter |
+|-------|--------------|
+| Description | 공용 파일 업로드 엔드포인트 라우터 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | upload_image() | Result | Public | 단일 이미지 업로드 |
+|  | upload_images() | Results | Public | 다중 이미지 업로드 |
+
+---
+
+### DocumentService Class
+
+| Class | DocumentService |
+|-------|-----------------|
+| Description | 문서 분석 비즈니스 로직 서비스 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | analyze_document(image_path) | dict | Public | 문서 이미지 종합 분석 |
+
+---
+
+### ClovaOCR Class
+
+| Class | ClovaOCR |
+|-------|----------|
+| Description | Naver Clova OCR API 클라이언트 (외부 시스템) |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | analyze_document(image_path) | OCRResult | Public | 문서 OCR 분석 |
+|  | extract_text(image) | str | Public | 텍스트 추출 |
+|  | extract_layout(image) | Layout | Public | 레이아웃 추출 |
+
+---
+
+## 3.6 데이터 전송 객체 (Data Transfer Objects)
+
+![3.6 Schemas (DTO)](image/class_diagram_dto.png)
+
+전체 시스템에서 사용되는 요청/응답 DTO들을 도메인별로 정리한 다이어그램입니다.
+
+### Authentication Schemas
+
 #### LoginRequest Class
 
 | Class | LoginRequest |
 |-------|--------------|
-| Description | 아이디/비밀번호 로그인 요청 DTO |
+| Description | 로그인 요청 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1349,11 +1720,11 @@
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | username | str | Public | 사용자 이름(Unique) |
-|  | email | str | Public | 이메일(Unique) |
+| Attribute | username | str | Public | 사용자 이름 |
+|  | email | str | Public | 이메일 주소 |
 |  | password | str | Public | 비밀번호 |
-|  | full_name | str | Public | 이름 |
-|  | phone | str | Public | 전화번호(선택) |
+|  | full_name | str | Public | 전체 이름 |
+|  | phone | str | Public | 전화번호 |
 
 ---
 
@@ -1361,13 +1732,13 @@
 
 | Class | TokenResponse |
 |-------|---------------|
-| Description | 액세스/리프레시 토큰 응답 DTO |
+| Description | 토큰 발급 응답 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
 | Attribute | access_token | str | Public | 액세스 토큰 |
 |  | refresh_token | str | Public | 리프레시 토큰 |
-|  | token_type | str | Public | 예: "bearer" |
+|  | token_type | str | Public | 토큰 타입 |
 
 ---
 
@@ -1375,17 +1746,17 @@
 
 | Class | UserResponse |
 |-------|--------------|
-| Description | 사용자 프로필 응답 DTO |
+| Description | 사용자 정보 응답 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | id | int | Public | 사용자 PK |
-|  | username | str | Public | 사용자명 |
-|  | email | str | Public | 이메일 |
-|  | full_name | str | Public | 이름 |
+| Attribute | id | int | Public | 사용자 ID |
+|  | username | str | Public | 사용자 이름 |
+|  | email | str | Public | 이메일 주소 |
+|  | full_name | str | Public | 전체 이름 |
 |  | phone | str | Public | 전화번호 |
-|  | is_active | bool | Public | 활성 여부 |
-|  | created_at | datetime | Public | 생성 일시 |
+|  | oauth_provider | str | Public | OAuth 제공자 |
+|  | is_active | bool | Public | 활성화 상태 |
 
 ---
 
@@ -1397,48 +1768,58 @@
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | full_name | Optional[str] | Public | 이름(선택) |
-|  | phone | Optional[str] | Public | 전화번호(선택) |
+| Attribute | full_name | str | Public | 전체 이름 |
+|  | phone | str | Public | 전화번호 |
 
 ---
 
-#### VoicePhishingRequest Class
+#### FindUsernameRequest Class
 
-| Class | VoicePhishingRequest |
+| Class | FindUsernameRequest |
+|-------|---------------------|
+| Description | 아이디 찾기 요청 DTO |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | email | str | Public | 이메일 주소 |
+
+---
+
+#### FindUsernameResponse Class
+
+| Class | FindUsernameResponse |
 |-------|----------------------|
-| Description | 보이스피싱 분석 요청 DTO(텍스트/스크립트) |
+| Description | 아이디 찾기 응답 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | text | Optional[str] | Public | 분석할 텍스트 |
-|  | transcript | Optional[str] | Public | 전사/스크립트 텍스트 |
+| Attribute | username | str | Public | 사용자 이름 |
 
 ---
 
-#### VoicePhishingResponse Class
+#### ResetPasswordRequest Class
 
-| Class | VoicePhishingResponse |
-|-------|-----------------------|
-| Description | 보이스피싱 분석 결과 DTO |
+| Class | ResetPasswordRequest |
+|-------|----------------------|
+| Description | 비밀번호 재설정 요청 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | risk_score | float | Public | 위험도 점수(0~1) |
-|  | tags | list[str] | Public | 탐지 태그 |
-|  | top_keywords | list[str] | Public | 주요 키워드 |
+| Attribute | username | str | Public | 사용자 이름 |
+|  | email | str | Public | 이메일 주소 |
+|  | new_password | str | Public | 새 비밀번호 |
 
 ---
 
-#### AnalysisResponse Class
+#### RefreshTokenRequest Class
 
-| Class | AnalysisResponse |
-|-------|------------------|
-| Description | 문서/보이스 통합 분석 결과 공통 응답 DTO |
+| Class | RefreshTokenRequest |
+|-------|---------------------|
+| Description | 토큰 갱신 요청 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | risk_score | float | Public | 종합 위험도 |
-|  | modules | dict | Public | 서브 모듈별 결과 맵 |
+| Attribute | refresh_token | str | Public | 리프레시 토큰 |
 
 ---
 
@@ -1446,375 +1827,86 @@
 
 | Class | MessageResponse |
 |-------|-----------------|
-| Description | 단순 메시지 응답 DTO |
+| Description | 공통 메시지 응답 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | message | str | Public | 메시지 문자열 |
+| Attribute | message | str | Public | 응답 메시지 |
 
 ---
 
-#### UploadResponse Class
+### Voice Phishing Schemas
 
-| Class | UploadResponse |
-|-------|----------------|
-| Description | 업로드 처리 결과 응답 DTO |
+#### TextAnalysisRequest Class
 
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Attribute | file_id | str | Public | 파일 식별자 |
-|  | url | str | Public | 접근 URL 또는 경로 |
-
----
-
-#### AuthRouter Class
-
-| Class | AuthRouter |
-|-------|-----------|
-| Description | 회원가입/로그인/토큰 갱신을 처리하는 인증 라우터 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Attribute | prefix | str | Public | "/auth" |
-| Operations | signup(payload, db) | UserResponse | Public | 회원가입 |
-|  | login(payload, db) | TokenResponse | Public | 로그인/토큰 발급 |
-|  | refresh(token) | TokenResponse | Public | 리프레시 토큰으로 재발급 |
-
----
-
-#### UserRouter Class
-
-| Class | UserRouter |
-|-------|-----------|
-| Description | 사용자 정보 조회/수정/삭제를 처리하는 API 라우터 클래스 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Attribute | prefix | str | Public | "/users" 또는 ""(루트) |
-| Operations | get_my_info(current_user) | UserResponse | Public | 로그인한 사용자 정보를 반환한다 |
-|  | update_my_info(payload, db, current_user) | UserResponse | Public | 사용자 정보를 수정한다 |
-|  | delete_my_account(current_user, db) | MessageResponse | Public | 사용자 계정을 삭제한다 |
-
----
-
-#### TranscribeRouter Class
-
-| Class | TranscribeRouter |
-|-------|------------------|
-| Description | 음성 → 텍스트 변환(STT) 및 실시간 탐지 API 라우터 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Attribute | prefix | str | Public | "/transcribe" |
-| Operations | upload_audio(file, lang) | dict | Public | 업로드 파일 STT 처리 |
-|  | ws_stream() | WebSocket | Public | 실시간 음성 스트리밍(STT) |
-
----
-
-#### VoicePhishingRouter Class
-
-| Class | VoicePhishingRouter |
+| Class | TextAnalysisRequest |
 |-------|---------------------|
-| Description | 텍스트/자막 기반 보이스피싱 위험도 분석 API 라우터 |
+| Description | 텍스트 분석 요청 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | prefix | str | Public | "/voice-phishing" |
-| Operations | analyze_text(req) | VoicePhishingResponse | Public | 텍스트 분석 |
-|  | analyze_transcript(file) | VoicePhishingResponse | Public | 자막/스크립트 파일 분석 |
+| Attribute | text | str | Public | 분석할 텍스트 |
+|  | method | str | Public | 분석 방법 |
 
 ---
 
-#### DocumentRouter Class
+#### AudioAnalysisRequest Class
 
-| Class | DocumentRouter |
-|-------|----------------|
-| Description | 문서 위조(키워드/레이아웃/OCR/직인) 종합 분석 API 라우터 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Attribute | prefix | str | Public | "/documents" |
-| Operations | analyze_document(file) | AnalysisResponse | Public | 업로드 문서 종합 분석 |
-|  | get_result(task_id) | AnalysisResponse | Public | 비동기 결과 조회(선택) |
-
----
-
-#### UploadRouter Class
-
-| Class | UploadRouter |
-|-------|--------------|
-| Description | 공용 파일 업로드 엔드포인트 라우터 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Attribute | prefix | str | Public | "/upload" |
-| Operations | upload_file(file) | UploadResponse | Public | 파일 저장 후 경로/ID 반환 |
-
----
-
-#### VoicePhishingService Class
-
-| Class | VoicePhishingService |
+| Class | AudioAnalysisRequest |
 |-------|----------------------|
-| Description | 보이스피싱 핵심 비즈니스 로직(키워드·모델 결합 평가) |
+| Description | 음성 파일 분석 요청 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | keyword_predictor | KeywordPredictor | Private | 키워드 위험도 예측기 |
-|  | bert_classifier | BERTClassifier | Private | KoBERT 분류기 |
-| Operations | analyze_text(text) | dict | Public | 텍스트 기반 종합 점수/태그 산출 |
-|  | analyze_transcript(path) | dict | Public | 파일 로드 후 분석 |
+| Attribute | file | bytes | Public | 음성 파일 데이터 |
+|  | language | str | Public | 언어 설정 |
+|  | method | str | Public | 분석 방법 |
 
 ---
 
-#### KeywordPredictor Class
+#### AnalysisResponse Class
 
-| Class | KeywordPredictor |
+| Class | AnalysisResponse |
 |-------|------------------|
-| Description | 위험 키워드/가중치 기반 스코어링 |
+| Description | 분석 결과 공통 응답 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Operations | predict(text) | dict | Public | 상위 위험 키워드/점수 반환 |
+| Attribute | immediate_result | dict | Public | 즉시 분석 결과 |
+|  | comprehensive_result | dict | Public | 종합 분석 결과 |
+|  | warning_message | str | Public | 경고 메시지 |
 
 ---
 
-#### LayoutPredictor Class
+### Smishing Schemas
 
-| Class | LayoutPredictor |
-|-------|-----------------|
-| Description | 문서 레이아웃 특징에 따른 위험도 평가 |
+#### SmishingAnalysisRequest Class
+
+| Class | SmishingAnalysisRequest |
+|-------|-------------------------|
+| Description | 스미싱 분석 요청 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Operations | predict(image_or_pdf) | dict | Public | 레이아웃 리스크 지표 산출 |
+| Attribute | message | str | Public | 문자 메시지 본문 |
 
 ---
 
-#### OCRPredictor Class
+#### SmishingAnalysisResponse Class
 
-| Class | OCRPredictor |
-|-------|---------------|
-| Description | OCR 결과 품질/패턴 기반 리스크 평가 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | predict(ocr_json) | dict | Public | 텍스트/좌표 기반 리스크 산출 |
-
----
-
-#### StampPredictor Class
-
-| Class | StampPredictor |
-|-------|----------------|
-| Description | 직인(도장) 유무/유사도 판별 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | predict(image) | dict | Public | 직인 탐지/유사도 점수 |
-
----
-
-#### BERTDataset Class
-
-| Class | BERTDataset |
-|-------|-------------|
-| Description | KoBERT 입력 텐서 구성용 데이터셋 래퍼 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | encode(texts, labels) | dict | Public | ids/attention_mask/token_type_ids 생성 |
-
----
-
-#### BERTClassifier Class
-
-| Class | BERTClassifier |
-|-------|----------------|
-| Description | KoBERT 기반 보이스피싱 분류 모델 래퍼 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | predict(texts) | list[float] | Public | 각 문장의 위험 확률 산출 |
-|  | load_from(path) | None | Public | 학습 가중치 로드 |
-
----
-
-#### SmishingRouter Class
-
-| Class | SmishingRouter |
-|-------|----------------|
-| Description | 문자 메시지(SMS/MMS) 기반 스미싱 탐지 API 라우터 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Attribute | prefix | str | Public | "/smishing" |
-| Operations | analyze_message(req) | SmishingResponse | Public | 단일 문자 본문·첨부·링크 종합 분석 |
-|  | analyze_urls(req) | list[URLAnalysisResponse] | Public | URL 리스트 일괄 분석 |
-|  | upload_attachment(file) | UploadResponse | Public | 첨부 파일 업로드 후 스캔 |
-
----
-
-#### SmishingService Class
-
-| Class | SmishingService |
-|-------|-----------------|
-| Description | 스미싱 핵심 비즈니스 로직(링크·도메인·단축 URL·첨부·발신자 종합) |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Attribute | sms_parser | SMSParser | Private | 본문에서 URL·전화번호·키워드 추출 |
-|  | url_extractor | URLExtractor | Private | URL 정규화·중복 제거 |
-|  | shortlink_expander | ShortLinkExpander | Private | 단축 URL 해제(리다이렉트 추적) |
-|  | url_feature_extractor | URLFeatureExtractor | Private | URL·도메인·WHOIS·SSL 특징 추출 |
-|  | domain_reputation | DomainReputation | Private | 블랙리스트·평판 정보 조회 |
-|  | attachment_scanner | AttachmentScanner | Private | 첨부 파일 정적 분석·시그니처 탐지 |
-|  | sender_reputation | SenderReputation | Private | 발신 번호 패턴·스푸핑 평가 |
-|  | url_classifier | URLClassifier | Private | ML 기반 URL 위험 확률 예측 |
-|  | rule_detector | RuleBasedSmishingDetector | Private | 규칙·시그니처 기반 탐지 |
-| Operations | analyze_message(req) | dict | Public | 본문·URL·첨부·발신자 통합 위험도·태그 산출 |
-|  | analyze_urls(urls) | list[dict] | Public | URL 리스트 상세 리포트 생성 |
-
----
-
-#### SMSParser Class
-
-| Class | SMSParser |
-|-------|-----------|
-| Description | 문자 본문에서 URL·숫자·명령형 문구·개인정보 요구 패턴 추출 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | parse(text) | dict | Public | urls, phones, imperative_phrases, pii_requests 반환 |
-
----
-
-#### URLExtractor Class
-
-| Class | URLExtractor |
-|-------|--------------|
-| Description | 텍스트에서 URL 추출 후 정규화·디코딩·중복 제거 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | extract(text) | list[str] | Public | 정규화된 URL 리스트 반환 |
-
----
-
-#### ShortLinkExpander Class
-
-| Class | ShortLinkExpander |
-|-------|-------------------|
-| Description | 단축 URL·리다이렉트 체인 해제 및 최종 도착지 확인 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | expand(url) | dict | Public | {final_url, hops, suspicious_redirect} 반환 |
-
----
-
-#### URLFeatureExtractor Class
-
-| Class | URLFeatureExtractor |
-|-------|---------------------|
-| Description | URL·도메인·SSL·WHOIS 기반 특징치 계산 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | extract(url) | dict | Public | 길이, 서브도메인 수, IP 도메인 여부, 특수문자, TLD, SSL, WHOIS age 등 |
-
----
-
-#### DomainReputation Class
-
-| Class | DomainReputation |
-|-------|------------------|
-| Description | 블랙리스트·위협 인텔·신고 이력 기반 도메인 평판 점수 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | score(domain) | dict | Public | {reputation, sources, listed} 반환 |
-
----
-
-#### AttachmentScanner Class
-
-| Class | AttachmentScanner |
-|-------|-------------------|
-| Description | 첨부 파일(압축·APK·PDF·HTML 등) 정적 분석·시그니처 탐지 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | scan(path_or_bytes) | dict | Public | 파일 타입, 매크로·스크립트·권한, 해시·시그니처 결과 |
-
----
-
-#### SenderReputation Class
-
-| Class | SenderReputation |
-|-------|------------------|
-| Description | 발신 번호 형식·스푸핑 패턴·사칭 키워드 평가 |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | evaluate(number, text) | dict | Public | {spoofing_pattern, brand_impersonation, score} 반환 |
-
----
-
-#### URLClassifier Class
-
-| Class | URLClassifier |
-|-------|---------------|
-| Description | ML 기반 URL 위험 확률 산출(특징 입력 → 확률·라벨) |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | predict(features) | float | Public | 피싱 확률(0~1) |
-|  | load_from(path) | None | Public | 학습 가중치 로드 |
-
----
-
-#### RuleBasedSmishingDetector Class
-
-| Class | RuleBasedSmishingDetector |
-|-------|---------------------------|
-| Description | 규칙·시그니처 기반 스미싱 탐지(은행·택배·정부 사칭 등) |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Operations | detect(evidence) | dict | Public | 매칭 규칙, 태그, 가중치 반환 |
-
----
-
-#### SmishingRequest Class
-
-| Class | SmishingRequest |
-|-------|-----------------|
-| Description | 스미싱 분석 요청 DTO(본문·URL·첨부·발신자) |
-
-| 구분 | Name | Type | Visibility | Description |
-|------|------|------|------------|-------------|
-| Attribute | text | str | Public | 문자 본문 |
-|  | urls | Optional[list[str]] | Public | 본문 외 별도 전달된 URL 목록(선택) |
-|  | sender | Optional[str] | Public | 발신 번호(선택) |
-|  | attachment_ids | Optional[list[str]] | Public | 업로드된 첨부 파일 ID 목록(선택) |
-
----
-
-#### SmishingResponse Class
-
-| Class | SmishingResponse |
-|-------|------------------|
+| Class | SmishingAnalysisResponse |
+|-------|--------------------------|
 | Description | 스미싱 종합 분석 응답 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | risk_score | float | Public | 총합 위험도(0~1) |
-|  | tags | list[str] | Public | 탐지 태그(예: "단축 URL", "택배 사칭", "개인정보 요구") |
-|  | url_reports | list[URLAnalysisResponse] | Public | URL별 상세 결과 |
-|  | attachment_findings | list[dict] | Public | 첨부 스캔 결과 |
-|  | sender_report | dict | Public | 발신자 평가 결과 |
-|  | evidence | dict | Public | 근거(규칙 매칭, 특징치, 리다이렉트 체인 등) |
+| Attribute | risk_level | str | Public | 위험 등급 |
+|  | risk_percentage | float | Public | 위험도 퍼센트 |
+|  | phone_numbers | List[str] | Public | 추출된 전화번호 |
+|  | urls | List[str] | Public | 추출된 URL |
+|  | detected_keywords | List[str] | Public | 탐지된 키워드 |
+|  | urgency_score | int | Public | 긴급도 점수 |
+|  | recommendation | str | Public | 권장 조치사항 |
 
 ---
 
@@ -1827,47 +1919,41 @@
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
 | Attribute | url | str | Public | 분석 대상 URL |
+|  | method | str | Public | 분석 방법 |
 
 ---
 
-#### URLBatchRequest Class
+### Document Analysis Schemas
 
-| Class | URLBatchRequest |
-|-------|-----------------|
-| Description | 복수 URL 일괄 분석 요청 DTO |
+#### DocumentAnalysisRequest Class
+
+| Class | DocumentAnalysisRequest |
+|-------|-------------------------|
+| Description | 문서 분석 요청 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | urls | list[str] | Public | 분석 대상 URL 배열 |
+| Attribute | file | bytes | Public | 문서 파일 데이터 |
 
 ---
 
-#### URLAnalysisResponse Class
+#### DocumentAnalysisResponse Class
 
-| Class | URLAnalysisResponse |
-|-------|---------------------|
-| Description | URL 단위 상세 분석 응답 DTO |
+| Class | DocumentAnalysisResponse |
+|-------|--------------------------|
+| Description | 문서 분석 결과 응답 DTO |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
-| Attribute | input_url | str | Public | 입력된 원본 URL |
-|  | final_url | str | Public | 리다이렉트 최종 URL |
-|  | hops | int | Public | 리다이렉트 단계 수 |
-|  | reputation | float | Public | 도메인 평판 점수(0~1, 높을수록 안전) |
-|  | phishing_prob | float | Public | ML 예측 확률(0~1, 높을수록 위험) |
-|  | features | dict | Public | URL·도메인·WHOIS·SSL 특징치 요약 |
-|  | matched_rules | list[str] | Public | 매칭된 규칙 태그 |
-|  | verdict | str | Public | "malicious" , "suspicious" , "benign" |
+| Attribute | immediate_result | dict | Public | 즉시 분석 결과 |
+|  | comprehensive_result | dict | Public | 종합 분석 결과 |
+|  | warning_message | str | Public | 경고 메시지 |
 
 ---
 
-**주요 관계:**
-- Router들은 해당 Service를 의존성 주입 방식으로 사용한다
-- 모든 Router는 User 모델과 연결되어 인증된 사용자의 요청을 처리한다
-- History 모델들은 User와 1:N 관계로 각 사용자의 탐지 이력을 저장한다
-- External Systems는 <<external system>> 스테레오타입으로 표시되어 외부 API 의존성을 명확히 표현한다
 
-### 3.2 안드로이드 클라이언트 클래스 다이어그램
+
+### 3.7 안드로이드 클라이언트 클래스 다이어그램
 
 ![### 3.2 Android Client Class Diagram](image/class_diagram_android.png)
 
