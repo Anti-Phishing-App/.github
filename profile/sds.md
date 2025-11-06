@@ -888,7 +888,7 @@
 
 | Class | FastAPIApp |
 |-------|------------|
-| Description | 애플리케이션 초기화, 미들웨어/예외처리/라우터 등록을 담당한다 |
+| Description | 애플리케이션 초기화, 미들웨어/예외처리/라우터 등록을 담당 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -969,7 +969,7 @@
 
 | Class | User |
 |-------|------|
-| Description | 사용자 정보를 저장하는 데이터베이스 모델 클래스다 |
+| Description | 사용자 정보를 저장하는 데이터베이스 모델 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1143,7 +1143,7 @@
 
 | Class | UserRouter |
 |-------|-----------|
-| Description | 사용자 정보 조회/수정/삭제를 처리하는 API 라우터 클래스다 |
+| Description | 사용자 정보 조회/수정/삭제를 처리하는 API 라우터 클래스 |
 
 | 구분 | Name | Type | Visibility | Description |
 |------|------|------|------------|-------------|
@@ -1295,7 +1295,228 @@
 | Operations | predict(texts) | list[float] | Public | 각 문장의 위험 확률 산출 |
 |  | load_from(path) | None | Public | 학습 가중치 로드 |
 
+---
 
+#### SmishingRouter Class
+
+| Class | SmishingRouter |
+|-------|----------------|
+| Description | 문자 메시지(SMS/MMS) 기반 스미싱 탐지 API 라우터 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | prefix | str | Public | "/smishing" |
+| Operations | analyze_message(req) | SmishingResponse | Public | 단일 문자 본문·첨부·링크 종합 분석 |
+|  | analyze_urls(req) | list[URLAnalysisResponse] | Public | URL 리스트 일괄 분석 |
+|  | upload_attachment(file) | UploadResponse | Public | 첨부 파일 업로드 후 스캔 |
+
+---
+
+#### SmishingService Class
+
+| Class | SmishingService |
+|-------|-----------------|
+| Description | 스미싱 핵심 비즈니스 로직(링크·도메인·단축 URL·첨부·발신자 종합) |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | sms_parser | SMSParser | Private | 본문에서 URL·전화번호·키워드 추출 |
+|  | url_extractor | URLExtractor | Private | URL 정규화·중복 제거 |
+|  | shortlink_expander | ShortLinkExpander | Private | 단축 URL 해제(리다이렉트 추적) |
+|  | url_feature_extractor | URLFeatureExtractor | Private | URL·도메인·WHOIS·SSL 특징 추출 |
+|  | domain_reputation | DomainReputation | Private | 블랙리스트·평판 정보 조회 |
+|  | attachment_scanner | AttachmentScanner | Private | 첨부 파일 정적 분석·시그니처 탐지 |
+|  | sender_reputation | SenderReputation | Private | 발신 번호 패턴·스푸핑 평가 |
+|  | url_classifier | URLClassifier | Private | ML 기반 URL 위험 확률 예측 |
+|  | rule_detector | RuleBasedSmishingDetector | Private | 규칙·시그니처 기반 탐지 |
+| Operations | analyze_message(req) | dict | Public | 본문·URL·첨부·발신자 통합 위험도·태그 산출 |
+|  | analyze_urls(urls) | list[dict] | Public | URL 리스트 상세 리포트 생성 |
+
+---
+
+#### SMSParser Class
+
+| Class | SMSParser |
+|-------|-----------|
+| Description | 문자 본문에서 URL·숫자·명령형 문구·개인정보 요구 패턴 추출 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | parse(text) | dict | Public | urls, phones, imperative_phrases, pii_requests 반환 |
+
+---
+
+#### URLExtractor Class
+
+| Class | URLExtractor |
+|-------|--------------|
+| Description | 텍스트에서 URL 추출 후 정규화·디코딩·중복 제거 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | extract(text) | list[str] | Public | 정규화된 URL 리스트 반환 |
+
+---
+
+#### ShortLinkExpander Class
+
+| Class | ShortLinkExpander |
+|-------|-------------------|
+| Description | 단축 URL·리다이렉트 체인 해제 및 최종 도착지 확인 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | expand(url) | dict | Public | {final_url, hops, suspicious_redirect} 반환 |
+
+---
+
+#### URLFeatureExtractor Class
+
+| Class | URLFeatureExtractor |
+|-------|---------------------|
+| Description | URL·도메인·SSL·WHOIS 기반 특징치 계산 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | extract(url) | dict | Public | 길이, 서브도메인 수, IP 도메인 여부, 특수문자, TLD, SSL, WHOIS age 등 |
+
+---
+
+#### DomainReputation Class
+
+| Class | DomainReputation |
+|-------|------------------|
+| Description | 블랙리스트·위협 인텔·신고 이력 기반 도메인 평판 점수 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | score(domain) | dict | Public | {reputation, sources, listed} 반환 |
+
+---
+
+#### AttachmentScanner Class
+
+| Class | AttachmentScanner |
+|-------|-------------------|
+| Description | 첨부 파일(압축·APK·PDF·HTML 등) 정적 분석·시그니처 탐지 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | scan(path_or_bytes) | dict | Public | 파일 타입, 매크로·스크립트·권한, 해시·시그니처 결과 |
+
+---
+
+#### SenderReputation Class
+
+| Class | SenderReputation |
+|-------|------------------|
+| Description | 발신 번호 형식·스푸핑 패턴·사칭 키워드 평가 |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | evaluate(number, text) | dict | Public | {spoofing_pattern, brand_impersonation, score} 반환 |
+
+---
+
+#### URLClassifier Class
+
+| Class | URLClassifier |
+|-------|---------------|
+| Description | ML 기반 URL 위험 확률 산출(특징 입력 → 확률·라벨) |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | predict(features) | float | Public | 피싱 확률(0~1) |
+|  | load_from(path) | None | Public | 학습 가중치 로드 |
+
+---
+
+#### RuleBasedSmishingDetector Class
+
+| Class | RuleBasedSmishingDetector |
+|-------|---------------------------|
+| Description | 규칙·시그니처 기반 스미싱 탐지(은행·택배·정부 사칭 등) |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Operations | detect(evidence) | dict | Public | 매칭 규칙, 태그, 가중치 반환 |
+
+---
+
+#### SmishingRequest Class
+
+| Class | SmishingRequest |
+|-------|-----------------|
+| Description | 스미싱 분석 요청 DTO(본문·URL·첨부·발신자) |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | text | str | Public | 문자 본문 |
+|  | urls | Optional[list[str]] | Public | 본문 외 별도 전달된 URL 목록(선택) |
+|  | sender | Optional[str] | Public | 발신 번호(선택) |
+|  | attachment_ids | Optional[list[str]] | Public | 업로드된 첨부 파일 ID 목록(선택) |
+
+---
+
+#### SmishingResponse Class
+
+| Class | SmishingResponse |
+|-------|------------------|
+| Description | 스미싱 종합 분석 응답 DTO |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | risk_score | float | Public | 총합 위험도(0~1) |
+|  | tags | list[str] | Public | 탐지 태그(예: "단축 URL", "택배 사칭", "개인정보 요구") |
+|  | url_reports | list[URLAnalysisResponse] | Public | URL별 상세 결과 |
+|  | attachment_findings | list[dict] | Public | 첨부 스캔 결과 |
+|  | sender_report | dict | Public | 발신자 평가 결과 |
+|  | evidence | dict | Public | 근거(규칙 매칭, 특징치, 리다이렉트 체인 등) |
+
+---
+
+#### URLAnalysisRequest Class
+
+| Class | URLAnalysisRequest |
+|-------|--------------------|
+| Description | 단일 URL 분석 요청 DTO |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | url | str | Public | 분석 대상 URL |
+
+---
+
+#### URLBatchRequest Class
+
+| Class | URLBatchRequest |
+|-------|-----------------|
+| Description | 복수 URL 일괄 분석 요청 DTO |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | urls | list[str] | Public | 분석 대상 URL 배열 |
+
+---
+
+#### URLAnalysisResponse Class
+
+| Class | URLAnalysisResponse |
+|-------|---------------------|
+| Description | URL 단위 상세 분석 응답 DTO |
+
+| 구분 | Name | Type | Visibility | Description |
+|------|------|------|------------|-------------|
+| Attribute | input_url | str | Public | 입력된 원본 URL |
+|  | final_url | str | Public | 리다이렉트 최종 URL |
+|  | hops | int | Public | 리다이렉트 단계 수 |
+|  | reputation | float | Public | 도메인 평판 점수(0~1, 높을수록 안전) |
+|  | phishing_prob | float | Public | ML 예측 확률(0~1, 높을수록 위험) |
+|  | features | dict | Public | URL·도메인·WHOIS·SSL 특징치 요약 |
+|  | matched_rules | list[str] | Public | 매칭된 규칙 태그 |
+|  | verdict | str | Public | "malicious" , "suspicious" , "benign" |
+
+---
 
 **주요 관계:**
 - Router들은 해당 Service를 의존성 주입 방식으로 사용한다
