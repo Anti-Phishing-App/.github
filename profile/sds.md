@@ -39,30 +39,98 @@
 해당 문서는 멀티모델 피싱 탐지 애플리케이션(Anti-Phishing APP)의 Software Design Specification(SDS) 문서이다. 스마트폰과 인터넷이 널리 쓰이면서 피싱 수법이 점점 똑똑해지고, 특히 디지털에 익숙하지 않은 사람들이 피해를 보기 쉬운 상황을 배경으로 하고 있다. 개발 시스템은 크게 Android 클라이언트와 AI 분석 서버(FastAPI)로 이루어지며, 사용자가 통화 음성(실시간), 문자(SMS) 내용, 문서·이미지 같은 의심 데이터를 올리면 서버가 바로 분석해 위험도와 그 근거를 보여 준다. 서버는 OCR(Clova로 텍스트 추출), 키워드 점수(금융·수사기관·압박 표현), KoBERT 기반 문맥 분류, 직인 탐지(Stamp), 레이아웃 지표, URL 검사(도메인/단축링크 등) 같은 모듈을 층별로 두고, Risk Aggregator가 각각의 결과를 가중해 최종 점수를 산출한다. 앱은 입력 화면과 서버 통신을 맡고, 알림·진동·하이라이트로 즉각 경고해 피해를 미리 막을 수 있게 돕는다.
 
 ## 2. Use Case Analysis
-이번 장은 Use case diagram과 Use case description을 제공한다. Diagram에 관한
-고려 사항은 다음과 같다.
+이번 장은 **Use case diagram**과 **Use case description**을 제공한다.
 
-● Use case diagram은 description에 대한 부가적인 결과물이다. 이 문서를 읽는 독자는 use case diagram보다 use case description에서 충분한 정보를 얻을 수 있으니 꼭 참고하길 바란다.<br>
-● 본 프로젝트 대부분의 기능들은 로그인을 하지 않으면 기능을 이용할 수 없다.(회원가입 기능은 제외)<br>
-● 본 프로젝트의 Use case는 총 9가지로, 각각의 Use case는 다음과 같은 기능들을 포괄한다.<br>
+### Diagram에 관한 고려 사항
 
--회원가입: 사용자가 아이디, 비밀번호 등 기본 정보를 입력하여 새로운 계정을 생성하는 기능.<br>
+- Use case diagram은 description에 대한 부가적인 결과물이다.  
+  이 문서를 읽는 독자는 use case diagram보다 use case description에서 충분한 정보를 얻을 수 있으니 꼭 참고하길 바람  
+- 본 프로젝트 대부분의 기능들은 로그인을 하지 않으면 기능을 이용할 수 없다.
+  (회원가입, 소셜 회원가입 기능은 예외)  
+- 본 프로젝트의 Use case는 총 11가지로, 각각의 Use case는 다음과 같은 기능들을 포괄한다.  
 
--소셜 회원가입: 소셜 로그인 시 가입 정보가 없을 경우, 외부 서비스 프로필을 기반으로 간편하게 신규 계정을 생성하는 기능.<br>
+---
 
--로그인: 가입된 사용자가 아이디와 비밀번호로 시스템에 접근 권한을 인증받는 기능.<br>
+ <h4>회원가입 (Sign Up)</h4>
 
--소셜 로그인: 사용자가 외부 인증 서비스 계정을 통해 간편하게 로그인하는 기능.<br>
+사용자가 이름, 아이디, 비밀번호 등을 입력하여 새로운 계정을 생성한다.  
+서버는 입력값 검증, 중복 확인, 비밀번호 해시 처리 후 DB에 신규 사용자 레코드를 등록한다.
 
--내 정보 조회: 로그인된 사용자가 자신의 가입 정보를 확인하고 수정하는 기능.<br>
+---
 
--통화 녹음본 보이스피싱 탐지: 사용자가 업로드한 녹음 파일을 서버로 보내 텍스트로 변환하고 보이스피싱 위험도를 분석하는 기능.<br>
+<h4>소셜 회원가입 (Sign-Up with OAuth)</h4>
 
--실시간 통화 보이스피싱 탐지: 사용자의 마이크 입력을 실시간으로 스트리밍하여 텍스트로 변환하고 보이스피싱 위험도를 즉시 탐지하는 기능.<br>
+사용자가 Google/Naver/Kakao 등의 OAuth 계정을 통해 처음 가입할 때,  
+Provider의 사용자 정보를 검증 후 DB에 신규 계정을 생성하고 JWT 토큰을 발급한다. 
 
--피싱 사이트 탐지: 메시지 등에 포함된 URL이 피싱 사이트인지 다층적인 방법(DB,ML, 규칙)으로 분석하는 기능.<br>
+---
 
--문서 위조 분석: 사용자가 업로드한 문서 이미지의 직인, 레이아웃, 키워드 등을 분석하여 위조 위험도를 측정하는 기능.<br>
+<h4>로그인 (Login)</h4>
+
+등록된 사용자 계정으로 로그인하면,  
+서버가 비밀번호 해시를 검증하고 JWT 액세스 토큰을 발급하여 인증 세션을 생성한다.  
+
+---
+
+<h4>소셜 로그인 (Social Login – OAuth 2.0)</h4>
+
+외부 OAuth Provider의 Access Token을 검증해 등록된 사용자일 경우 JWT를 발급하고 로그인 처리하며,  
+미등록 시 소셜 회원가입 단계로 분기한다.
+
+---
+
+<h4>사용자 정보 조회 (GET /user/me)</h4>
+
+로그인된 사용자가 JWT 인증을 통해 자신의 프로필 정보를 요청하면,  
+서버가 토큰을 검증 후 DB에서 사용자 데이터를 조회·반환한다.  
+
+---
+
+<h4>회원 정보 수정 (Edit User Information)</h4>
+
+로그인 상태에서 사용자가 자신의 개인정보(닉네임, 이메일 등)를 수정하면,  
+서버가 토큰 인증 및 중복/형식 검증을 거쳐 DB를 업데이트하고 최신 정보를 반환한다.
+
+---
+
+<h4>회원 탈퇴 (Delete My Account)</h4>
+
+로그인 사용자가 자신의 계정을 탈퇴(비활성화) 요청하면,  
+서버는 Soft Delete 방식으로 `is_active=False` 처리하고 JWT 세션을 만료시킨다. 
+
+---
+
+<h4>통화 녹음본 보이스피싱 탐지 (Recorded Call Detection)</h4>
+
+사용자가 녹음된 통화 파일을 업로드하면,  
+서버가 CLOVA Speech API로 음성을 텍스트로 변환하고 결과 JSON을 반환한다.  
+오류 시 세부 상태코드 및 메시지를 함께 제공한다.  
+
+---
+
+<h4>실시간 통화 보이스피싱 탐지 (WebSocket + gRPC)</h4>
+
+사용자가 통화 중 오디오 스트림을 서버로 전송하면,  
+서버는 CLOVA Speech gRPC로 실시간 음성 인식과 동시에  
+보이스피싱 즉시 탐지 및 종합 분석을 수행해 실시간 경고를 전송한다.
+
+---
+
+<h4>문서 위조 탐지 (Document Forgery Analysis)</h4>
+
+사용자가 문서 이미지를 업로드하면,  
+서버는 OCR·키워드·레이아웃·직인 탐지 모듈을 통해 위조 가능성을 평가하고  
+종합 위험도를 계산해 JSON으로 반환한다.  
+
+---
+
+<h4>스미싱 탐지 (Smishing Detection)</h4>
+
+앱이 수신한 문자 메시지를 분석하여 스미싱 여부를 판별한다. 
+텍스트 기반 탐지와 URL 기반 탐지를 병행 수행하며,  
+결과를 종합해 위험도와 경고 알림을 제공한다.
+
+---
 
 ### 2.1 Use case Diagram
 ![Usecase Diagram](image/usecase_diagram.png)
@@ -428,7 +496,7 @@
   <tr>
     <td><strong>Trigger</strong></td>
     <td>
-      사용자가 앱의 “내 정보”화면에서 [내 정보 보기] 버튼을 클릭하면, 클라이언트는 GET /user/me 엔드포인트로 요청을 전송한다.<br>
+      사용자가 앱 또는 웹의 “내 정보” 페이지에서 [내 정보 보기] 버튼을 클릭하면, 클라이언트는 GET /user/me 엔드포인트로 요청을 전송한다.<br>
       서버는 헤더의 JWT 토큰을 검증하고, 인증된 사용자 정보를 JSON으로 반환한다.
     </td>
   </tr>
@@ -1209,6 +1277,11 @@
 **3.2. 안드로이드 클라이언트 클래스 다이어그램**
 - 안드로이드 앱의 주요 기능(문서 위조 탐지, 서버 통신)을 담당하는 클래스 간의 관계를 나타낸다.
 
+**3.3. 주요 디자인 패턴**
+- 시스템 전반에서 사용된 디자인 패턴을 설명한다.
+
+전제는 다음과 같다.
+
 1. 한 번 정의된 클래스는 다시 정의하지 않는다.
 2. 이미 정의된 클래스 및 연관관계일 시, 시각적 편의성을 위해 클래스 다이어그램 내에서 클래스 이름으로만 표기하는 것을 허용한다.
 3. 모든 클래스는 상세 표(Class Description Table)로 Attributes와 Operations를 명시한다.
@@ -1689,7 +1762,7 @@
 
 ![3.6 Schemas (DTO)](image/class_diagram_dto.png)
 
-전체 시스템에서 사용되는 요청/응답 DTO들을 도메인별로 정리한 다이어그램
+전체 시스템에서 사용되는 요청/응답 DTO들을 도메인별로 정리한 다이어그램입니다.
 
 ### Authentication Schemas
 
@@ -1945,7 +2018,6 @@
 
 ---
 
-# 서버 시스템 클래스 다이어그램
 
 
 ### 3.7 안드로이드 클라이언트 클래스 다이어그램
@@ -2402,31 +2474,31 @@
 **흐름 설명:**
 
 1.  **이미지 업로드:**
-    *   사용자가 Android Client를 통해 분석을 원하는 문서 이미지를 한 장 또는 여러 장 선택하여 업로드한다.
-    *   클라이언트는 `multipart/form-data` 형식으로 이미지 파일들을 FastAPI 서버의 `/process-request` 엔드포인트로 전송한다.
+    *   사용자가 Android Client를 통해 분석을 원하는 문서 이미지를 한 장 또는 여러 장 선택하여 업로드합니다.
+    *   클라이언트는 `multipart/form-data` 형식으로 이미지 파일들을 FastAPI 서버의 `/process-request` 엔드포인트로 전송합니다.
 
 2.  **조건부 시나리오 분기:**
-    *   `DocumentRouter`는 업로드된 이미지의 수에 따라 두 가지 시나리오로 분기하여 분석을 처리한다.
+    *   `DocumentRouter`는 업로드된 이미지의 수에 따라 두 가지 시나리오로 분기하여 분석을 처리합니다.
 
 3.  **시나리오 A: 단일 이미지 분석 (`alt: file = 1`)**
-    *   `DocumentRouter`는 한 장의 이미지를 저장한 후, `DocumentAnalyzerService`의 `analyze_document` 메소드를 호출한다.
-    *   `DocumentAnalyzerService`는 직인 탐지, OCR, 키워드 분석, 레이아웃 분석을 순차적으로 수행한다.
-    *   각 분석 결과를 가중합하여 최종 위험도(`final_risk`)를 계산하고, 단일 분석 결과를 JSON **객체** 형식으로 라우터에 반환한다.
+    *   `DocumentRouter`는 한 장의 이미지를 저장한 후, `DocumentAnalyzerService`의 `analyze_document` 메소드를 호출합니다.
+    *   `DocumentAnalyzerService`는 직인 탐지, OCR, 키워드 분석, 레이아웃 분석을 순차적으로 수행합니다.
+    *   각 분석 결과를 가중합하여 최종 위험도(`final_risk`)를 계산하고, 단일 분석 결과를 JSON **객체** 형식으로 라우터에 반환합니다.
 
 4.  **시나리오 B: 복수 이미지 분석 (`else: files > 1`)**
-    *   `DocumentRouter`는 업로드된 모든 이미지를 반복문(`loop`)으로 순회한다.
-    *   각 반복마다 이미지를 저장하고, `DocumentAnalyzerService`를 호출하여 개별 문서 분석을 수행한다.
-    *   모든 개별 분석이 완료되면, 라우터는 각 문서의 위험도를 모두 취합하고 평균 등을 계산하여 전체적인 종합 위험도(`total_risk`)를 산출한다.
-    *   최종 결과를 JSON **배열** 형식으로 클라이언트에 반환한다.
+    *   `DocumentRouter`는 업로드된 모든 이미지를 반복문(`loop`)으로 순회합니다.
+    *   각 반복마다 이미지를 저장하고, `DocumentAnalyzerService`를 호출하여 개별 문서 분석을 수행합니다.
+    *   모든 개별 분석이 완료되면, 라우터는 각 문서의 위험도를 모두 취합하고 평균 등을 계산하여 전체적인 종합 위험도(`total_risk`)를 산출합니다.
+    *   최종 결과를 JSON **배열** 형식으로 클라이언트에 반환합니다.
 
 5.  **결과 표시:**
-    *   Android Client는 서버로부터 수신한 단일 결과(JSON 객체) 또는 복수 결과(JSON 배열)를 기반으로, 사용자에게 각 문서의 상세 분석 내용과 종합적인 위험 등급을 시각화하여 보여준다.
+    *   Android Client는 서버로부터 수신한 단일 결과(JSON 객체) 또는 복수 결과(JSON 배열)를 기반으로, 사용자에게 각 문서의 상세 분석 내용과 종합적인 위험 등급을 시각화하여 보여줍니다.
 
 **핵심 특징:**
 
-*   **조건부 분기 및 확장성 (Conditional Branching & Scalability):** `alt` 구문을 사용하여 업로드된 파일의 수에 따라 단일 분석과 복수 분석 로직을 유연하게 분기 처리한다. 이는 향후 더 복잡한 조건이 추가되더라도 쉽게 확장할 수 있는 구조적 이점을 제공한다.
-*   **일괄 처리 및 위험도 종합 (Batch Processing & Risk Aggregation):** 여러 개의 문서를 한 번의 요청으로 일괄 처리(`loop`)하고, 각 문서의 분석 결과를 종합하여 단일 위험 지표(`total_risk`)로 도출하는 기능을 제공하여 사용자의 편의성을 극대화한다.
-*   **다각적 종합 분석 (Multi-layered Comprehensive Analysis):** 단일, 복수 시나리오 모두에서 텍스트(OCR, 키워드)뿐만 아니라 시각적 요소(직인, 레이아웃)까지 다층적으로 분석하여, 위조·조작된 문서의 탐지 정확도를 높인다.
+*   **조건부 분기 및 확장성 (Conditional Branching & Scalability):** `alt` 구문을 사용하여 업로드된 파일의 수에 따라 단일 분석과 복수 분석 로직을 유연하게 분기 처리합니다. 이는 향후 더 복잡한 조건이 추가되더라도 쉽게 확장할 수 있는 구조적 이점을 제공합니다.
+*   **일괄 처리 및 위험도 종합 (Batch Processing & Risk Aggregation):** 여러 개의 문서를 한 번의 요청으로 일괄 처리(`loop`)하고, 각 문서의 분석 결과를 종합하여 단일 위험 지표(`total_risk`)로 도출하는 기능을 제공하여 사용자의 편의성을 극대화합니다.
+*   **다각적 종합 분석 (Multi-layered Comprehensive Analysis):** 단일, 복수 시나리오 모두에서 텍스트(OCR, 키워드)뿐만 아니라 시각적 요소(직인, 레이아웃)까지 다층적으로 분석하여, 위조·조작된 문서의 탐지 정확도를 높입니다.
 
 ### 4.6 스미싱 탐지
 
@@ -2437,31 +2509,31 @@
 **흐름 설명:**
 
 1.  **분석 요청:**
-    *   사용자가 Android Client에 의심스러운 전체 문자 메시지를 입력한다.
-    *   클라이언트는 메시지 내용을 JSON 형식(`sms_content`)으로 래핑하여 FastAPI 서버의 `/api/smishing/analyze` 엔드포인트로 `POST` 요청을 전송한다.
+    *   사용자가 Android Client에 의심스러운 전체 문자 메시지를 입력합니다.
+    *   클라이언트는 메시지 내용을 JSON 형식(`sms_content`)으로 래핑하여 FastAPI 서버의 `/api/smishing/analyze` 엔드포인트로 `POST` 요청을 전송합니다.
 
 2.  **텍스트 심층 분석 및 URL 추출:**
-    *   요청을 수신한 `SmishingRouter`는 분석을 총괄하는 `SmishingDetector`의 `analyze_sms` 메소드를 호출한다.
-    *   `SmishingDetector`는 전달받은 메시지 텍스트 자체에 대한 심층 분석을 수행한다. 이 과정에는 URL 추출(`extract_urls`), 긴급성 패턴 분석(`analyze_urgency_patterns`), 발신자 번호 변작 확인(`check_sender_spoofing`), 피싱 키워드 탐지(`detect_keywords`), 그리고 KoBERT 모델을 이용한 문맥 기반의 ML 분석(`predict_smishing_by_ml`)이 포함된다.
+    *   요청을 수신한 `SmishingRouter`는 분석을 총괄하는 `SmishingDetector`의 `analyze_sms` 메소드를 호출합니다.
+    *   `SmishingDetector`는 전달받은 메시지 텍스트 자체에 대한 심층 분석을 수행합니다. 이 과정에는 URL 추출(`extract_urls`), 긴급성 패턴 분석(`analyze_urgency_patterns`), 발신자 번호 변작 확인(`check_sender_spoofing`), 피싱 키워드 탐지(`detect_keywords`), 그리고 KoBERT 모델을 이용한 문맥 기반의 ML 분석(`predict_smishing_by_ml`)이 포함됩니다.
 
 3.  **URL 하이브리드 분석 (병렬 처리):**
-    *   텍스트 분석 과정에서 URL이 추출된 경우, `SmishingDetector`는 URL 분석 전문 모듈인 `PhishingSiteDetector`를 호출하여 추가 분석을 요청한다. 이 분석은 두 가지 방법으로 동시에(병렬적으로) 수행된다.
+    *   텍스트 분석 과정에서 URL이 추출된 경우, `SmishingDetector`는 URL 분석 전문 모듈인 `PhishingSiteDetector`를 호출하여 추가 분석을 요청합니다. 이 분석은 두 가지 방법으로 동시에(병렬적으로) 수행됩니다.
         *   **즉시 분석 (Immediate Analysis):** URL 자체의 패턴, 키워드, 구조 등을 분석하여 신속하게 위험도를 1차 판단합니다 (`detect_immediate`).
         *   **종합 분석 (Comprehensive Analysis):** 웹 페이지의 HTML 콘텐츠를 크롤링하고, PhishTank DB를 조회하며, 사전 학습된 ML 모델을 통해 피싱 여부를 정밀하게 예측합니다 (`detect_comprehensive`).
 
 4.  **결과 종합 및 최종 위험도 산출:**
-    *   모든 분석이 완료되면, `SmishingDetector`는 텍스트 심층 분석 결과와 URL 하이브리드 분석 결과를 종합한다.
-    *   이를 통해 복합적인 스미싱 공격에 대한 최종 위험도를 산출하고 종합 리포트를 생성한다.
+    *   모든 분석이 완료되면, `SmishingDetector`는 텍스트 심층 분석 결과와 URL 하이브리드 분석 결과를 종합합니다.
+    *   이를 통해 복합적인 스미싱 공격에 대한 최종 위험도를 산출하고 종합 리포트를 생성합니다.
 
 5.  **응답 반환 및 결과 표시:**
-    *   `SmishingDetector`는 최종 분석 결과를 `SmishingRouter`로 반환하고, 라우터는 이를 `SmishingAnalysisResponse` JSON 객체로 포장하여 Android Client에 응답한다.
-    *   클라이언트는 이 종합적인 결과를 사용자에게 명확한 경고와 함께 시각적으로 제시한다.
+    *   `SmishingDetector`는 최종 분석 결과를 `SmishingRouter`로 반환하고, 라우터는 이를 `SmishingAnalysisResponse` JSON 객체로 포장하여 Android Client에 응답합니다.
+    *   클라이언트는 이 종합적인 결과를 사용자에게 명확한 경고와 함께 시각적으로 제시합니다.
 
 **핵심 특징:**
 
-*   **입체적 하이브리드 분석 (Multi-layered Hybrid Analysis):** 문자 내용의 맥락(긴급성, 문맥)과 URL의 기술적 위험도를 모두 평가하는 입체적인 분석을 수행하여 탐지 정확도를 극대화한다.
-*   **역할 분리를 통한 모듈화 설계 (Modular Design with Separation of Concerns):** `SmishingDetector`는 전체 흐름을 제어하고 텍스트 분석을 담당하며, 복잡한 URL 분석은 `PhishingSiteDetector`에 위임하여 코드의 유지보수성과 확장성을 높인다.
-*   **병렬 처리를 통한 응답 시간 최적화 (Optimized Response Time via Parallel Processing):** 신속한 URL 패턴 분석과 시간이 소요되는 콘텐츠 기반 종합 분석을 병렬로 동시에 처리하여, 정확도를 희생하지 않으면서도 사용자에게 최대한 빠른 분석 결과를 제공한다.
+*   **입체적 하이브리드 분석 (Multi-layered Hybrid Analysis):** 문자 내용의 맥락(긴급성, 문맥)과 URL의 기술적 위험도를 모두 평가하는 입체적인 분석을 수행하여 탐지 정확도를 극대화합니다.
+*   **역할 분리를 통한 모듈화 설계 (Modular Design with Separation of Concerns):** `SmishingDetector`는 전체 흐름을 제어하고 텍스트 분석을 담당하며, 복잡한 URL 분석은 `PhishingSiteDetector`에 위임하여 코드의 유지보수성과 확장성을 높입니다.
+*   **병렬 처리를 통한 응답 시간 최적화 (Optimized Response Time via Parallel Processing):** 신속한 URL 패턴 분석과 시간이 소요되는 콘텐츠 기반 종합 분석을 병렬로 동시에 처리하여, 정확도를 희생하지 않으면서도 사용자에게 최대한 빠른 분석 결과를 제공합니다.
 
 ## 5. State Machine Diagrams
 
