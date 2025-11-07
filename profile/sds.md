@@ -65,7 +65,7 @@
 -문서 위조 분석: 사용자가 업로드한 문서 이미지의 직인, 레이아웃, 키워드 등을 분석하여 위조 위험도를 측정하는 기능.<br>
 
 ### 2.1 Use case Diagram
-![Usecase Diagram](image/Usecase_diagram.png)
+![Usecase Diagram](image/usecase_diagram.png)
 ### 2.2 Use case Description
 <h2>Use case #1 : 회원가입 (Sign Up)</h2>
 
@@ -95,7 +95,7 @@
   </tr>
   <tr>
     <td><strong>Trigger</strong></td>
-    <td>사용자가 회원가입 페이지에 접근하여 이름, 아이디, 비밀번호 등 필수 정보를 입력하고 ‘회원가입’ 버튼을 클릭할 때</td>
+    <td>사용자가 회원가입 페이지에 접근하여 이름, 아이디, 비밀번호 등 필수 정보를 입력하고 ‘회원가입’ 버튼을 클릭할 때.</td>
   </tr>
   <tr>
     <td><strong>Success Post Condition</strong></td>
@@ -116,20 +116,20 @@
   <tr><td><strong>Step</strong></td><td><strong>Action</strong></td></tr>
   <tr><td align="center">S</td><td>사용자가 회원가입 화면을 연다.</td></tr>
   <tr><td align="center">1</td><td>사용자: 아이디/비밀번호/닉네임 등 필수값 입력 후 제출한다.</td></tr>
-  <tr><td align="center">2</td><td>서버: DB에서 아이디 중복 여부 조회.</td></tr>
+  <tr><td align="center">2</td><td>서버: DB에서 아이디 중복 여부 조회한다.</td></tr>
   <tr><td align="center">3</td><td>서버: 중복이 아니면 비밀번호 해시 생성(bcrypt) 및 사용자 레코드 생성 트랜잭션 시작.</td></tr>
-  <tr><td align="center">4</td><td>서버: 사용자 정보를 DB에 커밋 후 성공 로그 기록.</td></tr>
-  <tr><td align="center">5</td><td>서버→클라이언트: 201 Created + {"message":"registered"} 반환.</td></tr>
+  <tr><td align="center">4</td><td>서버: 사용자 정보를 DB에 커밋 후 성공 로그 기록한다.</td></tr>
+  <tr><td align="center">5</td><td>서버→클라이언트: 201 Created + {"message":"registered"} 반환한다.</td></tr>
 
   <!-- EXTENSION SCENARIOS -->
   <tr><td colspan="2"><strong>EXTENSION SCENARIOS</strong></td></tr>
   <tr><td><strong>Step</strong></td><td><strong>Branching Action / Result (HTTP)</strong></td></tr>
-  <tr><td align="center">2</td><td>2a. 사용자가 필수 입력값을 누락하거나 형식이 잘못된 경우, 서버는 422 Unprocessable Entity를 반환.</td></tr>
-  <tr><td align="center">2</td><td>2b. 비밀번호가 정책(8자 이상, 문자+숫자 조합)을 만족하지 않으면 400 Bad Request를 반환.</td></tr>
-  <tr><td align="center">3</td><td>3a. 이미 존재하는 아이디로 가입을 시도하면 서버는 409 Conflict를 반환.</td></tr>
-  <tr><td align="center">4</td><td>4a. 비밀번호 해시 생성 과정에서 오류가 발생하면 서버는 500 Internal Server Error를 반환.</td></tr>
-  <tr><td align="center">5</td><td>5a. 데이터베이스 연결이 끊기거나 트랜잭션이 실패하면 서버는 500 Internal Server Error 또는 503 Service Unavailable을 반환.</td></tr>
-  <tr><td align="center">5</td><td>5b. DB 응답이 지연되면 서버는 504 Gateway Timeout을 반환.</td></tr>
+  <tr><td align="center">2</td><td>2a. 사용자가 필수 입력값을 누락하거나 형식이 잘못된 경우, 서버는 422 Unprocessable Entity를 반환한다.</td></tr>
+  <tr><td align="center">2</td><td>2b. 비밀번호가 정책(8자 이상, 문자+숫자 조합)을 만족하지 않으면 400 Bad Request를 반환한다.</td></tr>
+  <tr><td align="center">3</td><td>3a. 이미 존재하는 아이디로 가입을 시도하면 서버는 409 Conflict를 반환한다.</td></tr>
+  <tr><td align="center">4</td><td>4a. 비밀번호 해시 생성 과정에서 오류가 발생하면 서버는 500 Internal Server Error를 반환한다.</td></tr>
+  <tr><td align="center">5</td><td>5a. 데이터베이스 연결이 끊기거나 트랜잭션이 실패하면 서버는 500 Internal Server Error 또는 503 Service Unavailable을 반환한다.</td></tr>
+  <tr><td align="center">5</td><td>5b. DB 응답이 지연되면 서버는 504 Gateway Timeout을 반환한다.</td></tr>
 
   <!-- RELATED INFORMATION -->
   <tr><td colspan="2"><strong>RELATED INFORMATION</strong></td></tr>
@@ -154,7 +154,7 @@
   <tr>
     <td><strong>Summary</strong></td>
     <td>
-      사용자가 Google, Naver, Kakao 등 외부 소셜 계정(OAuth 2.0)을 이용하여 처음으로 시스템에 가입하는 기능이다.<br>
+      사용자가 외부 소셜 계정(OAuth 2.0)을 이용하여 처음으로 시스템에 가입하는 기능이다.<br>
       서버는 Provider로부터 전달받은 Access Token과 사용자 정보를 검증한 뒤, DB에 신규 사용자 정보를 저장하고 JWT를 발급한다.
     </td>
   </tr>
@@ -169,14 +169,14 @@
     <td>
       1.클라이언트와 서버 간 네트워크가 정상이어야 한다.<br>
       2.FastAPI 서버 및 DB 연결이 정상 상태여야 한다.<br>
-      3.사용자는 Google, Naver, Kakao 등 OAuth Provider 계정을 보유하고 있어야 한다.<br>
+      3.사용자는 OAuth Provider 계정을 보유하고 있어야 한다.<br>
       4.해당 소셜 계정은 아직 시스템 DB에 등록되지 않은 상태여야 한다.<br>
       5.OAuth Provider의 인증 서버와 Redirect URI 설정이 완료되어 있어야 한다.
     </td>
   </tr>
   <tr>
     <td><strong>Trigger</strong></td>
-    <td>사용자가 로그인 화면에서 “Google로 로그인” 등 소셜 로그인을 시도했으나, 해당 소셜 계정이 시스템 DB에 존재하지 않아 회원가입 절차로 분기되는 경우. 또는 사용자가 직접 “소셜 계정으로 회원가입” 버튼을 눌러 OAuth 인증을 시작하는 경우.</td>
+    <td>사용자가 로그인 화면에서 소셜 로그인을 시도했으나, 해당 소셜 계정이 시스템 DB에 존재하지 않아 회원가입 절차로 분기되는 경우. 또는 사용자가 직접 “소셜 계정으로 회원가입” 버튼을 눌러 OAuth 인증을 시작하는 경우.</td>
   </tr>
   <tr>
     <td><strong>Success Post Condition</strong></td>
@@ -200,7 +200,7 @@
   <tr><td align="center">S</td><td>사용자가 로그인 또는 회원가입 화면에서 “소셜 계정으로 가입” 버튼을 클릭한다.</td></tr>
   <tr><td align="center">1</td><td>클라이언트는 사용자가 선택한 Provider(Google, Naver, Kakao 등)의 인증 페이지로 리디렉션한다.</td></tr>
   <tr><td align="center">2</td><td>사용자가 해당 Provider 로그인 페이지에서 인증을 완료하고, 접근 권한을 허용한다.</td></tr>
-  <tr><td align="center">3</td><td>Provider는 인가 코드(Authorization Code) 또는 Access Token을 시스템 서버의 Redirect URI로 전달한다.</td></tr>
+  <tr><td align="center">3</td><td>Provider는 인가 코드 또는 Access Token을 시스템 서버의 Redirect URI로 전달한다.</td></tr>
   <tr><td align="center">4</td><td>서버는 전달받은 코드로 Provider API를 호출하여 Access Token을 교환하고 사용자 정보를 요청한다. (이메일, 이름, 프로필 이미지 등)</td></tr>
   <tr><td align="center">5</td><td>서버는 Provider가 반환한 사용자 정보의 무결성을 검증하고, DB에서 동일한 이메일 또는 Provider ID가 이미 존재하는지 확인한다.</td></tr>
   <tr><td align="center">6</td><td>DB에 해당 사용자가 존재하지 않으면, 서버는 새 사용자 레코드를 생성한다.<br>비밀번호는 소셜 계정 기반이므로 별도의 입력 없이 Provider ID 또는 고유 키로 대체 저장한다.</td></tr>
@@ -257,11 +257,11 @@
   </tr>
   <tr>
     <td><strong>Trigger</strong></td>
-    <td>사용자가 로그인 화면에서 아이디/비밀번호를 입력하고 로그인을 클릭하거나, 클라이언트가 POST /auth/login을 호출.</td>
+    <td>사용자가 로그인 화면에서 아이디/비밀번호를 입력하고 로그인을 클릭하거나, 클라이언트가 POST /auth/login을 호출한다.</td>
   </tr>
   <tr>
     <td><strong>Success Post Condition</strong></td>
-    <td>서버가 자격 증명을 검증하고 JWT 액세스 토큰을 발급하여 200 OK와 함께 반환.</td>
+    <td>서버가 자격 증명을 검증하고 JWT 액세스 토큰을 발급하여 200 OK와 함께 반환한다.</td>
   </tr>
   <tr>
     <td><strong>Failed Post Condition</strong></td>
@@ -282,13 +282,13 @@
   <!-- EXTENSION SCENARIOS -->
   <tr><td colspan="2"><strong>EXTENSION SCENARIOS</strong></td></tr>
   <tr><td><strong>Step</strong></td><td><strong>Branching Action / Result (HTTP)</strong></td></tr>
-  <tr><td align="center">2</td><td>2a. 사용자가 아이디나 비밀번호를 입력하지 않으면 서버는 422 Unprocessable Entity를 반환하고 "아이디와 비밀번호를 입력해주세요." 메시지를 표시.</td></tr>
+  <tr><td align="center">2</td><td>2a. 사용자가 아이디나 비밀번호를 입력하지 않으면 서버는 422 Unprocessable Entity를 반환하고 "아이디와 비밀번호를 입력해주세요." 메시지를 표시한다.</td></tr>
   <tr><td align="center">3</td><td>3a. 입력한 아이디가 존재하지 않으면 서버는 401 Unauthorized를 반환하고 "아이디 또는 비밀번호가 올바르지 않습니다." 메시지를 표시.</td></tr>
-  <tr><td align="center">4</td><td>4a.비밀번호가 일치하지 않으면 서버는 401 Unauthorized를 반환하고 동일하게 "아이디 또는 비밀번호가 올바르지 않습니다." 메시지를 표시.</td></tr>
-  <tr><td align="center">5</td><td>5a. JWT 토큰 생성 중 내부 오류나 키 로드 실패가 발생하면 서버는 500 Internal Server Error를 반환하고 "서버 오류로 로그인에 실패했습니다." 메시지를 표시.</td></tr>
-  <tr><td align="center">5</td><td>5b. 데이터베이스 연결 또는 쿼리 오류가 발생하면 서버는 500 Internal Server Error 또는 503 Service Unavailable을 반환하고 "일시적 서버 오류입니다. 잠시 후 다시 시도해주세요." 메시지를 표시.</td></tr>
-  <tr><td align="center">6</td><td>6a. 너무 많은 로그인 시도가 감지되면 서버는 429 Too Many Requests를 반환하고 "시도가 많습니다. 잠시 후 다시 시도해주세요." 메시지를 표시.</td></tr>
-  <tr><td align="center">6</td><td>6b. 연속된 실패로 계정이 잠금 상태이면 서버는 423 Locked를 반환하고 "보안을 위해 계정이 잠겼습니다. 비밀번호를 재설정해주세요." 메시지를 표시.</td></tr>
+  <tr><td align="center">4</td><td>4a.비밀번호가 일치하지 않으면 서버는 401 Unauthorized를 반환하고 동일하게 "아이디 또는 비밀번호가 올바르지 않습니다." 메시지를 표시한다.</td></tr>
+  <tr><td align="center">5</td><td>5a. JWT 토큰 생성 중 내부 오류나 키 로드 실패가 발생하면 서버는 500 Internal Server Error를 반환하고 "서버 오류로 로그인에 실패했습니다." 메시지를 표시한다.</td></tr>
+  <tr><td align="center">5</td><td>5b. 데이터베이스 연결 또는 쿼리 오류가 발생하면 서버는 500 Internal Server Error 또는 503 Service Unavailable을 반환하고 "일시적 서버 오류입니다. 잠시 후 다시 시도해주세요." 메시지를 표시한다.</td></tr>
+  <tr><td align="center">6</td><td>6a. 너무 많은 로그인 시도가 감지되면 서버는 429 Too Many Requests를 반환하고 "시도가 많습니다. 잠시 후 다시 시도해주세요." 메시지를 표시한다.</td></tr>
+  <tr><td align="center">6</td><td>6b. 연속된 실패로 계정이 잠금 상태이면 서버는 423 Locked를 반환하고 "보안을 위해 계정이 잠겼습니다. 비밀번호를 재설정해주세요." 메시지를 표시한다.</td></tr>
 
   <!-- RELATED INFORMATION -->
   <tr><td colspan="2"><strong>RELATED INFORMATION</strong></td></tr>
@@ -312,7 +312,7 @@
   <tr>
     <td><strong>Summary</strong></td>
     <td>
-      사용자가 Google, Naver, Kakao 등 외부 OAuth 제공자를 통해 로그인 요청을 하면,서버는 Access Token을 검증하여 사용자 정보를 가져오고,등록된 계정일 경우 JWT를 발급해 인증 세션을 생성한다.<br>
+      사용자가 외부 OAuth 제공자를 통해 로그인 요청을 하면,서버는 Access Token을 검증하여 사용자 정보를 가져오고,등록된 계정일 경우 JWT를 발급해 인증 세션을 생성한다.<br>
       신규 사용자일 경우 “소셜 회원가입” 단계로 분기한다.
     </td>
   </tr>
@@ -325,8 +325,8 @@
   <tr>
     <td><strong>Preconditions</strong></td>
     <td>
-      1.사용자는 이미 해당 소셜 계정(Google, Naver, Kakao 등)을 보유하고 있어야 한다.<br>
-      2.소셜 로그인 공급자(OAuth Provider)의 인증 서버가 정상 작동 중이어야 한다.<br>
+      1.사용자는 이미 해당 소셜 계정을 보유하고 있어야 한다.<br>
+      2.소셜 로그인 공급자의 인증 서버가 정상 작동 중이어야 한다.<br>
       3.서버는 OAuth Redirect URI로 등록되어 있어야 한다.<br>
       4.데이터베이스 연결 및 JWT 서명 키가 유효해야 한다.
     </td>
@@ -357,29 +357,28 @@
   <tr><td><strong>Step</strong></td><td><strong>Action</strong></td></tr>
   <tr><td align="center">S</td><td>사용자가 “Google로 로그인” 또는 “Naver로 로그인” 등의 버튼을 클릭한다.</td></tr>
   <tr><td align="center">1</td><td>클라이언트는 선택된 Provider(Google, Naver 등)의 OAuth 인증 URL로 리디렉션한다.</td></tr>
-  <tr><td align="center">2</td><td>클라이언트는 선택된 Provider(Google, Naver 등)의 OAuth 인증 URL로 리디렉션한다.</td></tr>
-  <tr><td align="center">3</td><td>사용자는 Provider 로그인 페이지에서 계정 정보를 입력하고, 시스템 접근 권한을 승인한다.</td></tr>
-  <tr><td align="center">4</td><td>인증이 완료되면 Provider는 인가 코드(Authorization Code) 또는 Access Token을 서버의 Redirect URI로 전달한다.</td></tr>
-  <tr><td align="center">5</td><td>서버는 전달받은 코드로 Provider API에 Access Token 요청을 보낸다.</td></tr>
-  <tr><td align="center">6</td><td>Provider는 Access Token 및 사용자 프로필 정보를 서버로 반환한다.</td></tr>
-  <tr><td align="center">7</td><td>서버는 Access Token의 유효성을 검증하고, Provider가 제공한 이메일 또는 고유 ID로 사용자 DB를 조회한다.</td></tr>
-  <tr><td align="center">8</td><td>DB에 해당 사용자가 존재하면 로그인 성공으로 간주하고 JWT Access Token을 생성한다.</td></tr>
-  <tr><td align="center">9</td><td>서버는 200 OK 응답과 함께 {access_token, token_type, user_info}를 반환한다.</td></tr>
-  <tr><td align="center">10</td><td>클라이언트는 JWT를 저장하고 이후 API 호출 시 Authorization 헤더에 포함시켜 인증된 요청을 보낸다.</td></tr>
+  <tr><td align="center">2</td><td>사용자는 Provider 로그인 페이지에서 계정 정보를 입력하고, 시스템 접근 권한을 승인한다.</td></tr>
+  <tr><td align="center">3</td><td>인증이 완료되면 Provider는 인가 코드(Authorization Code) 또는 Access Token을 서버의 Redirect URI로 전달한다.</td></tr>
+  <tr><td align="center">4</td><td>서버는 전달받은 코드로 Provider API에 Access Token 요청을 보낸다.</td></tr>
+  <tr><td align="center">5</td><td>Provider는 Access Token 및 사용자 프로필 정보를 서버로 반환한다.</td></tr>
+  <tr><td align="center">6</td><td>서버는 Access Token의 유효성을 검증하고, Provider가 제공한 이메일 또는 고유 ID로 사용자 DB를 조회한다.</td></tr>
+  <tr><td align="center">7</td><td>DB에 해당 사용자가 존재하면 로그인 성공으로 간주하고 JWT Access Token을 생성한다.</td></tr>
+  <tr><td align="center">8</td><td>서버는 200 OK 응답과 함께 {access_token, token_type, user_info}를 반환한다.</td></tr>
+  <tr><td align="center">9</td><td>클라이언트는 JWT를 저장하고 이후 API 호출 시 Authorization 헤더에 포함시켜 인증된 요청을 보낸다.</td></tr>
 
   <!-- EXTENSION SCENARIOS -->
   <tr><td colspan="2"><strong>EXTENSION SCENARIOS</strong></td></tr>
   <tr><td><strong>Step</strong></td><td><strong>Branching Action / Result (HTTP)</strong></td></tr>
-  <tr><td align="center">2</td><td>2a.소셜 로그인 버튼 클릭 후 Provider 인증 페이지로 이동하는 과정에서 네트워크 오류가 발생하면, 앱은 “연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.”라는 메시지를 표시하고 로그인 요청을 중단한다.</td></tr>
-  <tr><td align="center">3</td><td>3a. 사용자가 Provider 로그인 화면에서 인증을 취소하거나 브라우저 창을 닫으면, 시스템은 “로그인이 취소되었습니다.” 메시지를 표시하고 로그인 화면으로 되돌린다.</td></tr>
-  <tr><td align="center">4</td><td>4a.Provider 인증이 완료되지 않아 서버가 Redirect URI에서 인가 코드를 받지 못할 경우, 서버는 400 Bad Request를 반환하고 “잘못된 요청입니다.” 메시지를 사용자에게 전달한다.</td></tr>
-  <tr><td align="center">5</td><td>5a.서버가 Provider에 Access Token을 요청하는 과정에서 인증 코드가 만료되었거나 client_secret이 올바르지 않은 경우, 서버는 401 Unauthorized를 반환하고 “소셜 인증에 실패했습니다.” 메시지를 표시한다.</td></tr>
-  <tr><td align="center">6</td><td>6a. Provider가 사용자 프로필 정보를 반환하지 않거나, 응답 포맷이 변경되어 데이터를 해석할 수 없는 경우, 서버는 502 Bad Gateway를 반환하고 “소셜 서버 응답 오류가 발생했습니다.” 메시지를 표시한다.</td></tr>
-  <tr><td align="center">7</td><td>7a. 서버가 Provider로부터 전달받은 Access Token을 검증하는 과정에서 위조 또는 만료가 감지되면, 서버는 401 Unauthorized를 반환하고 “유효하지 않은 토큰입니다.” 메시지를 표시한다.</td></tr>
-  <tr><td align="center">7</td><td>7b.Access Token은 유효하지만 해당 소셜 계정이 시스템 DB에 등록되어 있지 않은 경우, 서버는 404 Not Found를 반환하고 “등록되지 않은 사용자입니다.” 메시지를 표시하며, 회원가입 프로세스(소셜 회원가입 Use Case)로 분기한다.</td></tr>
-  <tr><td align="center">8</td><td>8a. JWT 토큰 생성 중 내부 오류가 발생하거나 서명 키를 불러올 수 없는 경우, 서버는 500 Internal Server Error를 반환하고 “서버 오류로 로그인에 실패했습니다.” 메시지를 표시한다.</td></tr>
-  <tr><td align="center">9</td><td>9a. 데이터베이스 연결 오류 또는 로그인 기록 저장 실패가 발생하면, 서버는 503 Service Unavailable을 반환하고 “일시적인 서버 오류입니다. 잠시 후 다시 시도해주세요.” 메시지를 표시한다.</td></tr>
-  <tr><td align="center">10</td><td>10a.클라이언트가 발급된 JWT를 저장하는 과정에서 오류가 발생하거나, 토큰이 손상·만료된 경우, 사용자는 다시 소셜 로그인을 시도하도록 안내받는다.</td></tr>
+  <tr><td align="center">1</td><td>1a.소셜 로그인 버튼 클릭 후 Provider 인증 페이지로 이동하는 과정에서 네트워크 오류가 발생하면, 앱은 “연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.”라는 메시지를 표시하고 로그인 요청을 중단한다.</td></tr>
+  <tr><td align="center">2</td><td>2a. 사용자가 Provider 로그인 화면에서 인증을 취소하거나 브라우저 창을 닫으면, 시스템은 “로그인이 취소되었습니다.” 메시지를 표시하고 로그인 화면으로 되돌린다.</td></tr>
+  <tr><td align="center">3</td><td>3a.Provider 인증이 완료되지 않아 서버가 Redirect URI에서 인가 코드를 받지 못할 경우, 서버는 400 Bad Request를 반환하고 “잘못된 요청입니다.” 메시지를 사용자에게 전달한다.</td></tr>
+  <tr><td align="center">4</td><td>4a.서버가 Provider에 Access Token을 요청하는 과정에서 인증 코드가 만료되었거나 client_secret이 올바르지 않은 경우, 서버는 401 Unauthorized를 반환하고 “소셜 인증에 실패했습니다.” 메시지를 표시한다.</td></tr>
+  <tr><td align="center">5</td><td>5a. Provider가 사용자 프로필 정보를 반환하지 않거나, 응답 포맷이 변경되어 데이터를 해석할 수 없는 경우, 서버는 502 Bad Gateway를 반환하고 “소셜 서버 응답 오류가 발생했습니다.” 메시지를 표시한다.</td></tr>
+  <tr><td align="center">6</td><td>6a. 서버가 Provider로부터 전달받은 Access Token을 검증하는 과정에서 위조 또는 만료가 감지되면, 서버는 401 Unauthorized를 반환하고 “유효하지 않은 토큰입니다.” 메시지를 표시한다.</td></tr>
+  <tr><td align="center">6</td><td>6b.Access Token은 유효하지만 해당 소셜 계정이 시스템 DB에 등록되어 있지 않은 경우, 서버는 404 Not Found를 반환하고 “등록되지 않은 사용자입니다.” 메시지를 표시하며, 회원가입 프로세스(소셜 회원가입 Use Case)로 분기한다.</td></tr>
+  <tr><td align="center">7</td><td>7a. JWT 토큰 생성 중 내부 오류가 발생하거나 서명 키를 불러올 수 없는 경우, 서버는 500 Internal Server Error를 반환하고 “서버 오류로 로그인에 실패했습니다.” 메시지를 표시한다.</td></tr>
+  <tr><td align="center">8</td><td>8a. 데이터베이스 연결 오류 또는 로그인 기록 저장 실패가 발생하면, 서버는 503 Service Unavailable을 반환하고 “일시적인 서버 오류입니다. 잠시 후 다시 시도해주세요.” 메시지를 표시한다.</td></tr>
+  <tr><td align="center">9</td><td>9a.클라이언트가 발급된 JWT를 저장하는 과정에서 오류가 발생하거나, 토큰이 손상·만료된 경우, 사용자는 다시 소셜 로그인을 시도하도록 안내받는다.</td></tr>
 
   <!-- RELATED INFORMATION -->
   <tr><td colspan="2"><strong>RELATED INFORMATION</strong></td></tr>
@@ -440,7 +439,7 @@
       2.JWT 토큰이 유효하고 사용자가 존재하면,<br>
       DB에서 사용자 객체를 조회하고 직렬화하여 반환한다.<br>
       반환 데이터에는 username, email, full_name, phone, is_active, 3.created_at 등의 필드가 포함된다.<br>
-      4. 200 OK 와 함께 JSON 응답이 반환된다.<br>
+      1. 200 OK 와 함께 JSON 응답이 반환된다.<br>
       5.서버 로그에는 "사용자 정보 조회 성공" 이벤트가 기록된다.
     </td>
   </tr>
@@ -552,10 +551,10 @@
   <tr>
     <td><strong>Failed Post Condition</strong></td>
     <td>
-      1. JWT 토큰이 없거나 만료된 경우 <code>401 Unauthorized</code> 반환.<br>
-      2. 잘못된 필드 형식 또는 제약 조건 위반 시 <code>400 Bad Request</code> 반환.<br>
-      3. DB 업데이트 중 오류 발생 시 <code>500 Internal Server Error</code> 반환.<br>
-      4. 이메일/닉네임 중복일 경우 <code>409 Conflict</code> 반환.
+      1. JWT 토큰이 없거나 만료된 경우 <code>401 Unauthorized</code> 를 반환한다.<br>
+      2. 잘못된 필드 형식 또는 제약 조건 위반 시 <code>400 Bad Request</code> 를 반환한다.<br>
+      3. DB 업데이트 중 오류 발생 시 <code>500 Internal Server Error</code> 를 반환한다.<br>
+      4. 이메일/닉네임 중복일 경우 <code>409 Conflict</code> 를 반환한다.
     </td>
   </tr>
 
@@ -583,11 +582,11 @@
     <td colspan="2"><strong>EXTENSION SCENARIOS</strong></td>
   </tr>
 
-  <tr><td align="center">2a</td><td>입력값 형식이 유효하지 않으면 클라이언트에서 저장 버튼 비활성화 및 경고 표시.</td></tr>
-  <tr><td align="center">4a</td><td>이메일 형식 오류 → <code>400 Bad Request</code> (“잘못된 이메일 형식”).</td></tr>
-  <tr><td align="center">4b</td><td>중복 이메일/닉네임 존재 시 → <code>409 Conflict</code> (“이미 사용 중인 정보”).</td></tr>
-  <tr><td align="center">5a</td><td>DB 업데이트 실패 → <code>500 Internal Server Error</code> (“정보 저장 실패”).</td></tr>
-  <tr><td align="center">6a</td><td>토큰 만료 또는 변조 → <code>401 Unauthorized</code> (“인증 실패”).</td></tr>
+  <tr><td align="center">2</td><td>2a. 입력값 형식이 유효하지 않으면 클라이언트에서 저장 버튼 비활성화 및 경고를 표시한다.</td></tr>
+  <tr><td align="center">4</td><td>4a. 이메일 형식 오류 → <code>400 Bad Request</code> (“잘못된 이메일 형식”).</td></tr>
+  <tr><td align="center">4</td><td>4b. 중복 이메일/닉네임 존재 시 → <code>409 Conflict</code> (“이미 사용 중인 정보”).</td></tr>
+  <tr><td align="center">5</td><td>5a. DB 업데이트 실패 → <code>500 Internal Server Error</code> (“정보 저장 실패”).</td></tr>
+  <tr><td align="center">6</td><td>6a. 토큰 만료 또는 변조 → <code>401 Unauthorized</code> (“인증 실패”).</td></tr>
 
   <!-- RELATED INFORMATION -->
   <tr>
@@ -675,10 +674,10 @@
   <tr>
     <td><strong>Failed Post Condition</strong></td>
     <td>
-      1. JWT 토큰이 없거나 만료된 경우 <code>401 Unauthorized</code> 반환.<br>
-      2. 사용자 정보가 존재하지 않을 경우 <code>404 Not Found</code> 반환.<br>
-      3. DB 세션 오류 또는 커밋 실패 시 <code>500 Internal Server Error</code> 반환.<br>
-      4. 이미 탈퇴(비활성화)된 계정인 경우 <code>409 Conflict</code> 반환.
+      1. JWT 토큰이 없거나 만료된 경우 <code>401 Unauthorized</code> 를 반환한다.<br>
+      2. 사용자 정보가 존재하지 않을 경우 <code>404 Not Found</code> 를 반환한다.<br>
+      3. DB 세션 오류 또는 커밋 실패 시 <code>500 Internal Server Error</code> 를 반환한다.<br>
+      4. 이미 탈퇴(비활성화)된 계정인 경우 <code>409 Conflict</code> 를 반환한다.
     </td>
   </tr>
 
@@ -705,10 +704,10 @@
     <td colspan="2"><strong>EXTENSION SCENARIOS</strong></td>
   </tr>
 
-  <tr><td align="center">2a</td><td>사용자가 탈퇴 확인을 취소하면 요청이 중단된다.</td></tr>
-  <tr><td align="center">3a</td><td>토큰이 만료되면 <code>401 Unauthorized</code> — “로그인 세션이 만료되었습니다.”</td></tr>
-  <tr><td align="center">4a</td><td>이미 <code>is_active=False</code> 상태라면 <code>409 Conflict</code> — “이미 탈퇴된 계정입니다.”</td></tr>
-  <tr><td align="center">5a</td><td>DB 커밋 중 예외 발생 시 <code>500 Internal Server Error</code> — “서버 오류로 탈퇴 처리 실패.”</td></tr>
+  <tr><td align="center">2</td><td>2a. 사용자가 탈퇴 확인을 취소하면 요청이 중단된다.</td></tr>
+  <tr><td align="center">3</td><td>3a. 토큰이 만료되면 <code>401 Unauthorized</code> — “로그인 세션이 만료되었습니다.”</td></tr>
+  <tr><td align="center">4</td><td>4a. 이미 <code>is_active=False</code> 상태라면 <code>409 Conflict</code> — “이미 탈퇴된 계정입니다.”</td></tr>
+  <tr><td align="center">5</td><td>5a. DB 커밋 중 예외 발생 시 <code>500 Internal Server Error</code> — “서버 오류로 탈퇴 처리 실패.”</td></tr>
 
   <!-- RELATED INFORMATION -->
   <tr>
@@ -742,7 +741,7 @@
 
   <!-- GENERAL CHARACTERISTICS -->
   <tr><td colspan="2"><strong>GENERAL CHARACTERISTICS</strong></td></tr>
-  <tr><td><strong>Summary</strong></td><td>사용자가 저장된 통화 녹음 파일(MP3, WAV 등)을 업로드하면, 서버가 CLOVA Speech API를 통해 음성을 텍스트로 변환하고, 결과를 JSON으로 반환하는 기능</td></tr>
+  <tr><td><strong>Summary</strong></td><td>사용자가 저장된 통화 녹음 파일(MP3, WAV 등)을 업로드하면, 서버가 CLOVA Speech API를 통해 음성을 텍스트로 변환하고, 결과를 JSON으로 반환하는 기능.</td></tr>
   <tr><td><strong>Scope</strong></td><td>Anti-Phishing-App</td></tr>
   <tr><td><strong>Level</strong></td><td>User level</td></tr>
   <tr><td><strong>Author</strong></td><td>Anti-Phishing-App_Team</td></tr>
@@ -758,29 +757,29 @@
       3. 업로드 파일은 허용 형식/크기를 만족해야 한다.<br>
       ● 형식: audio/mpeg (MP3), audio/wav (WAV)<br>
       ● 최대 크기: 25 MB <br>
-      ● 최대 길이: 60분 권장(이상 시 처리 지연 가능)
+      ● 최대 길이: 60분 권장.(이상 시 처리 지연 가능)
     </td>
   </tr>
   <tr>
     <td><strong>Trigger</strong></td>
-    <td>사용자가 앱에서 음성 파일을 선택 후,<br>POST /api/transcribe/upload 엔드포인트로 업로드를 전송</td>
+    <td>사용자가 앱에서 음성 파일을 선택 후,<br>POST /api/transcribe/upload 엔드포인트로 업로드를 전송.</td>
   </tr>
   <tr>
     <td><strong>Success Post Condition</strong></td>
     <td>
       1. 사용자가 POST /api/transcribe/upload 요청을 보내면,<br>
       서버는 CLOVA Speech API로 음성 파일을 전송하고 작업 식별용 토큰 이 포함된 JSON 응답을 반환한다.<br>
-      2. 이후 사용자가 /api/transcribe/status/{token} 으로 요청하면, CLOVA Speech API가 변환을 완료한 경우 전체 텍스트, 신뢰도, 단어 정렬 정보 등을 포함한 최종 JSON 결과가 반환<br>
-      3. 모든 과정이 정상적으로 완료되면 HTTP 상태코드 200 OK가 반환
+      2. 이후 사용자가 /api/transcribe/status/{token} 으로 요청하면, CLOVA Speech API가 변환을 완료한 경우 전체 텍스트, 신뢰도, 단어 정렬 정보 등을 포함한 최종 JSON 결과가 반환된다.<br>
+      3. 모든 과정이 정상적으로 완료되면 HTTP 상태코드 200 OK가 반환된다.
     </td>
   </tr>
   <tr>
     <td><strong>Failed Post Condition</strong></td>
     <td>
-      1. CLOVA API 오류 발생 시 CLOVA Speech 서버가 4xx 또는 5xx 응답을 반환<br>
-      2. 네트워크/요청 오류 발생 시 CLOVA 서버에 연결하지 못했거나 타임아웃이 발생하면 500 Internal Server Error 응답 반환<br>
-      3. 환경 변수 누락 시 API 호출 전 설정이 비어 있으면 500 Internal Server Error 응답 반환<br>
-      4. CLOVA Speech가 업로드된 미디어를 처리할 수 없는 경우 400 Bad Request 응답 반환
+      1. CLOVA API 오류 발생 시 CLOVA Speech 서버가 4xx 또는 5xx 응답을 반환한다.<br>
+      2. 네트워크/요청 오류 발생 시 CLOVA 서버에 연결하지 못했거나 타임아웃이 발생하면 500 Internal Server Error 응답 반환한다.<br>
+      3. 환경 변수 누락 시 API 호출 전 설정이 비어 있으면 500 Internal Server Error 응답 반환한다.<br>
+      4. CLOVA Speech가 업로드된 미디어를 처리할 수 없는 경우 400 Bad Request 응답 반환한다.
     </td>
   </tr>
 
@@ -800,8 +799,8 @@
   <!-- EXTENSION SCENARIOS -->
   <tr><td colspan="2"><strong>EXTENSION SCENARIOS</strong></td></tr>
   <tr><td><strong>Step</strong></td><td><strong>Branching Action / Result (HTTP)</strong></td></tr>
-  <tr><td align="center">1</td><td>1a. 업로드된 파일 형식이 허용되지 않으면 서버는 415 Unsupported Media Type을 반환하고 오류 메시지를 표시.</td></tr>
-  <tr><td align="center">1</td><td>1b. 파일 크기가 25MB 제한을 초과하면 서버는 413 Payload Too Large를 반환하고 오류 메시지를 표시.</td></tr>
+  <tr><td align="center">1</td><td>1a. 업로드된 파일 형식이 허용되지 않으면 서버는 415 Unsupported Media Type을 반환하고 오류 메시지를 표시한다.</td></tr>
+  <tr><td align="center">1</td><td>1b. 파일 크기가 25MB 제한을 초과하면 서버는 413 Payload Too Large를 반환하고 오류 메시지를 표시한다.</td></tr>
   <tr><td align="center">3</td><td>3a. CLOVA Speech API가 4xx/5xx 오류를 반환하면 서버는 해당 상태코드와 함께 “CLOVA API Error: …” 메시지를 반환한다.</td></tr>
   <tr><td align="center">3</td><td>3b. CLOVA API 요청이 타임아웃되거나 연결이 끊기면 서버는 500 Internal Server Error를 반환하고 “CLOVA API 요청 실패” 메시지를 표시한다.</td></tr>
   <tr><td align="center">3</td><td>3c. CLOVA 환경 변수가 설정되지 않은 경우 서버는 500 Internal Server Error를 반환하고 오류 메시지를 표시한다.</td></tr>
@@ -856,22 +855,22 @@
   <tr>
     <td><strong>Success Post Condition</strong></td>
     <td>
-      1.서버는 WebSocket을 통해 클라이언트와 연결하고,오디오 스트림을 CLOVA Speech API로 전달해 실시간 텍스트 변환을 수행<br>
-      2.CLOVA로부터 수신된 인식 결과를 JSON(type: transcription) 형태로 클라이언트에 실시간 전송<br>
-      3.최종 문장(isFinal=True)이 수신될 때마다 해당 문장이 보이스피싱 탐지 세션에 추가(add_sentence)<br>
-      4.즉시 분석(immediate): 위험 단어·패턴 탐지를 통해 단어 기반 위험도를 즉시 계산하고, 위험도(Level 1~3)에 따라 즉시 "phishing_alert" 이벤트를 전송<br>
-      5.모든 스트림이 정상 종료되면 서버는 gRPC 연결과 WebSocket 세션을 안전하게 종료
+      1.서버는 WebSocket을 통해 클라이언트와 연결하고,오디오 스트림을 CLOVA Speech API로 전달해 실시간 텍스트 변환을 수행한다.<br>
+      2.CLOVA로부터 수신된 인식 결과를 JSON(type: transcription) 형태로 클라이언트에 실시간 전송한다.<br>
+      3.최종 문장이 수신될 때마다 해당 문장이 보이스피싱 탐지 세션에 추가한다.<br>
+      4.즉시 분석: 위험 단어·패턴 탐지를 통해 단어 기반 위험도를 즉시 계산하고, 위험도(Level 1~3)에 따라 즉시 "phishing_alert" 이벤트를 전송한다.<br>
+      5.모든 스트림이 정상 종료되면 서버는 gRPC 연결과 WebSocket 세션을 안전하게 종료한다.
     </td>
   </tr>
   <tr>
     <td><strong>Failed Post Condition</strong></td>
     <td>
-      1.CLOVA gRPC 오류 발생 시 서버는 "type": "error" 와 함께 "gRPC Error: ..." 메시지를 WebSocket으로 전송<br>
-      2.WebSocketDisconnect 발생 시 클라이언트 연결이 종료되면 "WebSocket disconnected." 로그를 남기고 세션을 정리<br>
-      3.Payload Parsing Error 발생 시 CLOVA 응답의 JSON 파싱 실패 시 "Payload parsing error" 로그를 남기고 "type": "debug" 메시지를 반환<br>
-      4.보이스피싱 세션 초기화 실패 시 enable_phishing_detection=False 로 전환되고 탐지 기능을 비활성화<br>
-      5.탐지 로직 실행 중 예외 발생 시 add_sentence() 호출 중 오류가 발생하면 "보이스피싱 탐지 오류" 로그를 남기고 해당 문장은 분석에서 제외<br>
-      6.환경 변수 누락 시 "type": "error" 와 "CLOVA_SECRET_KEY 환경변수가 필요합니다." 메시지를 전송한 뒤 세션 종료.
+      1.CLOVA gRPC 오류 발생 시 서버는 "type": "error" 와 함께 "gRPC Error: ..." 메시지를 WebSocket으로 전송한다<br>
+      2.WebSocketDisconnect 발생 시 클라이언트 연결이 종료되면 "WebSocket disconnected." 로그를 남기고 세션을 정리한다<br>
+      3.Payload Parsing Error 발생 시 CLOVA 응답의 JSON 파싱 실패 시 "Payload parsing error" 로그를 남기고 "type": "debug" 메시지를 반환한다<br>
+      4.보이스피싱 세션 초기화 실패 시 enable_phishing_detection=False 로 전환되고 탐지 기능을 비활성화 한다<br>
+      5.탐지 로직 실행 중 예외 발생 시 add_sentence() 호출 중 오류가 발생하면 "보이스피싱 탐지 오류" 로그를 남기고 해당 문장은 분석에서 제외한다<br>
+      6.환경 변수 누락 시 "type": "error" 와 "CLOVA_SECRET_KEY 환경변수가 필요합니다." 메시지를 전송한 뒤 세션 종료한다.
     </td>
   </tr>
 
@@ -983,10 +982,10 @@
   <tr>
     <td><strong>Failed Post Condition</strong></td>
     <td>
-      1. 비이미지 파일 업로드 시 <code>415 Unsupported Media Type</code> 반환.<br>
-      2. OCR 오류 또는 분석 중 예외 발생 시 <code>500 Internal Server Error</code> 반환.<br>
-      3. 서버 자원 부족(메모리 초과 등) 시 <code>503 Service Unavailable</code> 반환.<br>
-      4. 일부 파일 오류 발생 시 나머지는 정상 처리하며, 실패한 파일은 별도 메시지로 표시.
+      1. 비이미지 파일 업로드 시 <code>415 Unsupported Media Type</code> 반환한다.<br>
+      2. OCR 오류 또는 분석 중 예외 발생 시 <code>500 Internal Server Error</code> 반환한다.<br>
+      3. 서버 자원 부족(메모리 초과 등) 시 <code>503 Service Unavailable</code> 반환한다.<br>
+      4. 일부 파일 오류 발생 시 나머지는 정상 처리하며, 실패한 파일은 별도 메시지로 표시한다.
     </td>
   </tr>
 
@@ -1022,7 +1021,7 @@
   <tr><td align="center">4</td><td>각 파일별로 <code>analyze_document()</code>가 병렬 또는 비동기적으로 실행된다.</td></tr>
   <tr><td align="center">5</td><td>서버가 이미지별 위험도를 취합한다.</td></tr>
   <tr><td align="center">6</td><td>평균 또는 가중평균으로 <code>total_risk</code>를 계산한다.</td></tr>
-  <tr><td align="center">7</td><td>결과 배열 (<code>[{filename, risk_detail, final_risk}, ...]</code>) 형태로 반환.</td></tr>
+  <tr><td align="center">7</td><td>결과 배열 (<code>[{filename, risk_detail, final_risk}, ...]</code>) 형태로 반환한다.</td></tr>
   <tr><td align="center">8</td><td>클라이언트는 각 페이지별 결과 및 종합 위험 등급을 시각화한다.</td></tr>
 
   <!-- EXTENSION SCENARIOS -->
@@ -1030,11 +1029,11 @@
     <td colspan="2"><strong>EXTENSION SCENARIOS</strong></td>
   </tr>
 
-  <tr><td align="center">2a</td><td>비이미지 파일 업로드 시 <code>415 Unsupported Media Type</code> 오류</td></tr>
-  <tr><td align="center">4a</td><td>OCR 처리 실패 시 <code>500 Internal Server Error</code> — “OCR 처리 실패”</td></tr>
-  <tr><td align="center">5a</td><td>가중치 계산 오류 시 <code>500 Internal Server Error</code> — “위험도 계산 실패”</td></tr>
-  <tr><td align="center">6a</td><td>복수 문서 분석 중 일부 파일 오류 발생 시 해당 결과만 제외</td></tr>
-  <tr><td align="center">7a</td><td>병렬 처리 중 메모리 초과 시 <code>503 Service Unavailable</code> 반환</td></tr>
+  <tr><td align="center">2</td><td>2a. 비이미지 파일 업로드 시 <code>415 Unsupported Media Type</code> 오류한다</td></tr>
+  <tr><td align="center">4</td><td>4a. OCR 처리 실패 시 <code>500 Internal Server Error</code> — “OCR 처리 실패”</td></tr>
+  <tr><td align="center">5</td><td>5a. 가중치 계산 오류 시 <code>500 Internal Server Error</code> — “위험도 계산 실패”</td></tr>
+  <tr><td align="center">6</td><td>6a. 복수 문서 분석 중 일부 파일 오류 발생 시 해당 결과만 제외</td></tr>
+  <tr><td align="center">7</td><td>7a. 병렬 처리 중 메모리 초과 시 <code>503 Service Unavailable</code> 반환한다</td></tr>
 
   <!-- RELATED INFORMATION -->
   <tr>
@@ -1116,9 +1115,9 @@
     <td><strong>Success Post Condition</strong></td>
     <td>
       1. 서버가 텍스트 분석 및 (URL 존재 시) URL 분석 결과를 종합하여 
-         최종 위험도(<code>final_risk</code>)를 계산.<br>
-      2. 분석 결과에는 위험도, 판정(level), 주요 탐지 요인, 권고가 포함.<br>
-      3. 앱은 결과를 시각화하여 사용자에게 주의·경고 알림을 제공.
+         최종 위험도(<code>final_risk</code>)를 계산한다.<br>
+      2. 분석 결과에는 위험도, 판정(level), 주요 탐지 요인, 권고가 포함된다.<br>
+      3. 앱은 결과를 시각화하여 사용자에게 주의·경고 알림을 제공한다.
     </td>
   </tr>
 
@@ -1126,10 +1125,10 @@
   <tr>
     <td><strong>Failed Post Condition</strong></td>
     <td>
-      1. 입력 포맷 오류 시 400 Bad Request 반환.<br>
-      2. 서버 분석 중 예외 발생 시 500 Internal Server Error 반환.<br>
-      3. 일부 분석 실패 시 가능한 부분 결과만 부분 반환.<br>
-      4. 네트워크 문제 또는 크롤링 실패 시 기본 안전 응답 반환.
+      1. 입력 포맷 오류 시 400 Bad Request 를 반환한다.<br>
+      2. 서버 분석 중 예외 발생 시 500 Internal Server Error 를 반환한다.<br>
+      3. 일부 분석 실패 시 가능한 부분 결과만 부분 반환한다.<br>
+      4. 네트워크 문제 또는 크롤링 실패 시 기본 안전 응답을 반환한다.
     </td>
   </tr>
 
@@ -1147,34 +1146,34 @@
   <tr><td colspan="2" ><strong>(1) 텍스트 기반 스미싱 탐지 </strong></td></tr>
 
   <tr><td align="center">S1</td><td>앱이 메시지 수신 이벤트를 감지하고 본문 전체를 확보</td></tr>
-  <tr><td align="center">1</td><td>앱이 텍스트 및 발신자 정보를 엔드포인트로 전송</td></tr>
-  <tr><td align="center">2</td><td>서버가 긴급성/행동유도 패턴 탐지 → 패턴 점수 산출</td></tr>
+  <tr><td align="center">1</td><td>앱이 텍스트 및 발신자 정보를 엔드포인트로 전송한다</td></tr>
+  <tr><td align="center">2</td><td>서버가 긴급성/행동유도 패턴 탐지 → 패턴 점수 산출한다</td></tr>
   <tr><td align="center">3</td><td>키워드 탐지 및 가중치 계산 (<code>detect_keywords()</code>)</td></tr>
   <tr><td align="center">4</td><td>ML 분류기(KoBERT 등)로 스미싱 확률(<code>raw_prob_text</code>) 예측</td></tr>
   <tr><td align="center">5</td><td>패턴·키워드·ML 점수를 가중합 </td></tr>
-  <tr><td align="center">6</td><td>텍스트 기반 위험도및 분석 요약 JSON 생성</td></tr>
+  <tr><td align="center">6</td><td>텍스트 기반 위험도및 분석 요약 JSON 생성한다</td></tr>
 
   <!-- URL-BASED DETECTION (OPTIONAL) -->
   <tr><td colspan="2" ><strong>(2) URL 기반 스미싱 탐지 (URL 존재 시 추가 실행)</strong></td></tr>
 
   <tr><td align="center">S2</td><td>앱이 메시지 본문에서 URL을 추출 </td></tr>
-  <tr><td align="center">1</td><td>URL이 하나 이상 감지되면 각 URL을 <code>POST /api/phishing-site/analyze</code> 로 전송</td></tr>
+  <tr><td align="center">1</td><td>URL이 하나 이상 감지되면 각 URL을 <code>POST /api/phishing-site/analyze</code> 로 전송한다</td></tr>
   <tr><td align="center">2</td><td><code>detect_immediate(url)</code> 실행 — URL 길이, 도메인, 숫자 비율, 위험 키워드 탐지</td></tr>
   <tr><td align="center">3</td><td><code>detect_comprehensive(url)</code> 실행 — DB 조회, HTML 크롤링, ML 입력</td></tr>
   <tr><td align="center">4</td><td>ML 모델(<code>RandomForest</code>)로 <code>predict_proba()</code> 수행 → URL 위험 확률 계산</td></tr>
   <tr><td align="center">5</td><td>결과를 텍스트 분석 결과와 병합하여 종합 위험도(<code>final_risk</code>) 계산</td></tr>
-  <tr><td align="center">6</td><td>앱은 통합된 결과를 사용자에게 표시 (팝업/푸시/상세 분석 화면)</td></tr>
+  <tr><td align="center">6</td><td>앱은 통합된 결과를 사용자에게 표시한다 (팝업/푸시/상세 분석 화면)</td></tr>
 
   <!-- EXTENSION SCENARIOS -->
   <tr>
     <td colspan="2"><strong>EXTENSION SCENARIOS</strong></td>
   </tr>
 
-  <tr><td align="center">S1a</td><td>텍스트가 짧거나 의미 없는 경우(1~2글자) → ML 생략 후 키워드·패턴만 평가</td></tr>
-  <tr><td align="center">S2a</td><td>URL이 없으면 URL 분석 단계를 건너뛰고 텍스트 분석 결과만 사용</td></tr>
-  <tr><td align="center">3a</td><td>HTML 크롤링 실패 → HTML 특징 0으로 대체 후 예측 진행</td></tr>
-  <tr><td align="center">4a</td><td>ML 예측 실패 시 기본 안전 응답(is_phishing=false, confidence=0.0) 반환</td></tr>
-  <tr><td align="center">6a</td><td>결과 일부 누락 시 가능한 데이터만 포함하여 JSON 반환</td></tr>
+  <tr><td align="center">S1</td><td>S1a. 텍스트가 짧거나 의미 없는 경우(1~2글자) → ML 생략 후 키워드·패턴만 평가한다</td></tr>
+  <tr><td align="center">S2</td><td>S2a. URL이 없으면 URL 분석 단계를 건너뛰고 텍스트 분석 결과만 사용한다</td></tr>
+  <tr><td align="center">3</td><td>3a. HTML 크롤링 실패 → HTML 특징 0으로 대체 후 예측 진행</td></tr>
+  <tr><td align="center">4</td><td>4a. ML 예측 실패 시 기본 안전 응답(is_phishing=false, confidence=0.0) 반환한다</td></tr>
+  <tr><td align="center">6</td><td>6a. 결과 일부 누락 시 가능한 데이터만 포함하여 JSON 반환한다</td></tr>
 
   <!-- RELATED INFORMATION -->
   <tr>
