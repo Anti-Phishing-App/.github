@@ -1,4 +1,3 @@
-거# Software Design Specification (SDS)
 ## 피싱 탐지 시스템 (Phishing Detection System)
 
 ### Team Members
@@ -2878,7 +2877,7 @@ WebSocket 기반 실시간 통화 모니터링의 전체 생명주기를 나타�
 
 하단에는 최근 분석 내역으로 접근할 수 있는 요약 로그 영역이 제공된다.
 
-![UI_6_4](image/UI_6_4.png)
+![UI_6_4](image/UI_6_4.jpg)
 
 ---
 
@@ -2888,8 +2887,8 @@ WebSocket 기반 실시간 통화 모니터링의 전체 생명주기를 나타�
 서버에서 문서 내 OCR 인식, 위조 스탬프 검출, 레이아웃 분석을 수행하는 동안  
 **"이미지 분석 중..."** 문구와 로딩 인디케이터가 함께 나타난다.
 
-![UI_6_5](image/UI_6_5_1.png)
-![UI_6_5](image/UI_6_5.png)
+![UI_6_5](image/UI_6_5_1.jpg)
+![UI_6_5](image/UI_6_5.jpg)
 
 ---
 
