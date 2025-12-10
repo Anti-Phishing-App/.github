@@ -41,7 +41,7 @@
 
 서버 측 로그:
 
-![서버 실시간 스트리밍 로그](./image/server__test_log_streaming.png)
+![서버 실시간 스트리밍 로그](./image/server_test_log_streaming.png)
 
 위 로그를 통해 다음을 확인할 수 있음.
 
