@@ -7,6 +7,7 @@
 ## 문서
 
 - [SRS (Software Requirement Specification)](./srs.md) - 프로젝트 요구사항 문서
+- [SDS (Software Requirement Specification)](./sds.md) - 프로젝트 설계 명세서
 
 ### OneUI 기반 안드로이드 14의 음성 권한
 
@@ -44,7 +45,7 @@ https://antiphishingstt.p-e.kr/
 
 앱 측 로그:
 
-![앱 실시간 스트리밍 로그](./image/app_test_log_streaming.png)
+![앱 실시간 스트리밍 로그](https://github.com/user-attachments/assets/ff877611-6c2f-4fc6-8545-147bd88ff36b)
 
 서버 측 로그:
 
