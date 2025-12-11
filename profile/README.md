@@ -1,13 +1,44 @@
-## 프로젝트 개요
-
-이 프로젝트는 [SRS 문서](./srs.md)를 기반으로 설계되었습니다. 프로젝트의 요구사항, 기능, 상세 설명은 SRS 문서에서 확인하실 수 있습니다.
+# 🔐 구해줘 피싱(Guppy)
+**실시간 보이스피싱·스미싱·문서 위조 탐지 AI 기반 어플리케이션**
 
 ---
 
-## 문서
+## 📝 프로젝트 소개
 
-- [SRS (Software Requirement Specification)](./srs.md) - 프로젝트 요구사항 문서
-- [SDS (Software Requirement Specification)](./sds.md) - 프로젝트 설계 명세서
+보이스피싱은 더 이상 고령층만의 문제가 아니라, **전 세대**가 피해를 입는 사회적 문제로 확산되고 있습니다.  
+특히 짧은 문장, 링크, 메신저 기반으로 빠르게 실행되는 피싱 범죄는  
+사용자가 정상 여부를 판단하기 어렵고, 그 피해 규모 또한 매우 큽니다.
+
+구해줘 피싱(Guppy)은 다음 네 가지 기능을 통합한 **AI 기반 실시간 탐지 플랫폼**입니다:
+
+1. **실시간 통화 음성(STT) 기반 보이스피싱 위험 탐지**
+2. **문서 직인·레이아웃 분석 기반 위조 판별**
+3. **문자 본문·URL 분리 기반 스미싱 분석**
+4. **사용자 맞춤형 위험 번호 추천 기능**
+
+---
+
+## 👥 팀 구성
+
+|<img src="https://github.com/user-attachments/assets/3e348701-336a-4d30-9e77-c4ea725e91b1" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/85990226-4a91-486a-9d70-8da718e6d307" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/41c1071f-3207-4a7b-8e09-2afb35e05506" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/c0754791-ff19-4b18-a33c-f3f8e11727bc" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/15aa2cc2-b9b2-4896-a684-cf9432c7319e" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/b7caecf2-2e71-42d3-8489-1144ace2ef76" width="100" height="100"/>|
+|:-:|:-:|:-:|:-:|:-:|:-:|
+|[YEOUL](https://github.com/YEOUL0520)|[박윤호](https://github.com/nini4746)|[ychoik](https://github.com/haycho33)|[Kimminseo1104](https://github.com/Kimminseo1104)|[Hyeonsoo Choi](https://github.com/NockDu)|[SUNGHYUN](https://github.com/Ahrasblue)|
+|팀장 · FRONTEND|BACKEND|BACKEND|BACKEND|FRONTEND|FRONTEND|
+
+---
+
+## 🧩 팀 구성원 별 역할
+
+이미지로 추가 예정
+
+---
+
+## ⚙️ 개발 환경
+- **App** : Android Kotlin(Jetpack Compose)
+- **Backend** : FastAPI, WebSocket
+- **AI/ML** : OpenCV, OCR, STT, Layout Detection
+- **Tools** : Android Studio / VS Code / GitHub / Figma
+- **DB** : SQLite(Local) + 확장 가능 아키텍처
 
 ### OneUI 기반 안드로이드 14의 음성 권한
 
@@ -66,15 +97,54 @@ https://antiphishingstt.p-e.kr/
 > **권한 문제로 인해 서버에 수신되는 `volume` 값이 모두 `0.00`이며  
 > 실질적인 통화 음성 신호는 전달되지 않는 상태**임을 확인할 수 있음.
 
+---
 
+## 📌 주요 기능
 
-<!--
+### 🔊 1) 보이스피싱 위험 탐지 (Real-time STT)
+- PCM 기반 WebSocket 전송
+- 실시간 STT 변환 후 위험도 분석
+- 통화 중 즉시 사용자에게 경고 표시
 
-**Here are some ideas to get you started:**
+### 🖼 2) 문서 위조 탐지 (OCR + CV + Layout)
+- 직인 위치 분석
+- 영역 구조 비교
+- 비정상 패턴 탐지
+- 위험도 시각화 및 이미지 오버레이 제공
 
-🙋‍♀️ A short introduction - what is your organization all about?
-🌈 Contribution guidelines - how can the community get involved?
-👩‍💻 Useful resources - where can the community find your docs? Is there anything else the community should know?
-🍿 Fun facts - what does your team eat for breakfast?
-🧙 Remember, you can do mighty things with the power of [Markdown](https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
--->
+### 💬 3) 스미싱 분석
+- 문자 본문과 URL 자동 분리
+- 키워드 기반 위험 점수화
+- URL 도메인 위험도 비교
+- 정렬 및 검색 기능 지원
+
+### 📞 4) 위험 번호 추천
+- 사용자 패턴 분석
+- 개인화된 피싱 의심 번호 제공
+- 신종 패턴 자동 반영
+
+---
+
+## 🧱 전체 시스템 구조
+
+- **App → WebSocket(Server)** : 실시간 Audio/PCM 스트림 전송  
+- **Server → AI Pipeline** : STT / CV / OCR / URL 분석  
+- **Server → App** : 위험도 + 분석 결과 전달  
+- **App** : UI 시각화 및 사용자 알림  
+
+---
+
+## 🔮 향후 확장
+
+- AI 기반 신종 패턴 자동 탐지
+- 가족 보호 기능 (원격 위험 모니터링)
+- 공공기관 연계 데이터 허브 구축
+- 금융기관 FDS 연동 모델 제공
+
+---
+
+## 📚 참고 자료  
+본 README 문서는 SW공학 발표 자료를 기반으로 작성되었습니다.  
+
+- [SRS (Software Requirement Specification)](./srs.md) - 프로젝트 요구사항 문서
+- [SDS (Software Requirement Specification)](./sds.md) - 프로젝트 설계 명세서
