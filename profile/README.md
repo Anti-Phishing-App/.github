@@ -1,5 +1,5 @@
 # 🔐 구해줘 피싱(Guppy)
-**실시간 보이스피싱·스미싱·문서 위조 탐지 AI 기반 모바일 보안 서비스**
+**실시간 보이스피싱·스미싱·문서 위조 탐지 AI 기반 어플리케이션**
 
 ---
 
@@ -20,23 +20,16 @@
 
 ## 👥 팀 구성
 
-|<img src="https://avatars.githubusercontent.com/u/108114351?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/92625845?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/204812467?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/182756186?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/153744936?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/118596886?v=4" width="100" height="100"/>|
+|<img src="https://avatars.githubusercontent.com/u/92625845?v=4" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/85990226-4a91-486a-9d70-8da718e6d307" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/41c1071f-3207-4a7b-8e09-2afb35e05506" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/c0754791-ff19-4b18-a33c-f3f8e11727bc" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/15aa2cc2-b9b2-4896-a684-cf9432c7319e" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/b7caecf2-2e71-42d3-8489-1144ace2ef76" width="100" height="100"/>|
 |:-:|:-:|:-:|:-:|:-:|:-:|
-|[박윤호](https://github.com/nini4746)|[YEOUL](https://github.com/YEOUL0520)|[ychoik](https://github.com/haycho33)|[Hyeonsoo Choi](https://github.com/NockDu)|[Kimminseo1104](https://github.com/Kimminseo1104)|[SUNGHYUN](https://github.com/Ahrasblue)|
-|백엔드 / 서버 개발|팀장 · 앱 개발|문서 위조 CV 모델|오디오/STT 기능 개발|OCR/문자 분석|UI/UX 디자인|
+|[YEOUL](https://github.com/YEOUL0520)|[박윤호](https://github.com/nini4746)|[ychoik](https://github.com/haycho33)|[Kimminseo1104](https://github.com/Kimminseo1104)|[Hyeonsoo Choi](https://github.com/NockDu)|[SUNGHYUN](https://github.com/Ahrasblue)|
+|팀장 · FRONTEND|BACKEND|BACKEND|BACKEND|FRONTEND|FRONTEND|
 
 ---
 
-## 🧩 팀 역할별 책임 정리표 (Responsibility Matrix)
+## 🧩 팀 구성원 별 역할
 
-| 팀원 | 주요 역할 | 상세 책임 |
-|------|-----------|------------|
-| **YEOUL (팀장)** | Android App / 전체 구조 설계 | • Jetpack Compose 기반 UI 구현<br>• WebSocket 통화 전송 구조 개발<br>• 스미싱/문자 분석 UI 흐름 구현<br>• 프로젝트 구조 및 품질 관리 |
-| **박윤호** | Backend / FastAPI 서버 개발 | • STT·CV·OCR 모듈 통합 API 개발<br>• WebSocket 서버 구조 설계<br>• 위험도 계산 로직 구현<br>• 서버 로그/테스트 시스템 운영 |
-| **ychoik** | 문서 위조 Computer Vision | • 직인 검출 알고리즘 개발(OpenCV)<br>• 레이아웃 구조 분석 모델 설계<br>• 문서 위조 위험도 산정 알고리즘 개발 |
-| **Hyeonsoo Choi** | 오디오 분석 / STT | • PCM 캡처 및 오디오 처리 설계<br>• 실시간 STT 파이프라인 구성<br>• 피싱 키워드 탐지 로직 개발 |
-| **Kimminseo1104** | OCR · 문자 분석 | • 문자→URL 분리 알고리즘 구현<br>• 위험 키워드 탐지 모델 개발<br>• 스미싱 DB 구축 및 연동 |
-| **SUNGHYUN** | UI/UX 디자인 | • 앱 전체 UX 흐름 설계<br>• 피싱/위조 결과 시각화 디자인<br>• 사용자 편의성 개선 요소 설계 |
+이미지로 추가 예정
 
 ---
 
