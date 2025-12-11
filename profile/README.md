@@ -20,7 +20,7 @@
 
 ## 👥 팀 구성
 
-|<img src="https://avatars.githubusercontent.com/u/92625845?v=4" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/85990226-4a91-486a-9d70-8da718e6d307" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/41c1071f-3207-4a7b-8e09-2afb35e05506" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/c0754791-ff19-4b18-a33c-f3f8e11727bc" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/15aa2cc2-b9b2-4896-a684-cf9432c7319e" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/b7caecf2-2e71-42d3-8489-1144ace2ef76" width="100" height="100"/>|
+|<img src="https://github.com/user-attachments/assets/3e348701-336a-4d30-9e77-c4ea725e91b1" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/85990226-4a91-486a-9d70-8da718e6d307" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/41c1071f-3207-4a7b-8e09-2afb35e05506" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/c0754791-ff19-4b18-a33c-f3f8e11727bc" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/15aa2cc2-b9b2-4896-a684-cf9432c7319e" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/b7caecf2-2e71-42d3-8489-1144ace2ef76" width="100" height="100"/>|
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |[YEOUL](https://github.com/YEOUL0520)|[박윤호](https://github.com/nini4746)|[ychoik](https://github.com/haycho33)|[Kimminseo1104](https://github.com/Kimminseo1104)|[Hyeonsoo Choi](https://github.com/NockDu)|[SUNGHYUN](https://github.com/Ahrasblue)|
 |팀장 · FRONTEND|BACKEND|BACKEND|BACKEND|FRONTEND|FRONTEND|
