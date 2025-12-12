@@ -1,7 +1,7 @@
 # Software Requirements Specification (SRS)
 
 ## Project Title
-멀티모달 분석(OCR·이미지·음성)을 활용한 보이스피싱 탐지 어플리케이션
+멀티모달 분석(OCR·이미지·음성)을 활용한 보이스피싱 탐지 어플리케이션 '구해줘 피싱!(Guppy)'
 
 ## Project Description
 본 프로젝트는 보이스피싱 범죄를 다각적으로 탐지하기 위해 OCR, 음성 분석, 컴퓨터 비전(CV) 기법을 융합한 모바일 애플리케이션을 개발한다.
