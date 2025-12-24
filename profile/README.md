@@ -8,6 +8,7 @@
 <img width="1280" height="720" alt="슬라이드4" src="https://github.com/user-attachments/assets/7794d3fd-2b24-4072-b5c0-defe12607d12" />
 <img width="1280" height="720" alt="슬라이드5" src="https://github.com/user-attachments/assets/f73d041f-081e-4a70-b4b8-eaf0666774c6" />
 
+
 보이스피싱은 더 이상 고령층만의 문제가 아니라, **전 세대**가 피해를 입는 사회적 문제로 확산되고 있습니다.  
 특히 짧은 문장, 링크, 메신저 기반으로 빠르게 실행되는 피싱 범죄는 사용자가 정상 여부를 판단하기 어렵고, 그 피해 규모 또한 매우 큽니다.
 구해줘 피싱(Guppy)은 다음 네 가지 기능을 통합한 **AI 기반 실시간 탐지 플랫폼**입니다:
@@ -102,13 +103,16 @@ https://antiphishingstt.p-e.kr/
 ## 📌 주요 기능
 
 <img width="1280" height="720" alt="슬라이드7" src="https://github.com/user-attachments/assets/74b24966-2063-417c-8706-63b699f3438e" />
+<img width="1280" height="720" alt="슬라이드12" src="https://github.com/user-attachments/assets/c2926695-f431-43c5-9390-ba55e03118e4" />
+<img width="1280" height="720" alt="슬라이드15" src="https://github.com/user-attachments/assets/9af6b9cb-373f-4f18-bdc9-84f5c6b26401" />
+<img width="1280" height="720" alt="슬라이드16" src="https://github.com/user-attachments/assets/fa6cc24c-0b9d-43cb-a8aa-90dde7b435c2" />
+<img width="1280" height="720" alt="슬라이드10" src="https://github.com/user-attachments/assets/55f562cf-8e7a-4434-8647-ad0dee777870" />
+
 
 ### 🔊 1) 보이스피싱 위험 탐지 (Real-time STT)
 - PCM 기반 WebSocket 전송
 - 실시간 STT 변환 후 위험도 분석
 - 통화 중 즉시 사용자에게 경고 표시
-
-<img width="1280" height="720" alt="슬라이드12" src="https://github.com/user-attachments/assets/c2926695-f431-43c5-9390-ba55e03118e4" />
 
 ### 🖼 2) 문서 위조 탐지 (OCR + CV + Layout)
 - 직인 위치 분석
@@ -116,16 +120,11 @@ https://antiphishingstt.p-e.kr/
 - 비정상 패턴 탐지
 - 위험도 시각화 및 이미지 오버레이 제공
 
-<img width="1280" height="720" alt="슬라이드15" src="https://github.com/user-attachments/assets/9af6b9cb-373f-4f18-bdc9-84f5c6b26401" />
-<img width="1280" height="720" alt="슬라이드16" src="https://github.com/user-attachments/assets/fa6cc24c-0b9d-43cb-a8aa-90dde7b435c2" />
-
 ### 💬 3) 스미싱 분석
 - 문자 본문과 URL 자동 분리
 - 키워드 기반 위험 점수화
 - URL 도메인 위험도 비교
 - 정렬 및 검색 기능 지원
-
-<img width="1280" height="720" alt="슬라이드10" src="https://github.com/user-attachments/assets/55f562cf-8e7a-4434-8647-ad0dee777870" />
 
 ### 📞 4) 통화 녹음 피싱 위험 탐지
 - 음성 파일 전송
