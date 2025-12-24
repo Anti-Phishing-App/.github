@@ -1,13 +1,17 @@
 # 🔐 구해줘 피싱(Guppy)
 **실시간 보이스피싱·스미싱·문서 위조 탐지 AI 기반 어플리케이션**
+<img width="1280" height="720" alt="슬라이드1" src="https://github.com/user-attachments/assets/29b0533c-526c-4fc8-971a-c64486c642bf" />
 
 ---
 
 ## 📝 프로젝트 소개
+<img width="1280" height="720" alt="슬라이드4" src="https://github.com/user-attachments/assets/7794d3fd-2b24-4072-b5c0-defe12607d12" />
 
 보이스피싱은 더 이상 고령층만의 문제가 아니라, **전 세대**가 피해를 입는 사회적 문제로 확산되고 있습니다.  
 특히 짧은 문장, 링크, 메신저 기반으로 빠르게 실행되는 피싱 범죄는  
 사용자가 정상 여부를 판단하기 어렵고, 그 피해 규모 또한 매우 큽니다.
+
+<img width="1280" height="720" alt="슬라이드5" src="https://github.com/user-attachments/assets/f73d041f-081e-4a70-b4b8-eaf0666774c6" />
 
 구해줘 피싱(Guppy)은 다음 네 가지 기능을 통합한 **AI 기반 실시간 탐지 플랫폼**입니다:
 
@@ -29,7 +33,8 @@
 
 ## 🧩 팀 구성원 별 역할
 
-이미지로 추가 예정
+<img width="1280" height="720" alt="슬라이드21" src="https://github.com/user-attachments/assets/60519ba7-9f58-408a-b072-35c61fb6486f" />
+<img width="1280" height="720" alt="슬라이드22" src="https://github.com/user-attachments/assets/b12caab2-f73c-4334-841d-3c5df7c61fd0" />
 
 ---
 
@@ -101,27 +106,32 @@ https://antiphishingstt.p-e.kr/
 
 ## 📌 주요 기능
 
+<img width="1280" height="720" alt="슬라이드7" src="https://github.com/user-attachments/assets/74b24966-2063-417c-8706-63b699f3438e" />
 ### 🔊 1) 보이스피싱 위험 탐지 (Real-time STT)
 - PCM 기반 WebSocket 전송
 - 실시간 STT 변환 후 위험도 분석
 - 통화 중 즉시 사용자에게 경고 표시
 
+<img width="1280" height="720" alt="슬라이드12" src="https://github.com/user-attachments/assets/c2926695-f431-43c5-9390-ba55e03118e4" />
 ### 🖼 2) 문서 위조 탐지 (OCR + CV + Layout)
 - 직인 위치 분석
 - 영역 구조 비교
 - 비정상 패턴 탐지
 - 위험도 시각화 및 이미지 오버레이 제공
 
+<img width="1280" height="720" alt="슬라이드15" src="https://github.com/user-attachments/assets/9af6b9cb-373f-4f18-bdc9-84f5c6b26401" />
+<img width="1280" height="720" alt="슬라이드16" src="https://github.com/user-attachments/assets/fa6cc24c-0b9d-43cb-a8aa-90dde7b435c2" />
 ### 💬 3) 스미싱 분석
 - 문자 본문과 URL 자동 분리
 - 키워드 기반 위험 점수화
 - URL 도메인 위험도 비교
 - 정렬 및 검색 기능 지원
 
-### 📞 4) 위험 번호 추천
-- 사용자 패턴 분석
-- 개인화된 피싱 의심 번호 제공
-- 신종 패턴 자동 반영
+<img width="1280" height="720" alt="슬라이드10" src="https://github.com/user-attachments/assets/55f562cf-8e7a-4434-8647-ad0dee777870" />
+### 📞 4) 통화 녹음 피싱 위험 탐지
+- 음성 파일 전송
+- STT 변환 후 위험도 분석
+- 위험도 시각화 및 판단 근거 제공
 
 ---
 
@@ -137,7 +147,7 @@ https://antiphishingstt.p-e.kr/
 ## 🔮 향후 확장
 
 - AI 기반 신종 패턴 자동 탐지
-- 가족 보호 기능 (원격 위험 모니터링)
+- 탐지 결과 바탕 피싱 의심 연락처 추가
 - 공공기관 연계 데이터 허브 구축
 - 금융기관 FDS 연동 모델 제공
 
