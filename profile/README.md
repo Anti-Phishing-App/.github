@@ -53,8 +53,7 @@
 > 안드로이드 12 이상부터 통화 녹음이 사실상 완전히 차단되며,  
 > OneUI 환경에서는 일반 녹음까지 추가로 제한됨.
 
-이로 인해, 앱 내 **실시간 통화 캡처 방식** 대신  
-현재는 **통화 종료 후 음성 파일 업로드 방식**으로 기능을 대체하였음.
+이로 인해, 앱 내 **실시간 통화 캡처 방식** 대신 현재는 **통화 종료 후 음성 파일 업로드 방식**으로 기능을 대체하였음.
 
 #### 실시간 음성 스트리밍 테스트 페이지
 
@@ -90,8 +89,7 @@ https://antiphishingstt.p-e.kr/
 - 서버에서 gRPC 기반 CLOVA STT 세션이 정상적으로 시작되며  
 - `recv bytes len=2048` 로그가 주기적으로 출력되는 것으로 보아 **PCM 스트림 수신 자체는 정상 동작**함  
 
-다만, **Android 14 / OneUI의 통화 녹음 차단 정책으로 인해**  
-실제 통화 음성이 아닌, **볼륨이 0으로 처리된 오디오 데이터만 전달**되고 있음.
+다만, **Android 14 / OneUI의 통화 녹음 차단 정책으로 인해** 실제 통화 음성이 아닌, **볼륨이 0으로 처리된 오디오 데이터만 전달**되고 있음.
 
 따라서,
 
@@ -104,12 +102,14 @@ https://antiphishingstt.p-e.kr/
 ## 📌 주요 기능
 
 <img width="1280" height="720" alt="슬라이드7" src="https://github.com/user-attachments/assets/74b24966-2063-417c-8706-63b699f3438e" />
+
 ### 🔊 1) 보이스피싱 위험 탐지 (Real-time STT)
 - PCM 기반 WebSocket 전송
 - 실시간 STT 변환 후 위험도 분석
 - 통화 중 즉시 사용자에게 경고 표시
 
 <img width="1280" height="720" alt="슬라이드12" src="https://github.com/user-attachments/assets/c2926695-f431-43c5-9390-ba55e03118e4" />
+
 ### 🖼 2) 문서 위조 탐지 (OCR + CV + Layout)
 - 직인 위치 분석
 - 영역 구조 비교
@@ -118,6 +118,7 @@ https://antiphishingstt.p-e.kr/
 
 <img width="1280" height="720" alt="슬라이드15" src="https://github.com/user-attachments/assets/9af6b9cb-373f-4f18-bdc9-84f5c6b26401" />
 <img width="1280" height="720" alt="슬라이드16" src="https://github.com/user-attachments/assets/fa6cc24c-0b9d-43cb-a8aa-90dde7b435c2" />
+
 ### 💬 3) 스미싱 분석
 - 문자 본문과 URL 자동 분리
 - 키워드 기반 위험 점수화
@@ -125,6 +126,7 @@ https://antiphishingstt.p-e.kr/
 - 정렬 및 검색 기능 지원
 
 <img width="1280" height="720" alt="슬라이드10" src="https://github.com/user-attachments/assets/55f562cf-8e7a-4434-8647-ad0dee777870" />
+
 ### 📞 4) 통화 녹음 피싱 위험 탐지
 - 음성 파일 전송
 - STT 변환 후 위험도 분석
