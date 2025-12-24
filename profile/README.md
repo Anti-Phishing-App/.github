@@ -6,10 +6,7 @@
 
 ## 📝 프로젝트 소개
 <img width="1280" height="720" alt="슬라이드4" src="https://github.com/user-attachments/assets/7794d3fd-2b24-4072-b5c0-defe12607d12" />
-<img width="1280" height="720" alt="슬라이드5" src="https://github.com/user-attachments/assets/f73d041f-081e-4a70-b4b8-eaf0666774c6" />
-
-
-
+<img width="1280" height="720" alt="슬라이드5" src="https://github.com/user-attachments/assets/f73d041f-081e-4a70-b4b8-eaf0666774c6" /><br></br>
 
 보이스피싱은 더 이상 고령층만의 문제가 아니라, **전 세대**가 피해를 입는 사회적 문제로 확산되고 있습니다.  
 특히 짧은 문장, 링크, 메신저 기반으로 빠르게 실행되는 피싱 범죄는 사용자가 정상 여부를 판단하기 어렵고, 그 피해 규모 또한 매우 큽니다.
