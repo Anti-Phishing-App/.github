@@ -36,6 +36,13 @@
 
 ---
 
+## 📆 개발 기간
+
+- **1차** : 2025.09.03 ~ 2025.12.12 프로토타입 제작
+- **2차** : 2026.00.00 ~ AWS 재구성 및 기능 정확도 향상
+
+---
+
 ## ⚙️ 개발 환경
 - **App** : Android Kotlin(Jetpack Compose)
 - **Backend** : FastAPI, WebSocket
